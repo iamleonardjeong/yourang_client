@@ -1,7 +1,13 @@
-import React from 'react';
+import React,{useState} from 'react';
+import Mypage from './component/Mypage';
 
 function App() {
-  return <div>ok</div>;
+  
+  return (
+    <div>
+      <Mypage />
+    </div>
+  )
 }
 
 export default App;

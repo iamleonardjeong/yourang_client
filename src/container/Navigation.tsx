@@ -12,13 +12,15 @@ function Navigation() {
     <header>
       <div id="logo">youRang</div>
       <div id="navSearch">
-        <input
-          onChange={onChange}
-          value={value}
-          type="text"
-          placeholder="지역, 숙소명을 입력하세요"
-          autoComplete="off"
-        />
+        <form>
+          <input
+            onChange={onChange}
+            value={value}
+            type="text"
+            placeholder="지역, 숙소명을 입력하세요"
+            autoComplete="off"
+          />
+        </form>
       </div>
       <div id="navMenus">
         <div id="navProfile">Around</div>

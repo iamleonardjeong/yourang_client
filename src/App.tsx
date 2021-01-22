@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Home from './container/Home';
 import Navigation from './container/Navigation';
 import Main from './container/Main';
-import Mypage from './container/Mypage';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

@@ -1,5 +1,7 @@
 import React, { ReactNode, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import BGMusic from '../components/BGMusic';
+
 import SignInModal from '../components/SignInModal';
 import SignUpModal from '../components/SignUpModal';
 import './Home.css';
@@ -11,6 +13,7 @@ function Home() {
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [placeInput, setPlaceInput] = useState('');
+  const history = useHistory();
 
   const onChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setPlaceInput(e.currentTarget.value);
@@ -18,7 +21,7 @@ function Home() {
 
   const onEnterDownHander = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      console.log(placeInput);
+      history.push('/main', placeInput);
     }
   };
 

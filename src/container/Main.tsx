@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import './Main.scss';
 import classNames from 'classnames';
 import ContentsBox from '../components/ContentsBox';

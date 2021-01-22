@@ -13,7 +13,6 @@ function Home() {
 
   const signInModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
-    console.log(target);
     if (target === 'Log in') {
       setIsSignUpOpen(!isSignUpOpen);
       setIsSignInOpen(!isSignInOpen);
@@ -61,6 +60,7 @@ function Home() {
               type="text"
               placeholder="장소"
               className="home_contents_incoming-text_input"
+              maxLength={20}
             />
             <label
               htmlFor="place"

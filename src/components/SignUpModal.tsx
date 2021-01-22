@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { mobileValid } from './Helper/ValidationHelpers';
 import axios from 'axios';
 
 //style

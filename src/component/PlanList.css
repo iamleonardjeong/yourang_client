@@ -1,0 +1,38 @@
+.planList {
+  margin: 15px 15px 15px 15px;
+  width: 17.5%;
+  box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  border-radius: 10px;
+}
+.planList:hover {
+  transform: scale(1.07);
+  transition-duration: 0.3s;
+}
+
+.planList_photo {
+  border-radius: 10px 10px 0px 0px;
+}
+
+.planList_inform_remove {
+  display: flex;
+  justify-content: space-between;
+}
+
+.planList_inform {
+  margin: 0px 5px 5px 5px;
+}
+.planList_photo,
+.planList_inform_name,
+.planList_inform_inst {
+  margin-bottom: 5px;
+}
+
+.planList_inform_remove_btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+/* .planList_inform
+.planList_photo
+.planList_inform_name
+.planList_inform_inst */

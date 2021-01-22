@@ -10,6 +10,17 @@ import backgroundVideo from '../video/yourang-home_video.mp4';
 function Home() {
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+  const [placeInput, setPlaceInput] = useState('');
+
+  const onChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
+    setPlaceInput(e.currentTarget.value);
+  };
+
+  const onEnterDownHander = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      console.log(placeInput);
+    }
+  };
 
   const signInModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
@@ -61,6 +72,8 @@ function Home() {
               placeholder="장소"
               className="home_contents_incoming-text_input"
               maxLength={20}
+              onChange={onChangeHandler}
+              onKeyDown={onEnterDownHander}
             />
             <label
               htmlFor="place"

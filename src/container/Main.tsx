@@ -23,7 +23,7 @@ function Main() {
     hotel: false,
   });
 
-  const [modalState, setModaltate] = useState({
+  const [modalState, setModalState] = useState({
     isOn: false,
   });
 
@@ -50,7 +50,7 @@ function Main() {
 
   // 컨텐츠 상세 모달 on
   const onModalState = () => {
-    setModaltate({
+    setModalState({
       ...modalState,
       isOn: true,
     });
@@ -58,7 +58,7 @@ function Main() {
 
   // 컨텐츠 상세 모달 off
   const closeModalState = () => {
-    setModaltate({
+    setModalState({
       ...modalState,
       isOn: false,
     });

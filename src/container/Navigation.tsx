@@ -1,5 +1,6 @@
 import React, { ChangeEvent, useState } from 'react';
 import './Navigation.scss';
+import { Link } from 'react-router-dom';
 
 function Navigation() {
   const [value, setValue] = useState('');
@@ -10,7 +11,9 @@ function Navigation() {
 
   return (
     <header>
-      <div id="logo">youRang</div>
+      <div id="logo">
+        <Link to="/main">youRang</Link>
+      </div>
       <div id="navSearch">
         <form>
           <input
@@ -23,9 +26,13 @@ function Navigation() {
         </form>
       </div>
       <div id="navMenus">
-        <div id="navProfile">Around</div>
+        <div id="navProfile">
+          <Link to="/main">Home</Link>
+        </div>
         <div id="navProfile">Help</div>
-        <div id="navProfile">Profile</div>
+        <div id="navProfile">
+          <Link to="/main/profile">Profile</Link>
+        </div>
       </div>
     </header>
   );

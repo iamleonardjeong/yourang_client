@@ -1,7 +1,7 @@
 // import { type } from 'os'
-import React from "react";
-import PlanPhoto from "../planListPhoto.jpg";
-import "./PlanList.css";
+import React from 'react';
+import PlanPhoto from '../image/planListPhoto.jpg';
+import './PlanList.css';
 
 type PlanListProps = {
   user: {
@@ -26,8 +26,8 @@ function PlanList({ user, onRemove }: PlanListProps) {
             className="planList_inform_remove_btn"
             onClick={() => onRemove(user.id)}
           >
-            {" "}
-            X{" "}
+            {' '}
+            X{' '}
           </button>
         </div>
       </div>

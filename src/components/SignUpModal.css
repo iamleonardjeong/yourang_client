@@ -1,0 +1,198 @@
+.signup-modal_container {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0;
+  padding: 20px;
+}
+
+.signup-modal_container_content {
+  position: relative;
+  min-width: 32vw;
+  height: 75vh;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  border-radius: 13px;
+}
+
+.signup-modal_container_content_head {
+  flex: 1.1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  outline: 0;
+  border-bottom: 1px solid;
+  border-color: #008f7a;
+  opacity: 0.5;
+}
+
+.signup-modal_container_content_head_close-button {
+  flex: 1;
+  text-align: center;
+  width: 2rem;
+  font-size: 2rem;
+  font-weight: lighter;
+  transform: rotate(45deg);
+  cursor: pointer;
+}
+
+.signup-modal_container_content_head_title {
+  text-align: center;
+  flex: 8;
+  margin: 1rem;
+  font-size: 1rem;
+  font-weight: 900;
+}
+.empty-div-for-spacing {
+  flex: 1;
+  width: 1rem;
+}
+
+.signup-modal_container_content_body {
+  flex: 8.9;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  position: relative;
+  margin-top: 3%;
+}
+
+.signup-modal_container_content_body_upper {
+  flex: 8;
+  display: flex;
+  height: 9em;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.signup-modal_container_content_body__upper_input-field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1.3px solid #008f7a;
+  border-radius: 7px;
+  width: 90%;
+}
+.signup-modal_container_content_body__upper_input-field_id-group,
+.signup-modal_container_content_body__upper_input-field_email-group {
+  width: 100%;
+  display: flex;
+  border-bottom: 1.3px solid #008f7a;
+  align-items: center;
+  justify-content: space-between;
+}
+.signup-modal_container_content_body__upper_input-field_id,
+.signup-modal_container_content_body__upper_input-field_email {
+  height: 3.5rem;
+  border: none;
+  padding-left: 10px;
+  font-size: 13.5px;
+  width: 80%;
+}
+
+.signup-modal_container_content_body__upper_input-field_id_confirm,
+.signup-modal_container_content_body__upper_input-field_email_confirm {
+  border: none;
+  height: 2rem;
+  width: 4rem;
+  background-color: #008f7a;
+  border-radius: 7px;
+  margin-right: 1rem;
+  color: white;
+}
+
+.signup-modal_container_content_body__upper_input-field_mobile {
+  width: 100%;
+  height: 3.5rem;
+  border: none;
+  border-bottom: 1.3px solid #008f7a;
+  padding-left: 10px;
+  font-size: 13.5px;
+}
+
+.signup-modal_container_content_body__upper_input-field_password {
+  width: 100%;
+  height: 3.5rem;
+  border: none;
+  border-bottom: 1.3px solid #008f7a;
+  padding-left: 10px;
+  font-size: 13.5px;
+}
+
+.signup-modal_container_content_body__upper_input-field_password-confirm {
+  width: 100%;
+  height: 3.5rem;
+  border: none;
+  padding-left: 10px;
+  font-size: 13.5px;
+}
+
+/* .signup-modal_container_content_body__upper_input-field_id::placeholder,
+.signup-modal_container_content_body__upper_input-field_password::placeholder,
+.signup-modal_container_content_body__upper_input-field_password-confirm::placeholder {
+} */
+
+.signup-modal_container_content_body__upper_login-button {
+  position: relative;
+  border: none;
+  width: 90%;
+  height: 3rem;
+  font-size: 1rem;
+  background-color: #008f7a;
+  border-radius: 8px;
+  color: white;
+}
+
+.signup-modal_container_content_body_lower {
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.signup-modal_container_content_body_lower_google-login,
+.signup-modal_container_content_body_lower_naver-login {
+  display: flex;
+  width: 90%;
+  margin: 0.5rem 0;
+  border-radius: 7px;
+  border: 2px solid #008f7a;
+  /* border-color:  */
+}
+
+.signup-modal_container_content_body_lower_naver-login_icon,
+.signup-modal_container_content_body_lower_google-login_icon {
+  align-items: center;
+  width: 1.5rem;
+  margin-left: 1rem;
+  margin: 0.7rem 1rem;
+}
+
+.signup-modal_container_content_body_lower_google-login_message,
+.signup-modal_container_content_body_lower_naver-login_message {
+  /* width: 100em; */
+  font-size: 0.9rem;
+  text-align: center;
+  vertical-align: middle;
+  margin: auto;
+}
+
+.signup-modal_container_content_body_lower_to-login-group {
+  display: flex;
+  width: 90%;
+  margin-top: 0.5rem;
+}
+
+.signup-modal_container_content_body_lower_to-login {
+  margin-left: 1rem;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1.5px solid #008f7a;
+}

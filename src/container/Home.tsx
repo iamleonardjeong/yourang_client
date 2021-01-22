@@ -1,7 +1,7 @@
 import React, { ReactNode, useState } from 'react';
-import BGMusic from './BGMusic';
-import SignInModal from './SignInModal';
-import SignUpModal from './SignUpModal';
+import BGMusic from '../components/BGMusic';
+import SignInModal from '../components/SignInModal';
+import SignUpModal from '../components/SignUpModal';
 import './Home.css';
 
 //Video

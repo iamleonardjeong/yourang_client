@@ -1,5 +1,7 @@
 import React, { ReactNode, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import BGMusic from '../components/BGMusic';
+
 import SignInModal from '../components/SignInModal';
 import SignUpModal from '../components/SignUpModal';
 import './Home.css';
@@ -10,10 +12,21 @@ import backgroundVideo from '../video/yourang-home_video.mp4';
 function Home() {
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+  const [placeInput, setPlaceInput] = useState('');
+  const history = useHistory();
+
+  const onChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
+    setPlaceInput(e.currentTarget.value);
+  };
+
+  const onEnterDownHander = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      history.push('/main', placeInput);
+    }
+  };
 
   const signInModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
-    console.log(target);
     if (target === 'Log in') {
       setIsSignUpOpen(!isSignUpOpen);
       setIsSignInOpen(!isSignInOpen);
@@ -61,6 +74,9 @@ function Home() {
               type="text"
               placeholder="장소"
               className="home_contents_incoming-text_input"
+              maxLength={20}
+              onChange={onChangeHandler}
+              onKeyDown={onEnterDownHander}
             />
             <label
               htmlFor="place"

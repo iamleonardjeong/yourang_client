@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import './Main.scss';
 import classNames from 'classnames';
 import ContentsBox from '../components/ContentsBox';
@@ -25,6 +26,10 @@ function Main() {
     hotel: false,
   });
 
+  const location = useLocation();
+
+  //Home 콤포넨트에서 입력된 장소 이름이 현재 콤포넌트로 잘 넘어오는지 테스트 하기 위함
+  console.log(location.state);
   const [modalState, setModalState] = useState({
     isOn: false,
   });

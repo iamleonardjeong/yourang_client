@@ -1,6 +1,10 @@
 import React, { useState, useEffect, MouseEvent } from 'react';
 import './BGMusic.css';
+//music
 import bgMusic from '../music/yourang-home_music.mp3';
+// image
+import musicMute from '../image/music-mute.png';
+import musicPlay from '../image/music-play.png';
 
 function BGMusic(url: any) {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -21,9 +25,15 @@ function BGMusic(url: any) {
 
   return (
     <div>
-      <button className="home_music-button" onClick={toggle}>
-        play/pause
-      </button>
+      {/* <button className="home_music-button" onClick={toggle}>
+        {d}
+      </button> */}
+      <img
+        className="music-button"
+        onClick={toggle}
+        src={isPlaying ? musicPlay : musicMute}
+        alt=""
+      />
     </div>
   );
 }

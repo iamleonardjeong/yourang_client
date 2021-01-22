@@ -34,7 +34,7 @@ function Home() {
 
   return (
     <div className="home">
-      <video className="home_video" loop muted>
+      <video className="home_video" autoPlay loop muted>
         <source src={backgroundVideo} type="video/mp4" />
       </video>
 

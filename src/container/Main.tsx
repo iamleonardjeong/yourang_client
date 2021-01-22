@@ -4,10 +4,12 @@ import './Main.scss';
 import classNames from 'classnames';
 import ContentsBox from '../components/ContentsBox';
 import Modal from '../components/Modal';
+import { GoogleMap, Marker } from 'react-google-maps';
 
 declare global {
   interface Window {
-    kakao: any;
+    google: any;
+    // kakao: any;
   }
 }
 
@@ -24,19 +26,34 @@ function Main() {
     hotel: false,
   });
 
+  const location = useLocation();
+
+  //Home 콤포넨트에서 입력된 장소 이름이 현재 콤포넌트로 잘 넘어오는지 테스트 하기 위함
+  console.log(location.state);
   const [modalState, setModalState] = useState({
     isOn: false,
   });
 
-  // kakao map
+  // google map
+  let map: null;
   useEffect(() => {
-    const container = document.getElementById('mapContainer');
-    const options = {
-      center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-      level: 3,
+    let mapOptions = {
+      zoom: 15,
+      center: { lat: 33.450701, lng: 126.570667 },
+      // mapTypeId: 'satellite',
     };
-    const map = new window.kakao.maps.Map(container, options);
-  }, []);
+
+    map = new window.google.maps.Map(
+      document.getElementById('mapContainer') as HTMLElement,
+      mapOptions
+    );
+
+    new window.google.maps.Marker({
+      position: { lat: 33.450701, lng: 126.570667 },
+      map,
+      title: 'Hello',
+    });
+  });
 
   // leftContainer MenuTap State
   const onClick = (e: string) => {
@@ -109,11 +126,7 @@ function Main() {
         <div
           id="mapContainer"
           className={classNames({ onShow: modalState.isOn })}
-        >
-          <div
-            style={{ width: '100%', height: '100%', background: 'gray' }}
-          ></div>
-        </div>
+        ></div>
       </div>
     </div>
   );

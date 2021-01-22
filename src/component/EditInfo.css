@@ -1,0 +1,122 @@
+.editinfo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.56);
+  z-index: 10000;
+}
+
+.editinfo_modal_name {
+  /* border: solid; */
+  display: flex;
+  flex: 1;
+  font-size: 2rem;
+  padding: 20px 10px 20px 10px;
+  width: 96.4%;
+  background-color: #008f7a;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: whitesmoke;
+  border-radius: 10px 10px 0px 0px;
+  box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+.editinfo_modal {
+  background-color: whitesmoke;
+  position: absolute;
+  width: 30%;
+  height: 70%;
+  left: 35%;
+  top: 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+.editinfo_modal_form {
+  padding: 10px 0px 10px 70px;
+  display: flex;
+  flex-direction: column;
+  flex: 100;
+  justify-content: space-evenly;
+  width: 70%;
+  align-items: center;
+}
+
+.editinfo_modal_password {
+  display: flex;
+  flex-direction: column;
+}
+
+.editinfo_modal_Email_title,
+.editinfo_modal_phone_title,
+.editinfo_modal_password_title {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  /* font-weight: bold; */
+}
+
+.editinfo_modal_Email_value,
+.editinfo_modal_password_value1,
+.editinfo_modal_password_value2,
+.editinfo_modal_phone_value {
+  outline: none;
+  box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px 5px 10px;
+}
+
+.editinfo_modal_Email_value,
+.editinfo_modal_password_value1,
+.editinfo_modal_password_value2,
+.editinfo_modal_phone_value {
+  width: 80%;
+  height: 3.4vh;
+  font-size: 1.5rem;
+}
+.editinfo_modal_Email,
+.editinfo_modal_phone,
+.editinfo_modal_password {
+  width: 100%;
+
+  /* border: solid; */
+}
+
+/* .editinfo_modal_password {
+} */
+
+.editinfo_modal_password_value1 {
+  margin-bottom: 25px;
+}
+
+.editinfo_modal_btn {
+  background-color: #008f7a;
+  color: whitesmoke;
+  border: none;
+  width: 6rem;
+  height: 3rem;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  font-size: 1rem;
+  border-radius: 10px;
+  font-weight: bold;
+  margin-right: 70px;
+}
+
+.editinfo_modal_btn:hover {
+  transform: scale(1.15);
+  transition-duration: 0.2s;
+}
+
+.editinfo_modal_password_inspect {
+  /* border: solid; */
+  margin-right: 4.5rem;
+  color: red;
+  margin-top: 0.2rem;
+}

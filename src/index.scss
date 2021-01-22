@@ -1,0 +1,23 @@
+*,
+*:after,
+*:after {
+  box-sizing: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  height: 100%;
+}
+
+body {
+  font-family: Montserrat, 'Noto Sans KR', sans-serif;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+#root {
+  height: 100%;
+}

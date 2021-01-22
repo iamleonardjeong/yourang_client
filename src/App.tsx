@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
-} from 'react-router-dom';
-import Home from './container/Home';
-import Navigation from './container/Navigation';
-import Main from './container/Main';
-import Mypage from './container/Mypage';
-import NoMatch from './container/NoMatch';
-import MainContainer from './container/MainContainer';
+} from "react-router-dom";
+import Home from "./container/Home";
+import Navigation from "./container/Navigation";
+import Main from "./container/Main";
+import Mypage from "./container/Mypage";
+import NoMatch from "./container/NoMatch";
+import MainContainer from "./container/MainContainer";
 
 // 테스트다
 

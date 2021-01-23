@@ -9,8 +9,8 @@ const ConCon = () => {
     <>
       <Router>
         <Navigation />
-        <Route path="/main/profile" exact component={Main} />
-        <Route path="/main" exact component={Mypage} />
+        <Route path="/main/profile" exact component={Mypage} />
+        <Route path="/main" exact component={Main} />
       </Router>
       {/* <Main />
       <Mypage /> */}

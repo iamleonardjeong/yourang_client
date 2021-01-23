@@ -4,14 +4,9 @@ import './Main.scss';
 import classNames from 'classnames';
 import ContentsBox from '../components/ContentsBox';
 import Modal from '../components/Modal';
-import { GoogleMap, Marker } from 'react-google-maps';
+import { servicesVersion } from 'typescript';
 
-declare global {
-  interface Window {
-    google: any;
-    // kakao: any;
-  }
-}
+declare const google: any;
 
 interface menuState {
   restaurant: boolean;
@@ -26,34 +21,17 @@ function Main() {
     hotel: false,
   });
 
-  const location = useLocation();
-
-  //Home 콤포넨트에서 입력된 장소 이름이 현재 콤포넌트로 잘 넘어오는지 테스트 하기 위함
-  console.log(location.state);
   const [modalState, setModalState] = useState({
     isOn: false,
   });
 
-  // google map
-  let map: null;
-  useEffect(() => {
-    let mapOptions = {
-      zoom: 15,
-      center: { lat: 33.450701, lng: 126.570667 },
-      // mapTypeId: 'satellite',
-    };
-
-    map = new window.google.maps.Map(
-      document.getElementById('map') as HTMLElement,
-      mapOptions
-    );
-
-    new window.google.maps.Marker({
-      position: { lat: 33.450701, lng: 126.570667 },
-      map,
-      title: 'Hello',
-    });
-  });
+  // let map;
+  // useEffect(() => {
+  //   map = new google.map.Map(document.getElementById('map'), {
+  //     center: { lat: -34.397, lng: 150.644 },
+  //     zoom: 8,
+  //   });
+  // });
 
   // leftContainer MenuTap State
   const onClick = (e: string) => {
@@ -123,7 +101,11 @@ function Main() {
       </div>
       <div id="rightContainer">
         {modalState.isOn ? <Modal closeModalState={closeModalState} /> : ''}
-        <div id="map" className={classNames({ onShow: modalState.isOn })}></div>
+        <div
+          id="map"
+          style={{ height: '100%' }}
+          className={classNames({ onShow: modalState.isOn })}
+        ></div>
       </div>
     </div>
   );

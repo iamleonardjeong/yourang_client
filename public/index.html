@@ -30,10 +30,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,700;0,800;1,700;1,800&display=swap" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <script
-      type="text/javascript"
-      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=%REACT_APP_JS_KEY%"
-    ></script>
     <title>React App</title>
     <script>
       window.onload = function () {
@@ -48,6 +44,9 @@
       type="text/javascript"
       src="//dapi.kakao.com/v2/maps/sdk.js?appkey=%REACT_APP_JS_KEY%"
     ></script> -->
+    <script defer
+    src="https://maps.googleapis.com/maps/api/js?key=%REACT_APP_GOOGLE_MAP_API&libraries=places&callback=initMap">
+  </script>
     <script
       defer
       src="https://maps.googleapis.com/maps/api/js?key=%REACT_APP_GOOGLE_MAP_API%&callback=initMap&region=kr"

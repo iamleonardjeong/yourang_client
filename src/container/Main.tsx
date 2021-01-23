@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import './Main.scss';
 import classNames from 'classnames';
 import ContentsBox from '../components/ContentsBox';
 import Modal from '../components/Modal';
-import { servicesVersion } from 'typescript';
 
 declare const google: any;
 
@@ -15,6 +13,14 @@ interface menuState {
 }
 
 function Main() {
+  let map: google.maps.Map;
+
+  useEffect(() => {
+    map = new google.maps.Map(document.getElementById('map') as HTMLElement, {
+      center: { lat: -34.397, lng: 150.644 },
+      zoom: 15,
+    });
+  }, []);
   const [menuState, setMenuState] = useState<menuState>({
     restaurant: false,
     place: true,

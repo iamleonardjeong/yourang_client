@@ -19,7 +19,6 @@ const MainContainer = () => {
         <Navigation submit={submit} />
         <Route path="/main" exact component={Main} />
         <Route path="/main/profile" exact component={Mypage} />
-        <Route path="/main" exact component={Main} />
       </Router>
       {/* <Main />
       <Mypage /> */}

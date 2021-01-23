@@ -44,7 +44,7 @@ function Main() {
     };
 
     map = new window.google.maps.Map(
-      document.getElementById('mapContainer') as HTMLElement,
+      document.getElementById('map') as HTMLElement,
       mapOptions
     );
 
@@ -123,10 +123,7 @@ function Main() {
       </div>
       <div id="rightContainer">
         {modalState.isOn ? <Modal closeModalState={closeModalState} /> : ''}
-        <div
-          id="mapContainer"
-          className={classNames({ onShow: modalState.isOn })}
-        ></div>
+        <div id="map" className={classNames({ onShow: modalState.isOn })}></div>
       </div>
     </div>
   );

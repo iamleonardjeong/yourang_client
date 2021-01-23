@@ -1,19 +1,25 @@
 import React, { ReactNode, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 import BGMusic from '../components/BGMusic';
-
 import SignInModal from '../components/SignInModal';
 import SignUpModal from '../components/SignUpModal';
 import './Home.css';
 
 //Video
 import backgroundVideo from '../video/yourang-home_video.mp4';
+import { findDOMNode } from 'react-dom';
+// import { GoogleMap } from 'react-google-maps';
+
+declare const google: any;
+let map: google.maps.Map;
 
 function Home() {
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [placeInput, setPlaceInput] = useState('');
   const history = useHistory();
+  const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
 
   const onChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setPlaceInput(e.currentTarget.value);
@@ -21,7 +27,61 @@ function Home() {
 
   const onEnterDownHander = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      history.push('/main', placeInput);
+      // 위도, 경도 받아오기
+      axios
+        .get(
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${placeInput}&key=${apiKey}`
+        )
+        .then((res) => {
+          console.log(res);
+          const { lat, lng } = res.data.results[0].geometry.location;
+          return { lat, lng };
+        })
+        .then(({ lat, lng }) => {
+          console.log(lat, lng);
+
+          // @ts-ignore beta feature not in type declarations
+          const localContextMapView = new google.maps.localContext.LocalContextMapView(
+            {
+              element: document.getElementById('map'),
+              placeTypePreferences: ['restaurant', 'tourist_attraction'],
+              maxPlaceCount: 12,
+            }
+          );
+
+          map = localContextMapView.map;
+
+          map.setOptions({
+            center: { lat: 51.507307, lng: -0.08114 },
+            zoom: 14,
+          });
+
+          // function initMap() {
+          // const searchPlace = new google.maps.LatLng(lat, lng);
+          // const inforWindow = new google.maps.InfoWindow();
+          // const map = new google.maps.Map(
+          //   document.getElementById('map') as HTMLElement,
+          //   {
+          //     center: searchPlace,
+          //     zoom: 15,
+          //   }
+          // );
+
+          // console.log('map', map);
+          // const request = {
+          //   location: searchPlace,
+          //   type: ['restaurant'],
+          // };
+
+          // const service = new google.maps.places.PlacesService(map);
+          // console.log(service.prototype);
+          // service.nearbySearch(request, function (results: any, status: any) {
+          //   console.log(results);
+          // });
+          // }
+          // initMap();
+        });
+      // history.push('/main', placeInput);
     }
   };
 
@@ -47,6 +107,7 @@ function Home() {
 
   return (
     <div className="home">
+      <div id="map"></div>
       <video className="home_video" autoPlay loop muted>
         <source src={backgroundVideo} type="video/mp4" />
       </video>

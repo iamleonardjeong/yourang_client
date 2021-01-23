@@ -41,20 +41,20 @@ function Home() {
           console.log(lat, lng);
 
           // @ts-ignore beta feature not in type declarations
-          const localContextMapView = new google.maps.localContext.LocalContextMapView(
-            {
-              element: document.getElementById('map'),
-              placeTypePreferences: ['restaurant', 'tourist_attraction'],
-              maxPlaceCount: 12,
-            }
-          );
+          // const localContextMapView = new google.maps.localContext.LocalContextMapView(
+          //   {
+          //     element: document.getElementById('map'),
+          //     placeTypePreferences: ['restaurant', 'tourist_attraction'],
+          //     maxPlaceCount: 12,
+          //   }
+          // );
 
-          map = localContextMapView.map;
+          // map = localContextMapView.map;
 
-          map.setOptions({
-            center: { lat: 51.507307, lng: -0.08114 },
-            zoom: 14,
-          });
+          // map.setOptions({
+          //   center: { lat: 51.507307, lng: -0.08114 },
+          //   zoom: 14,
+          // });
 
           // function initMap() {
           // const searchPlace = new google.maps.LatLng(lat, lng);

@@ -1,6 +1,6 @@
 .planList {
   margin: 15px 15px 15px 15px;
-  width: 17.5%;
+  width: 175px;
   box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   border-radius: 10px;
 }
@@ -10,6 +10,7 @@
 }
 
 .planList_photo {
+  margin: 0px 10px 10px 0px;
   border-radius: 10px 10px 0px 0px;
 }
 
@@ -23,8 +24,10 @@
 }
 .planList_photo,
 .planList_inform_name,
-.planList_inform_inst {
-  margin-bottom: 5px;
+.planList_inform_inst,
+.planList_inform_date {
+  margin-bottom: 2px;
+  font-size: 13px;
 }
 
 .planList_inform_remove_btn {

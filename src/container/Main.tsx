@@ -17,10 +17,17 @@ function Main() {
 
   useEffect(() => {
     map = new google.maps.Map(document.getElementById('map') as HTMLElement, {
-      center: { lat: -34.397, lng: 150.644 },
+      center: { lat: 37.49791467507743, lng: 127.0275305696762 },
       zoom: 15,
     });
+    // const timer = setTimeout(() => {
+    //   console.log('el');
+    // }, 500);
+    // return () => {
+    //   clearTimeout(timer);
+    // };
   }, []);
+
   const [menuState, setMenuState] = useState<menuState>({
     restaurant: false,
     place: true,
@@ -30,14 +37,6 @@ function Main() {
   const [modalState, setModalState] = useState({
     isOn: false,
   });
-
-  // let map;
-  // useEffect(() => {
-  //   map = new google.map.Map(document.getElementById('map'), {
-  //     center: { lat: -34.397, lng: 150.644 },
-  //     zoom: 8,
-  //   });
-  // });
 
   // leftContainer MenuTap State
   const onClick = (e: string) => {

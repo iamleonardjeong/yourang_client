@@ -2,20 +2,21 @@ import React from 'react';
 import './ContentsBox.scss';
 
 interface ContentsBoxProps {
-  imgSrc: string;
+  imgSrc?: string;
   title: string;
+  desc: string;
   onModalState: () => void;
 }
 
-function ContentsBox({ imgSrc, title, onModalState }: ContentsBoxProps) {
+function ContentsBox({ imgSrc, title, desc, onModalState }: ContentsBoxProps) {
   return (
     <div className="contentsBox" onClick={onModalState}>
       <div className="contentsImg">
-        <img src={imgSrc} alt="img" />
+        <img src={imgSrc} alt="등록된 사진이 없습니다." />
       </div>
       <div className="contentsDis">
         <p>{title}</p>
-        <span>contents</span>
+        <span>{desc}</span>
       </div>
     </div>
   );

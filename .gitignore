@@ -27,3 +27,6 @@ yarn-error.log*
 .eslintcache
 
 .http
+
+cert.pem
+key.pem

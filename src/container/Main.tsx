@@ -3,6 +3,7 @@ import './Main.scss';
 import classNames from 'classnames';
 import ContentsBox from '../components/ContentsBox';
 import Modal from '../components/Modal';
+import axios from 'axios';
 
 declare const google: any;
 
@@ -11,7 +12,6 @@ interface menuState {
   place: boolean;
   hotel: boolean;
 }
-
 function Main() {
   let map: google.maps.Map;
 

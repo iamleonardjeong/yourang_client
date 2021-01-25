@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import './Navigation.scss';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -39,7 +39,7 @@ function Navigation({ submit }: NavigationProps) {
   return (
     <header>
       <div id="logo">
-        <Link to="/main">youRang</Link>
+        <Link to="/main">YouRang</Link>
       </div>
       <div id="navSearch">
         <form onSubmit={handleSubmit}>

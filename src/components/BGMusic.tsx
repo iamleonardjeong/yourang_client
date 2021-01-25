@@ -24,16 +24,17 @@ function BGMusic(url: any) {
   };
 
   return (
-    <div>
+    <div onClick={toggle} style={{ cursor: 'pointer' }}>
+      {isPlaying ? 'BGM Off' : 'BGM On'}
       {/* <button className="home_music-button" onClick={toggle}>
         {d}
       </button> */}
-      <img
+      {/* <img
         className="music-button"
         onClick={toggle}
         src={isPlaying ? musicPlay : musicMute}
         alt=""
-      />
+      /> */}
     </div>
   );
 }

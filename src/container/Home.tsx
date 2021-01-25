@@ -1,17 +1,13 @@
-import React, { ReactNode, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import axios from 'axios';
 import BGMusic from '../components/BGMusic';
 import SignInModal from '../components/SignInModal';
 import SignUpModal from '../components/SignUpModal';
-import './Home.css';
-
-//Video
-import backgroundVideo from '../video/yourang-home_video.mp4';
-import { findDOMNode } from 'react-dom';
-// import { GoogleMap } from 'react-google-maps';
+import './Home.scss';
+import backgroundVideo from '../video/yourang-home_video.mp4'; // background video
 
 declare const google: any;
+
 let map: google.maps.Map;
 
 function Home() {
@@ -19,7 +15,6 @@ function Home() {
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [placeInput, setPlaceInput] = useState('');
   const history = useHistory();
-  const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
 
   const onChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setPlaceInput(e.currentTarget.value);
@@ -27,22 +22,17 @@ function Home() {
 
   const onEnterDownHander = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      // 위도, 경도 받아오기
-      // axios
-      //   .get(
-      //     `https://maps.googleapis.com/maps/api/geocode/json?address=${placeInput}&key=${apiKey}`
-      //   )
-      //   .then((res) => {
-      //     const { lat, lng } = res.data.results[0].geometry.location;
-      //     return { lat, lng };
-      //   })
-      //   .then(({ lat, lng }) => console.log(lat, lng));
       history.push('/main', placeInput);
     }
   };
 
+  const onExplore = () => {
+    history.push('/main');
+  };
+
   const signInModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
+
     if (target === 'Log in') {
       setIsSignUpOpen(!isSignUpOpen);
       setIsSignInOpen(!isSignInOpen);
@@ -53,6 +43,7 @@ function Home() {
 
   const signUpModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
+
     if (target === '+') {
       setIsSignUpOpen(!isSignUpOpen);
     } else if (target === 'Sign up') {
@@ -63,44 +54,43 @@ function Home() {
 
   return (
     <div className="home">
-      <video className="home_video" loop muted>
+      <video className="home_video" autoPlay loop muted>
         <source src={backgroundVideo} type="video/mp4" />
       </video>
-
       <div className="home_contents">
-        <div className="home_contents_header-bar">
-          <div className="home_contents_header-bar_home_music">
+        <div className="home_contents_header">
+          <div className="home_contents_header_title">YouRang</div>
+          <div className="home_contents_header_bgm">
             <BGMusic />
           </div>
           <div
-            className="home_contents_header-bar_home_signin"
+            className="home_contents_header_signIn"
             onClick={signInModalHandler}
           >
-            Sign-In
+            로그인
           </div>
         </div>
 
-        <div className="home_contents_incoming-texts">
-          <div className="home_contents_incoming-text_title">YouRang</div>
-          <div className="home_contents_incoming-text_question">
+        <div className="home_contents_body">
+          <div className="home_contents_body_title">
             대한민국 어디로 떠나고 싶으세요?
           </div>
-          <div className="home_contents_incoming-text_input-family">
-            <input
-              type="text"
-              placeholder="장소"
-              className="home_contents_incoming-text_input"
-              maxLength={20}
-              onChange={onChangeHandler}
-              onKeyDown={onEnterDownHander}
-            />
-            <label
-              htmlFor="place"
-              className="home_contents_incoming-text_input_label"
-            >
-              장소
-            </label>
-          </div>
+          <input
+            type="text"
+            placeholder="떠나고 싶은 장소를 검색해보세요"
+            className="home_contents_body_input"
+            maxLength={20}
+            onChange={onChangeHandler}
+            onKeyDown={onEnterDownHander}
+          />
+          <button onClick={onExplore}>체험하기</button>
+
+          {/* <label
+            htmlFor="place"
+            className="home_contents_incoming-text_input_label"
+          >
+            장소
+          </label> */}
         </div>
         {isSignInOpen ? (
           <SignInModal

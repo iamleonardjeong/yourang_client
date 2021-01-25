@@ -1,125 +1,124 @@
-import React, { useState, useRef } from "react";
-import "./Mypage.css";
-import Photo from "../image/photo.png";
-import PlanList from "../components/PlanList";
-import EditInfo from "../components/EditInfo";
-import Navigation from "./Navigation";
+import React, { useState } from 'react';
+import './Mypage.scss';
+import Photo from '../image/photo.png';
+import PlanList from '../components/PlanList';
+import EditInfo from '../components/EditInfo';
 
 function Mypage() {
   const [userinfo, setUserinfo] = useState({
-    name: "이종원",
-    userid: "per1215",
-    email: "syd1215no@gmail.com",
-    phone: "010-6418-7794",
-    created: "20.11.12",
+    name: '이종원',
+    userid: 'per1215',
+    email: 'syd1215no@gmail.com',
+    phone: '010-6418-7794',
+    created: '20.11.12',
   });
 
   const [planList, setPlanList] = useState([
     {
       id: 0,
-      planName: "부산 여행",
-      inst: "부산은 역시 돼지국밥",
-      created: "20.11.12",
+      planName: '부산 여행',
+      inst: '부산은 역시 돼지국밥',
+      created: '20.11.12',
     },
     {
       id: 1,
-      planName: "서울 여행",
-      inst: "서울은 역시 강남",
-      created: "20.11.12",
+      planName: '서울 여행',
+      inst: '서울은 역시 강남',
+      created: '20.11.12',
     },
     {
       id: 2,
-      planName: "강원도 여행",
-      inst: "서울은 역시 감자",
-      created: "20.11.12",
+      planName: '강원도 여행',
+      inst: '서울은 역시 감자',
+      created: '20.11.12',
     },
     {
       id: 3,
-      planName: "제주도 여행",
-      inst: "제주도은 역시 한라봉",
-      created: "20.11.12",
+      planName: '제주도 여행',
+      inst: '제주도은 역시 한라봉',
+      created: '20.11.12',
     },
     {
       id: 4,
-      planName: "경주",
-      inst: "경주은 역시 불국사",
-      created: "20.11.12",
+      planName: '경주',
+      inst: '경주은 역시 불국사',
+      created: '20.11.12',
     },
     {
       id: 5,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
+      planName: '전주',
+      inst: '전주은 역시 비빔밥',
+      created: '20.11.12',
     },
     {
       id: 6,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
+      planName: '전주',
+      inst: '전주은 역시 비빔밥',
+      created: '20.11.12',
     },
     {
       id: 7,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
+      planName: '전주',
+      inst: '전주은 역시 비빔밥',
+      created: '20.11.12',
     },
     {
       id: 8,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
+      planName: '전주',
+      inst: '전주은 역시 비빔밥',
+      created: '20.11.12',
     },
     {
       id: 9,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
+      planName: '전주',
+      inst: '전주은 역시 비빔밥',
+      created: '20.11.12',
     },
     {
       id: 10,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
+      planName: '전주',
+      inst: '전주은 역시 비빔밥',
+      created: '20.11.12',
     },
     {
       id: 11,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
+      planName: '전주',
+      inst: '전주은 역시 비빔밥',
+      created: '20.11.12',
     },
     {
       id: 12,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
+      planName: '전주',
+      inst: '전주은 역시 비빔밥',
+      created: '20.11.12',
     },
     {
       id: 13,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
+      planName: '전주',
+      inst: '전주은 역시 비빔밥',
+      created: '20.11.12',
     },
     {
       id: 14,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
+      planName: '전주',
+      inst: '전주은 역시 비빔밥',
+      created: '20.11.12',
     },
     {
       id: 15,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
+      planName: '전주',
+      inst: '전주은 역시 비빔밥',
+      created: '20.11.12',
     },
     {
       id: 16,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
+      planName: '전주',
+      inst: '전주은 역시 비빔밥',
+      created: '20.11.12',
     },
   ]);
 
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [onModal, setOnModal] = useState(false);
 
   const { name, userid, email, phone } = userinfo;
@@ -138,96 +137,53 @@ function Mypage() {
   };
 
   return (
-    <div className="mypage">
+    <div id="mypage">
       {onModal && <EditInfo editOnModal={editOnModal} userinfo={userinfo} />}
-      <div className="mypage_top">
-        <div className="mypage_top_left">
-          <div className="mypage_top_left_proflie">
-            <img
-              width="150px"
-              className="mypage_top_left_proflie_photo"
-              src={Photo}
-              alt=""
-            />
-            <span className="mypage_top_left_proflie_name">{name}</span>
-            <button
-              className="mypage_top_left_proflie_edit"
-              onClick={editOnModal}
-            >
-              EDIT
-            </button>
-          </div>
-          <div className="mypage_top_left_info">
-            <div className="mypage_top_left_info_title">User info</div>
-            <div className="mypage_top_left_info_detail">
-              <div className="mypage_top_left_info_detail_useridemail">
-                <div className="mypage_top_left_info_detail_userid">
-                  <div className="mypage_top_left_info_detail_userid_title">
-                    UserId
-                  </div>
-                  <div className="mypage_top_left_info_detail_userid_value">
-                    {userid}
-                  </div>
-                </div>
-                <div className="mypage_top_left_info_detail_email">
-                  <div className="mypage_top_left_info_detail_email_title">
-                    Email
-                  </div>
-                  <div className="mypage_top_left_info_detail_email_value">
-                    {email}
-                  </div>
-                </div>
-              </div>
-              <div className="mypage_top_left_info_detail_phoneplan">
-                <div className="mypage_top_left_info_detail_phone">
-                  <div className="mypage_top_left_info_detail_phone_title">
-                    Phone
-                  </div>
-                  <div className="mypage_top_left_info_detail_phone_value">
-                    {phone}
-                  </div>
-                </div>
-                <div className="mypage_top_left_info_detail_plans">
-                  <div className="mypage_top_left_info_detail_plans_title">
-                    Plans
-                  </div>
-                  <div className="mypage_top_left_info_detail_plans_value">
-                    {planList.length}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div id="profileLeft">
+        <div id="profileLeft_profile">
+          <img width="46px" id="profileLeft_profile_photo" src={Photo} alt="" />
+          <h1 id="profileLeft_profile_name">{name}</h1>
+          <button id="profileLeft_profile_editBtn" onClick={editOnModal}>
+            EDIT
+          </button>
         </div>
-        <div className="empty">
-          <div className="mypage_bottom_cover">
-            <div className="mypage_editbar">
-              <button className="mypage_editbar_add">Add</button>
+        <div id="profileLeft_myInfo">
+          <div id="profileLeft_myInfo_titleBar">User info</div>
+          <div id="profileLeft_myInfo_detail">
+            <div id="profileLeft_myInfo_detail_userId">
+              <div id="detail_title">아이디</div>
+              <div>{userid}</div>
             </div>
-            <div className="mypage_planlist">
-              <div className="mypage_planlist_form">
-                {planList.map((el) => (
-                  <PlanList key={el.id} user={el} onRemove={onRemove} />
-                ))}
-              </div>
+            <div id="profileLeft_myInfo_detail_email">
+              <div id="detail_email">이메일</div>
+              <div>{email}</div>
+            </div>
+            <div id="profileLeft_myInfo_detail_phone">
+              <div id="detail_phone">전화번호</div>
+              <div>{phone}</div>
+            </div>
+            <div id="profileLeft_myInfo_detail_plans">
+              <div id="detail_plan">내 여행</div>
+              <div>{planList.length}</div>
             </div>
           </div>
         </div>
       </div>
-      {/* <div className="mypage_bottom">
-        <div className="mypage_bottom_cover">
-          <div className="mypage_editbar">
-            <button className="mypage_editbar_add">추가</button>
+      <div id="profileRight">
+        <div id="profileRight_contents">
+          <div id="profileRight_contents_titleBar">
+            {/* <button id="profileRight_contents_addBtn">Add</button> */}Plan
+            List
           </div>
-          <div className="mypage_planlist">
-            <div className="mypage_planlist_form">
-              {planList.map((el) => (
-                <PlanList key={el.id} user={el} onRemove={onRemove} />
-              ))}
-            </div>
+          {/* <div className="mypage_planlist"> */}
+          <div id="profileRight_contents_planList">
+            {planList.map((el) => (
+              <PlanList key={el.id} user={el} onRemove={onRemove} />
+            ))}
           </div>
+          {/* </div> */}
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }

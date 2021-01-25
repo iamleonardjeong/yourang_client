@@ -7,15 +7,12 @@ import Modal from '../components/Modal';
 import axios from 'axios';
 import { GoogleMap, Marker } from 'react-google-maps';
 import { fireEvent } from '@testing-library/react';
-
 //https://yourang-server.link:5000
-
 declare global {
   interface Window {
     google: any;
   }
 }
-
 interface menuState {
   restaurant: boolean;
   place: boolean;
@@ -42,10 +39,8 @@ function Main() {
     place: true,
     hotel: false,
   });
-
   const location = useLocation();
   const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
-
   //Home 콤포넨트에서 입력된 장소 이름이 현재 콤포넌트로 잘 넘어오는지 테스트 하기 위함
   console.log(location.state);
   const [modalState, setModalState] = useState({
@@ -66,12 +61,10 @@ function Main() {
       zoom: 15,
       // mapTypeId: 'satellite',
     };
-
     const map = new window.google.maps.Map(
       document.getElementById('map') as HTMLElement,
       mapOptions
     );
-
     axios.post('https://localhost:5001/google/map', {
       data: latLng,
       withCredentials: true,
@@ -102,7 +95,6 @@ function Main() {
               const placeIds = places.map((placeId: any) => {
                 return placeId.place_id;
               });
-
               axios
                 .post('https://localhost:5001/google/places_photo', {
                   placeIds: placeIds,
@@ -144,7 +136,6 @@ function Main() {
       [e]: true,
     });
   };
-
   // 컨텐츠 상세 모달 on
   const onModalState = () => {
     setModalState({
@@ -152,7 +143,6 @@ function Main() {
       isOn: true,
     });
   };
-
   // 컨텐츠 상세 모달 off
   const closeModalState = () => {
     setModalState({
@@ -160,7 +150,6 @@ function Main() {
       isOn: false,
     });
   };
-
   return (
     <div id="mainContainer">
       <div id="leftContainer">
@@ -208,5 +197,4 @@ function Main() {
     </div>
   );
 }
-
 export default Main;

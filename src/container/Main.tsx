@@ -24,18 +24,18 @@ interface menuState {
 function Main() {
   let map: google.maps.Map;
 
-  useEffect(() => {
-    map = new google.maps.Map(document.getElementById('map') as HTMLElement, {
-      center: { lat: 37.49791467507743, lng: 127.0275305696762 },
-      zoom: 15,
-    });
-    // const timer = setTimeout(() => {
-    //   console.log('el');
-    // }, 500);
-    // return () => {
-    //   clearTimeout(timer);
-    // };
-  }, []);
+  // useEffect(() => {
+  //   map = new google.maps.Map(document.getElementById('map') as HTMLElement, {
+  //     center: { lat: 37.49791467507743, lng: 127.0275305696762 },
+  //     zoom: 15,
+  //   });
+  //   // const timer = setTimeout(() => {
+  //   //   console.log('el');
+  //   // }, 500);
+  //   // return () => {
+  //   //   clearTimeout(timer);
+  //   // };
+  // }, []);
 
   const [menuState, setMenuState] = useState<menuState>({
     restaurant: false,
@@ -54,12 +54,31 @@ function Main() {
   const [placeInput, setPlaceInput] = useState('');
   const [placeInfo, setPlaceInfo] = useState<any>([]);
 
-  let latLng;
+  let latLng: any;
   // google map
-  let map: null;
-  useEffect(() => {
-    // let latLng;
 
+  const renderMap = () => {
+    //지도 만들고 마커 찍는 로직
+    let myLatlng = new google.maps.LatLng(latLng.lat, latLng.lng);
+    // latLng;
+    let mapOptions = {
+      center: myLatlng,
+      zoom: 15,
+      // mapTypeId: 'satellite',
+    };
+
+    const map = new window.google.maps.Map(
+      document.getElementById('map') as HTMLElement,
+      mapOptions
+    );
+
+    axios.post('https://localhost:5001/google/map', {
+      data: latLng,
+      withCredentials: true,
+    });
+  };
+
+  useEffect(() => {
     const getLocation = async (place: any) => {
       let response = await axios
         .get(
@@ -79,17 +98,8 @@ function Main() {
             })
             .then((res) => {
               console.log('이게 응답온 장소들이다', res);
-              let myLatlng = new google.maps.LatLng(latLng.lat, latLng.lng);
-              // latLng;
-              let mapOptions = {
-                center: myLatlng,
-                zoom: 15,
-                // mapTypeId: 'satellite',
-              };
-
-              setPlaceInfo(res.data);
-
-              const placeIds = res.data.map((placeId: any) => {
+              let places = res.data.slice(0, 6); //응답받은 장소들
+              const placeIds = places.map((placeId: any) => {
                 return placeId.place_id;
               });
 
@@ -99,40 +109,30 @@ function Main() {
                   withCredentials: true,
                 })
                 .then((res) => {
-                  console.log(res.data.data);
-                  const newPlaceInfo = [...placeInfo];
-                  for (let i = 0; i < newPlaceInfo.length; i++) {
-                    newPlaceInfo[i].photo_url = res.data.data[i];
+                  console.log('포토 URL', res.data.data);
+                  for (let i = 0; i < places.length; i++) {
+                    places[i].photo_url = res.data.data[i];
                   }
-                  setPlaceInfo(newPlaceInfo);
+                  setPlaceInfo(places);
+                  renderMap();
                 });
-
-              //지도 만들고 마커 찍는 로직
-              const map = new window.google.maps.Map(
-                document.getElementById('mapContainer') as HTMLElement,
-                mapOptions
-              );
-
-              axios.post('https://localhost:5001/google/map', {
-                data: latLng,
-                withCredentials: true,
-              });
-
-              console.log('장소들 배열', res.data);
-              res.data.forEach((location: any) => {
-                const marker = new window.google.maps.Marker({
-                  position: location.geometry.location,
-                  title: 'Hello',
-                  viible: true,
-                });
-
-                marker.setMap(map);
-              });
             });
         });
     };
     getLocation(location.state);
   }, [location.state]);
+
+  useEffect(() => {
+    // 이미 생성된 지도 위에, 마커를 찍는 일
+    placeInfo.forEach((location: any) => {
+      const marker = new window.google.maps.Marker({
+        position: location.geometry.location,
+        title: 'Hello',
+        visible: true,
+      });
+      marker.setMap(map);
+    });
+  }, [placeInfo]);
 
   // leftContainer MenuTap State
   const onClick = (e: string) => {
@@ -203,52 +203,10 @@ function Main() {
       </div>
       <div id="rightContainer">
         {modalState.isOn ? <Modal closeModalState={closeModalState} /> : ''}
-        <div
-          id="mapContainer"
-          className={classNames({ onShow: modalState.isOn })}
-        ></div>
+        <div id="map" className={classNames({ onShow: modalState.isOn })}></div>
       </div>
     </div>
   );
 }
 
 export default Main;
-
-const src = [
-  {
-    id: 1,
-    imgSrc:
-      'https://images.unsplash.com/photo-1508672019048-805c876b67e2?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1993&q=80',
-    title: 'Please Travel',
-  },
-  {
-    id: 2,
-    imgSrc:
-      'https://images.unsplash.com/photo-1508672019048-805c876b67e2?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1993&q=80',
-    title: 'Please Travel',
-  },
-  {
-    id: 3,
-    imgSrc:
-      'https://images.unsplash.com/photo-1508672019048-805c876b67e2?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1993&q=80',
-    title: 'Please Travel',
-  },
-  {
-    id: 4,
-    imgSrc:
-      'https://images.unsplash.com/photo-1508672019048-805c876b67e2?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1993&q=80',
-    title: 'Please Travel',
-  },
-  {
-    id: 5,
-    imgSrc:
-      'https://images.unsplash.com/photo-1508672019048-805c876b67e2?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1993&q=80',
-    title: 'Please Travel',
-  },
-  {
-    id: 6,
-    imgSrc:
-      'https://images.unsplash.com/photo-1508672019048-805c876b67e2?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1993&q=80',
-    title: 'Please Travel',
-  },
-];

@@ -1,14 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Mypage from './Mypage';
 import Main from './Main';
 import Navigation from './Navigation';
 
-const ConCon = () => {
+const MainContainer = () => {
+  const [data, setData] = useState({
+    data: 'okok',
+  });
+
+  const submit = (form: { data: string; foo: string }) => {
+    console.log(form);
+  };
+
   return (
     <>
       <Router>
-        <Navigation />
+        <Navigation submit={submit} />
         <Route path="/main" exact component={Main} />
         <Route path="/main/profile" exact component={Mypage} />
       </Router>
@@ -18,4 +26,4 @@ const ConCon = () => {
   );
 };
 
-export default ConCon;
+export default MainContainer;

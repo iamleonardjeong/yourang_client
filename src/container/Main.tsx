@@ -21,8 +21,22 @@ interface menuState {
   place: boolean;
   hotel: boolean;
 }
-
 function Main() {
+  let map: google.maps.Map;
+
+  useEffect(() => {
+    map = new google.maps.Map(document.getElementById('map') as HTMLElement, {
+      center: { lat: 37.49791467507743, lng: 127.0275305696762 },
+      zoom: 15,
+    });
+    // const timer = setTimeout(() => {
+    //   console.log('el');
+    // }, 500);
+    // return () => {
+    //   clearTimeout(timer);
+    // };
+  }, []);
+
   const [menuState, setMenuState] = useState<menuState>({
     restaurant: false,
     place: true,

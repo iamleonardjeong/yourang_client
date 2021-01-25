@@ -14,7 +14,7 @@
   flex: 1;
   font-size: 2rem;
   padding: 20px 10px 20px 10px;
-  width: 96.4%;
+  width: 100%;
   background-color: #008f7a;
   justify-content: center;
   align-items: center;
@@ -70,6 +70,7 @@
   border: none;
   border-radius: 5px;
   padding: 5px 10px 5px 10px;
+  /* font-size: 10px; */
 }
 
 .editinfo_modal_Email_value,
@@ -78,7 +79,7 @@
 .editinfo_modal_phone_value {
   width: 80%;
   height: 3.4vh;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
 }
 .editinfo_modal_Email,
 .editinfo_modal_phone,
@@ -116,7 +117,8 @@
 
 .editinfo_modal_password_inspect {
   /* border: solid; */
-  margin-right: 4.5rem;
+  /* margin-right: 4.5rem; */
   color: red;
-  margin-top: 0.2rem;
+  margin-top: 1rem;
+  margin-left: 20px;
 }

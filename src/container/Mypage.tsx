@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import './Mypage.css';
+import React, { useState } from 'react';
+import './Mypage.scss';
 import Photo from '../image/photo.png';
 import PlanList from '../components/PlanList';
 import EditInfo from '../components/EditInfo';
@@ -81,7 +81,37 @@ function Mypage() {
       created: '20.11.12',
     },
     {
-      id: 10,
+      id: 11,
+      planName: '전주',
+      inst: '전주은 역시 비빔밥',
+      created: '20.11.12',
+    },
+    {
+      id: 12,
+      planName: '전주',
+      inst: '전주은 역시 비빔밥',
+      created: '20.11.12',
+    },
+    {
+      id: 13,
+      planName: '전주',
+      inst: '전주은 역시 비빔밥',
+      created: '20.11.12',
+    },
+    {
+      id: 14,
+      planName: '전주',
+      inst: '전주은 역시 비빔밥',
+      created: '20.11.12',
+    },
+    {
+      id: 15,
+      planName: '전주',
+      inst: '전주은 역시 비빔밥',
+      created: '20.11.12',
+    },
+    {
+      id: 16,
       planName: '전주',
       inst: '전주은 역시 비빔밥',
       created: '20.11.12',
@@ -107,45 +137,51 @@ function Mypage() {
   };
 
   return (
-    <div className="mypage">
+    <div id="mypage">
       {onModal && <EditInfo editOnModal={editOnModal} userinfo={userinfo} />}
-      <div className="mypage_middle">
-        <div className="mypage_profile">
-          <img
-            className="mypage_profile_photo"
-            width="250px"
-            src={Photo}
-            alt=""
-          />
-          <button onClick={editOnModal} className="mypage_profile_edit">
-            회원정보 수정
+      <div id="profileLeft">
+        <div id="profileLeft_profile">
+          <img width="46px" id="profileLeft_profile_photo" src={Photo} alt="" />
+          <h1 id="profileLeft_profile_name">{name}</h1>
+          <button id="profileLeft_profile_editBtn" onClick={editOnModal}>
+            EDIT
           </button>
         </div>
-        <div className="mypage_body">
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;이름 : {name}</p>
-          <hr></hr>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;아이디 : {userid}</p>
-          <hr></hr>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;이메일 : {email}</p>
-          <hr></hr>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;전화번호 : {phone}</p>
-          <hr></hr>
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;여행갯수 : {planList.length}</p>
-          <hr></hr>
-        </div>
-      </div>
-      <div className="mypage_bottom">
-        <div className="mypage_bottom_cover">
-          <div className="mypage_editbar">
-            <button className="mypage_editbar_add">추가</button>
-          </div>
-          <div className="mypage_planlist">
-            <div className="mypage_planlist_form">
-              {planList.map((el) => (
-                <PlanList key={el.id} user={el} onRemove={onRemove} />
-              ))}
+        <div id="profileLeft_myInfo">
+          <div id="profileLeft_myInfo_titleBar">User info</div>
+          <div id="profileLeft_myInfo_detail">
+            <div id="profileLeft_myInfo_detail_userId">
+              <div id="detail_title">아이디</div>
+              <div>{userid}</div>
+            </div>
+            <div id="profileLeft_myInfo_detail_email">
+              <div id="detail_email">이메일</div>
+              <div>{email}</div>
+            </div>
+            <div id="profileLeft_myInfo_detail_phone">
+              <div id="detail_phone">전화번호</div>
+              <div>{phone}</div>
+            </div>
+            <div id="profileLeft_myInfo_detail_plans">
+              <div id="detail_plan">내 여행</div>
+              <div>{planList.length}</div>
             </div>
           </div>
+        </div>
+      </div>
+      <div id="profileRight">
+        <div id="profileRight_contents">
+          <div id="profileRight_contents_titleBar">
+            {/* <button id="profileRight_contents_addBtn">Add</button> */}Plan
+            List
+          </div>
+          {/* <div className="mypage_planlist"> */}
+          <div id="profileRight_contents_planList">
+            {planList.map((el) => (
+              <PlanList key={el.id} user={el} onRemove={onRemove} />
+            ))}
+          </div>
+          {/* </div> */}
         </div>
       </div>
     </div>

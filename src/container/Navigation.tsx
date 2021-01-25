@@ -1,12 +1,39 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import './Navigation.scss';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
-function Navigation() {
-  const [value, setValue] = useState('');
+const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
+
+interface NavigationProps {
+  submit: (form: { data: string; foo: string }) => void;
+}
+function Navigation({ submit }: NavigationProps) {
+  const [value, setValue] = useState({
+    data: '',
+    foo: '',
+  });
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
+    setValue({
+      ...value,
+      data: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    let data;
+    e.preventDefault();
+    submit(value);
+    async function foo() {
+      data = axios
+        .get(
+          `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=Museum%20of%20Contemporary%20Art%20Australia&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=${apiKey}`
+          // `https://maps.googleapis.com/maps/api/geocode/json?address=${value.data}&key=${apiKey}`
+        )
+        .then(console.log);
+    }
+    foo();
   };
 
   return (
@@ -15,10 +42,10 @@ function Navigation() {
         <Link to="/main">youRang</Link>
       </div>
       <div id="navSearch">
-        <form>
+        <form onSubmit={handleSubmit}>
           <input
             onChange={onChange}
-            value={value}
+            value={value.data}
             type="text"
             placeholder="지역, 숙소명을 입력하세요"
             autoComplete="off"

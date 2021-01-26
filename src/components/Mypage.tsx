@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import './Mypage.scss';
+import '../styles/Mypage.scss';
+import PlanList from './PlanList';
+import EditInfo from './EditInfo';
 import Photo from '../image/photo.png';
-import PlanList from '../components/PlanList';
-import EditInfo from '../components/EditInfo';
 
 function Mypage() {
+  // fake data - user info
   const [userinfo, setUserinfo] = useState({
-    name: '이종원',
-    userid: 'per1215',
-    email: 'syd1215no@gmail.com',
-    phone: '010-6418-7794',
+    name: '홍길동',
+    userid: 'userId',
+    email: 'userId@gmail.com',
+    phone: '010-1234-5678',
     created: '20.11.12',
   });
 
+  // fake data - plan list
   const [planList, setPlanList] = useState([
     {
       id: 0,
@@ -118,20 +120,18 @@ function Mypage() {
     },
   ]);
 
-  const [search, setSearch] = useState('');
-  const [onModal, setOnModal] = useState(false);
-
+  // fake data - user info contents
   const { name, userid, email, phone } = userinfo;
 
+  // useState
+  const [onModal, setOnModal] = useState(false);
+
+  // plan list element delete
   const onRemove = (id: number): void => {
     setPlanList(planList.filter((el) => el.id !== id));
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-    // console.log(e.target)
-  };
-
+  // user info modification pop
   const editOnModal = (e: any) => {
     setOnModal(!onModal);
   };
@@ -141,7 +141,7 @@ function Mypage() {
       {onModal && <EditInfo editOnModal={editOnModal} userinfo={userinfo} />}
       <div id="profileLeft">
         <div id="profileLeft_profile">
-          <img width="46px" id="profileLeft_profile_photo" src={Photo} alt="" />
+          <img id="profileLeft_profile_photo" src={Photo} alt="" />
           <h1 id="profileLeft_profile_name">{name}</h1>
           <button id="profileLeft_profile_editBtn" onClick={editOnModal}>
             EDIT
@@ -171,17 +171,12 @@ function Mypage() {
       </div>
       <div id="profileRight">
         <div id="profileRight_contents">
-          <div id="profileRight_contents_titleBar">
-            {/* <button id="profileRight_contents_addBtn">Add</button> */}Plan
-            List
-          </div>
-          {/* <div className="mypage_planlist"> */}
+          <div id="profileRight_contents_titleBar">Plan List</div>
           <div id="profileRight_contents_planList">
             {planList.map((el) => (
               <PlanList key={el.id} user={el} onRemove={onRemove} />
             ))}
           </div>
-          {/* </div> */}
         </div>
       </div>
     </div>

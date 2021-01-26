@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import "./EditInfo.css";
+import React, { useState } from 'react';
+import '../styles/EditInfo.scss';
 
 type EditInfoProp = {
   editOnModal: (e: any) => void;
@@ -14,10 +14,10 @@ type EditInfoProp = {
 
 function EditInfo({ editOnModal, userinfo }: EditInfoProp) {
   const [inputForm, setInputForm] = useState({
-    editEmail: "",
-    password: "",
-    inspect: "",
-    editPhone: "",
+    editEmail: '',
+    password: '',
+    inspect: '',
+    editPhone: '',
   });
 
   const { editEmail, password, inspect, editPhone } = inputForm;
@@ -35,10 +35,10 @@ function EditInfo({ editOnModal, userinfo }: EditInfoProp) {
   const mobileInputHander = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // mobile전용 유효성 검사 및 입력제한 로직(출력 예시: 000-0000-0000 숫자로만 입력됨. "-"는 자동입력 됨)
     const { name, value, maxLength } = e.currentTarget;
-    let reg = new RegExp("^[0-9]");
+    let reg = new RegExp('^[0-9]');
     if (reg.test(e.key)) {
       if (value.length === 3 || value.length === 8) {
-        setInputForm({ ...inputForm, [name]: value + "-" + e.key });
+        setInputForm({ ...inputForm, [name]: value + '-' + e.key });
       } else {
         setInputForm({
           ...inputForm,
@@ -47,11 +47,11 @@ function EditInfo({ editOnModal, userinfo }: EditInfoProp) {
       }
     }
 
-    if (e.key === "Backspace" && value.length === 9) {
+    if (e.key === 'Backspace' && value.length === 9) {
       setInputForm({ ...inputForm, [name]: value.substring(0, 8) });
-    } else if (e.key === "Backspace" && value.length === 4) {
+    } else if (e.key === 'Backspace' && value.length === 4) {
       setInputForm({ ...inputForm, [name]: value.substring(0, 3) });
-    } else if (e.key === "Backspace") {
+    } else if (e.key === 'Backspace') {
       setInputForm({
         ...inputForm,
         [name]: value.substring(0, value.length - 1),
@@ -106,7 +106,7 @@ function EditInfo({ editOnModal, userinfo }: EditInfoProp) {
                 작성된 비밀번호가 서로 다릅니다
               </div>
             ) : (
-              ""
+              ''
             )}
           </div>
 

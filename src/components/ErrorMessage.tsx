@@ -1,5 +1,5 @@
 import React from 'react';
-import './ErrorMessage.css';
+import '../styles/ErrorMessage.scss';
 
 interface ErrorMessageProps {
   validationCheck: (e: React.MouseEvent<HTMLElement>) => void;

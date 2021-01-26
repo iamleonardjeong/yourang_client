@@ -13,6 +13,7 @@ function SignInModal({
   signInModalHandler,
   signUpModalHandler,
 }: SignInModalProps) {
+  // useState
   const [loginInfo, setLoginInfo] = useState({ userId: '', password: '' });
   const [isValidFail, setIsValidFail] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');

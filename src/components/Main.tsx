@@ -40,6 +40,7 @@ function Main() {
   const [placeInput, setPlaceInput] = useState('');
   const [placeInfo, setPlaceInfo] = useState<any>([]);
   const [latLng, setLatLng] = useState<any>({});
+  const [imgStatus, setImgStatus] = useState(false);
 
   // google map
   const renderMap = () => {
@@ -74,11 +75,16 @@ function Main() {
   useEffect(() => {
     setLatLng(location.state.latLng);
     setPlaceInfo(location.state.places);
-  }, []);
+  }, [latLng, placeInfo]);
 
   useEffect(() => {
     renderMap();
-  }, [latLng, placeInfo]);
+  }, [latLng]);
+
+  //콘텐츠 박스의 img가 onLoad되면 상태변경 -> re-render 유도
+  const imgStatusHandler = () => {
+    setImgStatus(true);
+  };
 
   // leftContainer MenuTap State
   const onClick = (e: string) => {
@@ -140,6 +146,7 @@ function Main() {
                   title={content.name}
                   desc={content.rating}
                   onModalState={onModalState}
+                  imgStatusHandler={imgStatusHandler}
                 />
               ))
             : ''}

@@ -49,7 +49,7 @@ function Home() {
           })
           .then((res) => {
             console.log('nearby search 응답', res);
-            let places = res.data.slice(0, 6); //응답받은 장소들
+            let places = res.data.slice(0, 1); //응답받은 장소들
             const placeIds = places.map((placeId: any) => {
               return placeId.place_id;
             });

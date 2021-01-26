@@ -45,10 +45,11 @@ function Home() {
           })
           .then((res) => {
             console.log('nearby search 응답', res);
-            let places = res.data.slice(0, 1); //응답받은 장소들
+            let places = res.data.slice(0, 3); //응답받은 장소들
             const placeIds = places.map((placeId: any) => {
               return placeId.place_id;
             });
+
             axios
               .post('https://localhost:5001/google/places_photo', {
                 placeIds: placeIds,
@@ -60,6 +61,8 @@ function Home() {
                   places[i].photo_url = res.data.data[i];
                 }
 
+                console.log(places);
+                // 다음 페이지로 이동
                 history.push('/main', { latLng, places });
               });
           });

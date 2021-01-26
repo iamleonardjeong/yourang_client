@@ -7,6 +7,7 @@ import Modal from '../components/Modal';
 import axios from 'axios';
 import { GoogleMap, Marker } from 'react-google-maps';
 import { fireEvent } from '@testing-library/react';
+import { render } from 'node-sass';
 //https://yourang-server.link:5000
 declare global {
   interface Window {
@@ -37,8 +38,8 @@ function Main() {
   });
   const [placeInput, setPlaceInput] = useState('');
   const [placeInfo, setPlaceInfo] = useState<any>([]);
+  const [latLng, setLatLng] = useState<any>({});
 
-  let latLng: any;
   // google map
 
   const renderMap = () => {
@@ -71,10 +72,13 @@ function Main() {
   };
 
   useEffect(() => {
-    latLng = location.state.latLng;
+    setLatLng(location.state.latLng);
     setPlaceInfo(location.state.places);
-    renderMap();
   }, []);
+
+  useEffect(() => {
+    renderMap();
+  }, [latLng, placeInfo]);
 
   // leftContainer MenuTap State
   const onClick = (e: string) => {

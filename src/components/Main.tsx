@@ -42,7 +42,6 @@ function Main() {
   const [latLng, setLatLng] = useState<any>({});
 
   // google map
-
   const renderMap = () => {
     //지도 만들고 마커 찍는 로직
     let myLatlng = new google.maps.LatLng(latLng.lat, latLng.lng);

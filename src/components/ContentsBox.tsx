@@ -1,11 +1,11 @@
-import React from 'react';
-import './ContentsBox.scss';
+import React from "react";
+import "./ContentsBox.scss";
 
 interface ContentsBoxProps {
   imgSrc?: string;
   title: string;
   desc: string;
-  onModalState: () => void;
+  onModalState: (e: React.MouseEvent<HTMLElement>) => void;
 }
 
 function ContentsBox({ imgSrc, title, desc, onModalState }: ContentsBoxProps) {

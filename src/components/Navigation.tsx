@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
-import './Navigation.scss';
+import '../styles/Navigation.scss';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 

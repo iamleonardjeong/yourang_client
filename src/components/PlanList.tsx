@@ -1,7 +1,6 @@
-// import { type } from 'os'
-import React from "react";
-import PlanPhoto from "../image/planListPhoto.jpg";
-import "./PlanList.css";
+import React from 'react';
+import PlanPhoto from '../image/planListPhoto.jpg';
+import '../styles/PlanList.scss';
 
 type PlanListProps = {
   user: {
@@ -16,7 +15,7 @@ type PlanListProps = {
 function PlanList({ user, onRemove }: PlanListProps) {
   return (
     <div className="planList">
-      <img className="planList_photo" src={PlanPhoto} width="100%" alt="" />
+      <img className="planList_photo" src={PlanPhoto} alt="" />
       <div className="planList_inform">
         <div className="planList_inform_name">여행 : {user.planName}</div>
         <div className="planList_inform_inst">설명 : {user.inst}</div>
@@ -26,13 +25,13 @@ function PlanList({ user, onRemove }: PlanListProps) {
             className="planList_inform_remove_btn"
             onClick={() => onRemove(user.id)}
           >
-            {" "}
-            X{" "}
+            {' '}
+            X{' '}
           </button>
         </div>
       </div>
     </div>
   );
 }
-// planList_photo
+
 export default PlanList;

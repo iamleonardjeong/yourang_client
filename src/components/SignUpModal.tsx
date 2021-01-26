@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState } from 'react';
+import axios from 'axios';
 
 //style
-import "./SignUpModal.css";
-import googleIcon from "../image/google_icon.png";
-import naverIcon from "../image/naver_icon.png";
+import '../styles/SignUpModal.scss';
+import googleIcon from '../image/google_icon.png';
+import naverIcon from '../image/naver_icon.png';
 
 //components
-import ErrorMessage from "./ErrorMessage";
+import ErrorMessage from './ErrorMessage';
 
 interface SignUpModalProps {
   signInModalHandler: (e: React.MouseEvent<HTMLElement>) => void;
@@ -19,14 +19,14 @@ function SignUpModal({
   signUpModalHandler,
 }: SignUpModalProps) {
   const [signUpInfo, setSignUpInfo] = useState({
-    userId: "",
-    email: "",
-    mobile: "",
-    password: "",
-    confirmPassword: "",
+    userId: '',
+    email: '',
+    mobile: '',
+    password: '',
+    confirmPassword: '',
   });
   const [isValidFail, setIsValidFail] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
 
   const signUpInfoHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     // input창에 입력한 내용 state로 저장하는 로직
@@ -37,10 +37,10 @@ function SignUpModal({
   const mobileInputHander = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // mobile전용 유효성 검사 및 입력제한 로직(출력 예시: 000-0000-0000 숫자로만 입력됨. "-"는 자동입력 됨)
     const { name, value, maxLength } = e.currentTarget;
-    let reg = new RegExp("^[0-9]");
+    let reg = new RegExp('^[0-9]');
     if (reg.test(e.key)) {
       if (value.length === 3 || value.length === 8) {
-        setSignUpInfo({ ...signUpInfo, [name]: value + "-" + e.key });
+        setSignUpInfo({ ...signUpInfo, [name]: value + '-' + e.key });
       } else {
         setSignUpInfo({
           ...signUpInfo,
@@ -49,11 +49,11 @@ function SignUpModal({
       }
     }
 
-    if (e.key === "Backspace" && value.length === 9) {
+    if (e.key === 'Backspace' && value.length === 9) {
       setSignUpInfo({ ...signUpInfo, [name]: value.substring(0, 8) });
-    } else if (e.key === "Backspace" && value.length === 4) {
+    } else if (e.key === 'Backspace' && value.length === 4) {
       setSignUpInfo({ ...signUpInfo, [name]: value.substring(0, 3) });
-    } else if (e.key === "Backspace") {
+    } else if (e.key === 'Backspace') {
       setSignUpInfo({
         ...signUpInfo,
         [name]: value.substring(0, value.length - 1),
@@ -65,9 +65,9 @@ function SignUpModal({
     // Sign-up버튼을 눌렀을 때, signUpInfo를 바탕으로 진행하는 유효성 검사.
     const { userId, email, mobile, password, confirmPassword } = signUpInfo;
 
-    const error1 = "입력정보를 모두 입력해 주셔야 합니다.";
-    const error2 = "아이디 혹은 비밀번가 맞지않습니다. 다시 입력해 주세요.";
-    const error3 = "비밀번호가 서로 일치하지 않습니다. 다시 입력해 주세요.";
+    const error1 = '입력정보를 모두 입력해 주셔야 합니다.';
+    const error2 = '아이디 혹은 비밀번가 맞지않습니다. 다시 입력해 주세요.';
+    const error3 = '비밀번호가 서로 일치하지 않습니다. 다시 입력해 주세요.';
 
     if (password !== confirmPassword) {
       setIsValidFail(!isValidFail);

@@ -1,9 +1,9 @@
 import React, { cloneElement, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import './Main.scss';
+import '../styles/Main.scss';
 import classNames from 'classnames';
-import ContentsBox from '../components/ContentsBox';
-import Modal from '../components/Modal';
+import ContentsBox from './ContentsBox';
+import Modal from './Modal';
 import axios from 'axios';
 import { GoogleMap, Marker } from 'react-google-maps';
 import { fireEvent } from '@testing-library/react';
@@ -75,54 +75,54 @@ function Main() {
       marker.setMap(map);
     });
   };
-  useEffect(() => {
-    const getLocation = async (place: any) => {
-      let response = await axios
-        .get(
-          `https://maps.googleapis.com/maps/api/geocode/json?address=${place}&key=${apiKey}`
-        )
-        .then((response) => {
-          latLng = response.data.results[0].geometry.location;
-          setPlaceInput(latLng);
-          return latLng;
-        })
-        .then((latLng) => {
-          console.log('넘어오나??', latLng);
-          axios
-            .post('https://localhost:5001/google/map', {
-              data: latLng,
-              withCredentials: true,
-            })
-            .then((res) => {
-              console.log('이게 응답온 장소들이다', res);
-              setPlaceInfo(res.data);
-              const placeIds = res.data.map((placeId: any) => {
-                return placeId.place_id;
-              });
-              axios
-                .post('https://localhost:5001/google/places_photo', {
-                  placeIds: placeIds,
-                  withCredentials: true,
-                })
-                .then((res) => {
-                  console.log(res.data.data);
-                  const newPlaceInfo = [...placeInfo];
-                  for (let i = 0; i < newPlaceInfo.length; i++) {
-                    newPlaceInfo[i].photo_url = res.data.data[i];
-                  }
-                  console.log('포토 url이 들어왔나???', newPlaceInfo);
-                  setPlaceInfo(newPlaceInfo);
-                });
-            });
-        });
-    };
-    getLocation(location.state);
-  }, [location.state]);
-  useEffect(() => {
-    if (latLng) {
-      renderMap();
-    }
-  }, [placeInfo]);
+  // useEffect(() => {
+  //   const getLocation = async (place: any) => {
+  //     let response = await axios
+  //       .get(
+  //         `https://maps.googleapis.com/maps/api/geocode/json?address=${place}&key=${apiKey}`
+  //       )
+  //       .then((response) => {
+  //         latLng = response.data.results[0].geometry.location;
+  //         setPlaceInput(latLng);
+  //         return latLng;
+  //       })
+  //       .then((latLng) => {
+  //         console.log('넘어오나??', latLng);
+  //         axios
+  //           .post('https://localhost:5001/google/map', {
+  //             data: latLng,
+  //             withCredentials: true,
+  //           })
+  //           .then((res) => {
+  //             console.log('이게 응답온 장소들이다', res);
+  //             setPlaceInfo(res.data);
+  //             const placeIds = res.data.map((placeId: any) => {
+  //               return placeId.place_id;
+  //             });
+  //             axios
+  //               .post('https://localhost:5001/google/places_photo', {
+  //                 placeIds: placeIds,
+  //                 withCredentials: true,
+  //               })
+  //               .then((res) => {
+  //                 console.log(res.data.data);
+  //                 const newPlaceInfo = [...placeInfo];
+  //                 for (let i = 0; i < newPlaceInfo.length; i++) {
+  //                   newPlaceInfo[i].photo_url = res.data.data[i];
+  //                 }
+  //                 console.log('포토 url이 들어왔나???', newPlaceInfo);
+  //                 setPlaceInfo(newPlaceInfo);
+  //               });
+  //           });
+  //       });
+  //   };
+  //   getLocation(location.state);
+  // }, [location.state]);
+  // useEffect(() => {
+  //   if (latLng) {
+  //     renderMap();
+  //   }
+  // }, [placeInfo]);
   // leftContainer MenuTap State
   const onClick = (e: string) => {
     setMenuState({

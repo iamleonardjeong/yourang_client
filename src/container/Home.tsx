@@ -65,7 +65,7 @@ function Home() {
                   places[i].photo_url = res.data.data[i];
                 }
 
-                console.log(places);
+                // console.log(places);
                 // 다음 페이지로 이동
                 history.push('/main', { latLng, places });
               });

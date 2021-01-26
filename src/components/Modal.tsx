@@ -1,15 +1,11 @@
-import React, { useEffect } from "react";
-import "./Modal.scss";
+import React from "react";
+import "../styles/Modal.scss";
 
 interface ModalProps {
   closeModalState: (e: React.MouseEvent<HTMLElement>) => void;
-  place: any;
 }
 
-function Modal({ closeModalState, place }: ModalProps) {
-  useEffect(() => {
-    console.log("asdadsadsdas", place);
-  });
+function Modal({ closeModalState }: ModalProps) {
   return (
     <div id="modalContainer">
       <div id="contentsModal">

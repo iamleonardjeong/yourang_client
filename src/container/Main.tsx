@@ -21,26 +21,15 @@ interface menuState {
 function Main() {
   let map: google.maps.Map;
 
-  // useEffect(() => {
-  //   map = new google.maps.Map(document.getElementById('map') as HTMLElement, {
-  //     center: { lat: 37.49791467507743, lng: 127.0275305696762 },
-  //     zoom: 15,
-  //   });
-  //   // const timer = setTimeout(() => {
-  //   //   console.log('el');
-  //   // }, 500);
-  //   // return () => {
-  //   //   clearTimeout(timer);
-  //   // };
-  // }, []);
-
   const [menuState, setMenuState] = useState<menuState>({
     restaurant: false,
     place: true,
     hotel: false,
   });
-  const location = useLocation();
+
+  const location = useLocation<any>();
   const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
+
   //Home 콤포넨트에서 입력된 장소 이름이 현재 콤포넌트로 잘 넘어오는지 테스트 하기 위함
   console.log(location.state);
   const [modalState, setModalState] = useState({
@@ -69,62 +58,23 @@ function Main() {
       data: latLng,
       withCredentials: true,
     });
-  };
 
-  useEffect(() => {
-    const getLocation = async (place: any) => {
-      let response = await axios
-        .get(
-          `https://maps.googleapis.com/maps/api/geocode/json?address=${place}&key=${apiKey}`
-        )
-        .then((response) => {
-          latLng = response.data.results[0].geometry.location;
-          setPlaceInput(latLng);
-          return latLng;
-        })
-        .then((latLng) => {
-          console.log('넘어오나??', latLng);
-          axios
-            .post('https://localhost:5001/google/map', {
-              data: latLng,
-              withCredentials: true,
-            })
-            .then((res) => {
-              console.log('이게 응답온 장소들이다', res);
-              let places = res.data.slice(0, 6); //응답받은 장소들
-              const placeIds = places.map((placeId: any) => {
-                return placeId.place_id;
-              });
-              axios
-                .post('https://localhost:5001/google/places_photo', {
-                  placeIds: placeIds,
-                  withCredentials: true,
-                })
-                .then((res) => {
-                  console.log('포토 URL', res.data.data);
-                  for (let i = 0; i < places.length; i++) {
-                    places[i].photo_url = res.data.data[i];
-                  }
-                  setPlaceInfo(places);
-                  renderMap();
-                });
-            });
-        });
-    };
-    getLocation(location.state);
-  }, [location.state]);
-
-  useEffect(() => {
-    // 이미 생성된 지도 위에, 마커를 찍는 일
     placeInfo.forEach((location: any) => {
+      console.log('걱정마 이건 과금 아니야', location);
       const marker = new window.google.maps.Marker({
         position: location.geometry.location,
-        title: 'Hello',
+        title: location.geometry.name,
         visible: true,
       });
       marker.setMap(map);
     });
-  }, [placeInfo]);
+  };
+
+  useEffect(() => {
+    latLng = location.state.latLng;
+    setPlaceInfo(location.state.places);
+    renderMap();
+  }, []);
 
   // leftContainer MenuTap State
   const onClick = (e: string) => {
@@ -136,6 +86,7 @@ function Main() {
       [e]: true,
     });
   };
+
   // 컨텐츠 상세 모달 on
   const onModalState = () => {
     setModalState({
@@ -177,7 +128,7 @@ function Main() {
           </li>
         </ul>
         <div id="leftContents">
-          {menuState.place
+          {menuState.place || menuState.restaurant || menuState.hotel
             ? placeInfo.map((content: any) => (
                 <ContentsBox
                   // key={content.place_id}

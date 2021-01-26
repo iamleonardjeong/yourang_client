@@ -1,5 +1,5 @@
 import React from 'react';
-import './ContentsBox.scss';
+import '../styles/ContentsBox.scss';
 
 interface ContentsBoxProps {
   imgSrc?: string;

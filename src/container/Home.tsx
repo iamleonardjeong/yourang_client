@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import '../styles/Home.scss';
 import BGMusic from '../components/BGMusic';
 import SignInModal from '../components/SignInModal';
 import SignUpModal from '../components/SignUpModal';
-import './Home.scss';
 import backgroundVideo from '../video/yourang-home_video.mp4'; // background video
 import axios from 'axios';
 
@@ -13,11 +13,15 @@ let map: google.maps.Map;
 const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
 
 function Home() {
+  // useState
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [placeInput, setPlaceInput] = useState('');
+
+  // useHistory
   const history = useHistory();
 
+  // Input Change
   const onChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setPlaceInput(e.currentTarget.value);
   };
@@ -81,10 +85,12 @@ function Home() {
     }
   };
 
+  // push main page - 체험하기 버튼
   const onExplore = () => {
     history.push('/main');
   };
 
+  // logIn modal pop
   const signInModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
 
@@ -96,6 +102,7 @@ function Home() {
     }
   };
 
+  // signUp modal pop
   const signUpModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
 
@@ -139,13 +146,6 @@ function Home() {
             onKeyDown={onEnterDownHander}
           />
           <button onClick={onExplore}>체험하기</button>
-
-          {/* <label
-            htmlFor="place"
-            className="home_contents_incoming-text_input_label"
-          >
-            장소
-          </label> */}
         </div>
         {isSignInOpen ? (
           <SignInModal

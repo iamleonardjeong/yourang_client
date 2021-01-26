@@ -1,5 +1,5 @@
 import React from 'react';
-import './Modal.scss';
+import '../styles/Modal.scss';
 
 interface ModalProps {
   closeModalState: () => void;

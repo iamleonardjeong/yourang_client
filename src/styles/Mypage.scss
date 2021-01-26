@@ -1,185 +1,178 @@
+// mypage component local
 #mypage {
-  font-family: 'Montserrat', sans-serif;
   width: 100%;
   height: calc(100% - 72px);
+  font-size: 1.2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: scroll;
 
+  // left container
   #profileLeft {
-    height: 100%;
     flex: 1;
+    height: 100%;
     padding: 40px 20px 40px 40px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    overflow: hidden;
 
+    // left container - profile view
     #profileLeft_profile {
       flex: 1;
+      padding: 30px;
+      margin-bottom: 10px;
       border-radius: 8px;
-      display: flex;
-      align-items: center;
       box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
         0 3px 6px rgba(0, 0, 0, 0.23);
-      margin-bottom: 10px;
-      padding: 30px;
+      display: flex;
+      align-items: center;
 
-      #profileLeft_profile_detail {
-      }
-      #profileLeft_titleBar {
-        border-radius: 8px 8px 0px 0px;
-        height: 56px;
-        font-weight: 600;
-        font-size: 20px;
-        color: white;
-        display: flex;
-        align-items: center;
-        padding-left: 30px;
-        background-color: whitesmoke;
-        background-color: #008f7a;
-      }
+      // left container - profile view - photo
       #profileLeft_profile_photo {
+        width: 46px;
         border-radius: 100%;
         box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
           0 3px 6px rgba(0, 0, 0, 0.23);
       }
 
+      // left container - profile view - name
       #profileLeft_profile_name {
+        font-size: 1.4rem;
         margin-left: 16px;
-        font-size: 24px;
       }
 
+      // left container - profile view - edit btn
       #profileLeft_profile_editBtn {
-        border: none;
         font-family: 'Montserrat';
-        margin-left: 20px;
-        height: 26px;
         width: 56px;
-        border-radius: 8px;
-        background-color: #008f7a;
+        height: 26px;
+        margin-left: 20px;
         color: white;
+        background-color: #008f7a;
+        border: none;
+        border-radius: 8px;
         cursor: pointer;
       }
     }
 
+    // left container - user info
     #profileLeft_myInfo {
+      flex: 4;
+      margin-top: 10px;
+      border-radius: 8px;
       box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
         0 3px 6px rgba(0, 0, 0, 0.23);
-      border-radius: 8px;
-      flex: 4;
-      flex-direction: column;
       display: flex;
+      flex-direction: column;
       justify-content: center;
-      margin-top: 10px;
 
+      // left container - user info - title bar
       #profileLeft_myInfo_titleBar {
-        border-radius: 8px 8px 0px 0px;
         height: 56px;
-        font-weight: 600;
-        font-size: 20px;
-        color: white;
-        display: flex;
-        // justify-content: center;
-        align-items: center;
         padding-left: 30px;
-        background-color: whitesmoke;
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: white;
         background-color: #008f7a;
+        border-radius: 8px 8px 0px 0px;
+        display: flex;
+        align-items: center;
       }
 
+      // left container - user info - detail
       #profileLeft_myInfo_detail {
-        display: flex;
         flex: 6;
-        overflow: hidden;
+        padding: 30px;
+        display: flex;
         justify-content: space-around;
         flex-wrap: wrap;
-        padding: 30px;
+        overflow: hidden;
 
+        // left container - user info - detail - user id
         #profileLeft_myInfo_detail_userId {
           width: 50%;
           #detail_title {
-            font-weight: 600;
             height: 26px;
+            font-weight: 600;
+            margin-bottom: 8px;
           }
         }
 
+        // left container - user info - detail - email
         #profileLeft_myInfo_detail_email {
           width: 50%;
           #detail_email {
-            font-weight: 600;
             height: 26px;
+            font-weight: 600;
+            margin-bottom: 8px;
           }
         }
 
+        // left container - user info - detail - phone
         #profileLeft_myInfo_detail_phone {
           width: 50%;
           #detail_phone {
-            font-weight: 600;
             height: 26px;
+            font-weight: 600;
+            margin-bottom: 8px;
           }
         }
 
+        // left container - user info - detail - plans
         #profileLeft_myInfo_detail_plans {
           width: 50%;
           #detail_plan {
-            font-weight: 600;
             height: 26px;
+            font-weight: 600;
+            margin-bottom: 8px;
           }
         }
       }
     }
   }
 
+  // right container
   #profileRight {
-    padding: 40px 40px 40px 20px;
     flex: 1;
     height: 100%;
+    padding: 40px 40px 40px 20px;
 
+    // right container - contents
     #profileRight_contents {
-      border-radius: 8px;
       flex: 1;
       width: 100%;
       height: 100%;
+      background-color: #fafafa;
+      border-radius: 8px;
+      box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
+        0 3px 6px rgba(0, 0, 0, 0.23);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
-        0 3px 6px rgba(0, 0, 0, 0.23);
-      background-color: #fafafa;
 
+      // right container - contents - title bar
       #profileRight_contents_titleBar {
-        font-weight: 600;
-        font-size: 20px;
-        color: white;
-        border-radius: 8px 8px 0px 0px;
+        width: 100%;
         height: 56px;
+        padding-left: 30px;
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: white;
         background-color: #008f7a;
+        border-radius: 8px 8px 0px 0px;
         display: flex;
         align-items: center;
-        padding-left: 30px;
-        // justify-content: center;
-        width: 100%;
-
-        #profileRight_contents_addBtn {
-          margin: 10px 10px 10px 10px;
-          background-color: transparent;
-          color: whitesmoke;
-          border: none;
-          cursor: pointer;
-          font-weight: bold;
-        }
       }
 
+      // right container - contents - plan list
       #profileRight_contents_planList {
         height: 100%;
-        display: flex;
         padding: 20px;
+        overflow: scroll;
+        display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        overflow: scroll;
-        white-space: nowrap;
       }
     }
   }

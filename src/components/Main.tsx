@@ -1,9 +1,9 @@
 import React, { cloneElement, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import './Main.scss';
+import '../styles/Main.scss';
 import classNames from 'classnames';
-import ContentsBox from '../components/ContentsBox';
-import Modal from '../components/Modal';
+import ContentsBox from './ContentsBox';
+import Modal from './Modal';
 import axios from 'axios';
 import { GoogleMap, Marker } from 'react-google-maps';
 import { fireEvent } from '@testing-library/react';
@@ -14,6 +14,7 @@ declare global {
     google: any;
   }
 }
+
 interface menuState {
   restaurant: boolean;
   place: boolean;

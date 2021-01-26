@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './SignInModal.css';
+import '../styles/SignInModal.scss';
 import googleIcon from '../image/google_icon.png';
 import naverIcon from '../image/naver_icon.png';
 import ErrorMessage from './ErrorMessage';

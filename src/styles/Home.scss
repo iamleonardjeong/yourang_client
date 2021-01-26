@@ -1,0 +1,121 @@
+// home component local
+.home {
+  width: 100%;
+  height: 100%;
+  font-size: 1rem;
+
+  // bg video
+  .home_video {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+  }
+
+  // home content
+  .home_contents {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    color: white;
+
+    // home content - header
+    .home_contents_header {
+      height: 72px;
+      background: none;
+      padding: 0 32px;
+      text-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
+        0 1px 4px rgba(0, 0, 0, 0.23);
+      display: flex;
+      align-items: center;
+
+      // home content - header - title
+      .home_contents_header_title {
+        flex: 8;
+        font-size: 1.6rem;
+        font-weight: 600;
+      }
+
+      // home content - header - bgm btn
+      .home_contents_header_bgm {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      // home content - header - logIn btn
+      .home_contents_header_signIn {
+        max-width: 100px;
+        cursor: pointer;
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+      }
+    }
+
+    // home content - body
+    .home_contents_body {
+      font-family: 'Noto Sans KR', sans-serif;
+      height: calc(100% - 72px);
+      padding: 0 120px;
+      display: flex;
+      flex-direction: column;
+
+      // home content - body - title
+      .home_contents_body_title {
+        width: 100%;
+        margin-top: 160px;
+        font-size: 2.6rem;
+        font-weight: 600;
+        text-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
+          0 1px 4px rgba(0, 0, 0, 0.23);
+      }
+
+      // home content - body - input
+      .home_contents_body_input {
+        width: 400px;
+        padding-bottom: 8px;
+        margin-top: 36px;
+        font-size: 1rem;
+        border: 0;
+        border-bottom: 1px solid white;
+        background: none;
+        color: white;
+
+        &::placeholder {
+          color: white;
+        }
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      // home content - body - 체험하기 버튼
+      button {
+        width: 120px;
+        height: 40px;
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        font-size: 1rem;
+        color: white;
+        background: none;
+        border: 1px solid white;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.5s;
+
+        &:hover {
+          background: #008f7a;
+          border: none;
+          transition: 0.2s linear;
+        }
+      }
+    }
+  }
+}

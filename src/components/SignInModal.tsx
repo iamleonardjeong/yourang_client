@@ -29,7 +29,7 @@ function SignInModal({
       setLoginInfo({ userId: '', password: '' });
     }
 
-    const error1 = '아아디와 비밀번호를 모두 입력해 주셔야 합니다.';
+    const error1 = '아이디와 비밀번호를 입력해주세요';
     const error2 = '아이디 혹은 비밀번가 맞지않습니다. 다시 입력해 주세요.';
     const { userId, password } = loginInfo;
 
@@ -40,82 +40,73 @@ function SignInModal({
   };
 
   return (
-    <div className="signin-modal">
-      <div className="signin-modal_container">
-        <div className="signin-modal_container_content">
-          <div className="signin-modal_container_content_head">
+    <div className="signIn_modal">
+      <div className="signIn_modal_container">
+        <div className="signIn_modal_container_wrap">
+          <div className="signIn_modal_container_wrap_titleBar">
             <div
-              className="signin-modal_container_content_head_close-button"
+              className="signIn_modal_container_wrap_titleBar_title_closeBtn"
               onClick={signInModalHandler}
             >
               +
             </div>
-            <div className="signin-modal_container_content_head_title">
-              Log in
+            <div className="signIn_modal_container_wrap_titleBar_title">
+              로그인
             </div>
-            <div className="empty-div-for-spacing"></div>
+            <div className="signIn_modal_container_wrap_titleBar_empty"></div>
           </div>
 
-          <div className="signin-modal_container_content_body">
-            <div className="signin-modal_container_content_body_upper">
-              <div className="signin-modal_container_content_body__upper_input-field">
-                <input
-                  type="text"
-                  name="userId"
-                  className="signin-modal_container_content_body__upper_input-field_id"
-                  placeholder="User ID"
-                  onChange={loginInfoHandler}
-                />
-                <input
-                  type="password"
-                  name="password"
-                  className="signin-modal_container_content_body__upper_input-field_password"
-                  placeholder="Password"
-                  onChange={loginInfoHandler}
-                />
+          <div className="signIn_modal_container_wrap_body">
+            <input
+              type="text"
+              name="userId"
+              className="signIn_modal_container_wrap_body_idInput"
+              placeholder="아이디"
+              onChange={loginInfoHandler}
+            />
+            <input
+              type="password"
+              name="password"
+              className="signIn_modal_container_wrap_body_pwInput"
+              placeholder="비밀번호"
+              onChange={loginInfoHandler}
+            />
+
+            <button
+              className="signIn_modal_container_wrap_body_loginBtn"
+              onClick={validationCheck}
+            >
+              로그인
+            </button>
+            <div className="social_title">or</div>
+            <div className="signIn_modal_container_wrap_body_social_google">
+              <img
+                src={googleIcon}
+                className="signIn_modal_container_wrap_body_social_google_icon"
+              />
+              <div className="signIn_modal_container_wrap_body_social_google_text">
+                구글 계정으로 로그인
               </div>
-              <button
-                className="signin-modal_container_content_body__upper_login-button"
-                onClick={validationCheck}
-              >
-                Log In
-              </button>
             </div>
-
-            <div className="signin-modal_container_content_body_lower">
-              <div className="signin-modal_container_content_body_lower_google-login">
-                <img
-                  src={googleIcon}
-                  className="signin-modal_container_content_body_lower_google-login_icon"
-                />
-                <div className="signin-modal_container_content_body_lower_google-login_message">
-                  Continue with Google
-                </div>
+            <div className="signIn_modal_container_wrap_body_social_naver">
+              <img
+                src={naverIcon}
+                className="signIn_modal_container_wrap_body_social_naver_icon"
+              />
+              <div className="signIn_modal_container_wrap_body_social_naver_text">
+                네이버 계정으로 로그인
               </div>
-              <div className="signin-modal_container_content_body_lower_naver-login">
-                <img
-                  src={naverIcon}
-                  className="signin-modal_container_content_body_lower_naver-login_icon"
-                />
-                <div className="signin-modal_container_content_body_lower_naver-login_message">
-                  Continue with Naver
-                </div>
-              </div>
-
-              <div className="signin-modal_container_content_body_lower_to-signup-group">
-                <div className="signin-modal_container_content_body_lower_ask-for-signup">
-                  아직 회원이 아니세요?
-                </div>
-                <button
-                  name="toSignUp"
-                  type="button"
-                  value="signup"
-                  onClick={signUpModalHandler}
-                  className="signin-modal_container_content_body_lower_to-signup"
-                >
-                  Sign up
-                </button>
-              </div>
+            </div>
+            <div className="signUp_btn_Container">
+              <button
+                name="toSignUp"
+                type="button"
+                value="signup"
+                onClick={signUpModalHandler}
+                className="signUp_btn"
+              >
+                회원가입
+              </button>
             </div>
           </div>
         </div>

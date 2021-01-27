@@ -1,174 +1,182 @@
-.signin-modal_container {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: 0;
-  padding: 20px;
+// sign in modal component local
+.signIn_modal {
+  // modal container
+  .signIn_modal_container {
+    width: 100%;
+    min-height: 100%;
+    position: fixed;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    // modal container - wrap
+    .signIn_modal_container_wrap {
+      min-width: 400px;
+      background-color: white;
+      box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
+        0 3px 6px rgba(0, 0, 0, 0.23);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+
+      // modal container - wrap - title bar
+      .signIn_modal_container_wrap_titleBar {
+        display: flex;
+        align-items: center;
+        background: #008f7a;
+        border-radius: 8px 8px 0px 0px;
+
+        // modal container - wrap - title bar - close btn
+        .signIn_modal_container_wrap_titleBar_title_closeBtn {
+          flex: 1;
+          font-size: 2rem;
+          font-weight: 300;
+          text-align: center;
+          cursor: pointer;
+          transform: rotate(45deg);
+        }
+
+        // modal container - wrap - title bar - title
+        .signIn_modal_container_wrap_titleBar_title {
+          flex: 8;
+          margin: 16px;
+          font-size: 1rem;
+          font-weight: 400;
+          text-align: center;
+        }
+
+        // modal container - wrap - title bar - empty space
+        .signIn_modal_container_wrap_titleBar_empty {
+          flex: 1;
+        }
+      }
+
+      // modal container - wrap - body
+      .signIn_modal_container_wrap_body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 20px;
+
+        // modal container - wrap - body - id input
+        .signIn_modal_container_wrap_body_idInput {
+          font-family: 'Montserrat';
+          width: 100%;
+          height: 46px;
+          border: none;
+          border-bottom: 1px solid #008f7a;
+          outline: none;
+          font-size: 0.9rem;
+        }
+
+        // modal container - wrap - body - pw input
+        .signIn_modal_container_wrap_body_pwInput {
+          font-family: 'Montserrat';
+          width: 100%;
+          height: 46px;
+          border: none;
+          border-bottom: 1px solid #008f7a;
+          outline: none;
+          margin-top: 20px;
+          font-size: 0.9rem;
+        }
+
+        // modal container - wrap - body - login btn
+        .signIn_modal_container_wrap_body_loginBtn {
+          width: 100%;
+          height: 46px;
+          border: none;
+          color: white;
+          background-color: #008f7a;
+          margin-top: 20px;
+          border-radius: 8px;
+          font-size: 0.9rem;
+          cursor: pointer;
+        }
+
+        // modal container - wrap - body - social section div
+        .social_title {
+          color: #008f7a;
+          margin: 15px 0px;
+        }
+
+        // modal container - wrap - body - google
+        .signIn_modal_container_wrap_body_social_google {
+          width: 100%;
+          height: 46px;
+          border-radius: 8px;
+          color: #008f7a;
+          border: 1px solid #008f7a;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+
+          // modal container - wrap - body - google - icon
+          .signIn_modal_container_wrap_body_social_google_icon {
+            width: 24px;
+            margin-left: 10px;
+          }
+
+          // modal container - wrap - body - google - text
+          .signIn_modal_container_wrap_body_social_google_text {
+            font-size: 0.9rem;
+            text-align: center;
+            margin: auto;
+          }
+        }
+
+        // modal container - wrap - body - naver
+        .signIn_modal_container_wrap_body_social_naver {
+          width: 100%;
+          height: 46px;
+          border-radius: 8px;
+          color: #008f7a;
+          border: 1px solid #008f7a;
+          margin-top: 10px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+
+          // modal container - wrap - body - naver - icon
+          .signIn_modal_container_wrap_body_social_naver_icon {
+            width: 26px;
+            margin-left: 10px;
+          }
+
+          // modal container - wrap - body - naver - text
+          .signIn_modal_container_wrap_body_social_naver_text {
+            font-size: 0.9rem;
+            text-align: center;
+            margin: auto;
+          }
+        }
+
+        // modal container - wrap - body - sign up container
+        .signUp_btn_Container {
+          width: 100%;
+          margin: 20px 0 0 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          // modal container - wrap - body - sign up container - btn
+          .signUp_btn {
+            font-family: 'Montserrat';
+            color: #008f7a;
+            font-size: 0.9rem;
+            background: none;
+            border: none;
+            text-align: center;
+            margin: auto;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
 }
-
-.signin-modal_container_content {
-  position: relative;
-  min-width: 32vw;
-  height: 67vh;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  border-radius: 13px;
-}
-
-.signin-modal_container_content_head {
-  flex: 1.1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  outline: 0;
-  border-bottom: 1px solid;
-  border-color: #008f7a;
-  opacity: 0.5;
-}
-
-.signin-modal_container_content_head_close-button {
-  flex: 1;
-  text-align: center;
-  width: 2rem;
-  font-size: 2rem;
-  font-weight: lighter;
-  transform: rotate(45deg);
-  cursor: pointer;
-}
-
-.signin-modal_container_content_head_title {
-  text-align: center;
-  flex: 8;
-  margin: 1rem;
-  font-size: 1rem;
-  font-weight: 900;
-}
-
-.empty-div-for-spacing {
-  flex: 1;
-  width: 1rem;
-}
-
-.signin-modal_container_content_body {
-  flex: 8;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  position: relative;
-  align-items: center;
-}
-
-.signin-modal_container_content_body_upper {
-  flex: 6;
-  display: flex;
-  height: 9em;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  width: 90%;
-}
-
-.signin-modal_container_content_body__upper_input-field {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1.3px solid #008f7a;
-  border-radius: 7px;
-  width: 100%;
-}
-
-.signin-modal_container_content_body__upper_input-field_id {
-  width: 100%;
-  height: 3.5rem;
-  border: none;
-  border-bottom: 1.3px solid #008f7a;
-  padding-left: 10px;
-}
-
-.signin-modal_container_content_body__upper_input-field_password {
-  width: 100%;
-  height: 3.5rem;
-  border: none;
-  padding-left: 10px;
-}
-
-.signin-modal_container_content_body__upper_input-field_error-message {
-  position: relative;
-  width: 33rem;
-  height: 2rem;
-}
-
-/* .signin-modal_container_content_body__upper_input-field_id::placeholder,
-.signin-modal_container_content_body__upper_input-field_password::placeholder {
-} */
-
-.signin-modal_container_content_body__upper_login-button {
-  position: relative;
-  border: none;
-  width: 100%;
-  height: 3rem;
-  font-size: 1rem;
-  background-color: #008f7a;
-  border-radius: 8px;
-  color: white;
-}
-
-.signin-modal_container_content_body_lower {
-  flex: 4;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 90%;
-}
-
-.signin-modal_container_content_body_lower_google-login,
-.signin-modal_container_content_body_lower_naver-login {
-  display: flex;
-  width: 100%;
-  margin: 0.5rem 0;
-  border-radius: 7px;
-  border: 2px solid #008f7a;
-  /* border-color:  */
-}
-
-.signin-modal_container_content_body_lower_naver-login_icon,
-.signin-modal_container_content_body_lower_google-login_icon {
-  align-items: center;
-  width: 1.5rem;
-  margin-left: 1rem;
-  margin: 0.7rem 1rem;
-}
-
-.signin-modal_container_content_body_lower_google-login_message,
-.signin-modal_container_content_body_lower_naver-login_message {
-  /* width: 100em; */
-  font-size: 0.9rem;
-  text-align: center;
-  vertical-align: middle;
-  margin: auto;
-}
-
-.signin-modal_container_content_body_lower_to-signup-group {
-  display: flex;
-  width: 33rem;
-  margin-top: 0.5rem;
-  width: 100%;
-}
-
-.signin-modal_container_content_body_lower_to-signup {
-  margin-left: 1rem;
-  background-color: transparent;
-  border: none;
-  border-bottom: 1.5px solid #008f7a;
-}
-
-/* .signin-modal_container_content_footer {
-  flex: 0.7;
-  display: flex;
-} */

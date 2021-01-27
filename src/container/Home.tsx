@@ -46,7 +46,7 @@ function Home() {
             placeType: { tourist_attraction: 'tourist_attraction' },
           })
           .then((res) => {
-            let places = res.data.slice(0, 20); //응답받은 장소들
+            let places = res.data.slice(0, 2); //응답받은 장소들
 
             const placeIds: any = [];
 

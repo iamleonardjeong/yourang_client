@@ -1,14 +1,10 @@
-import React, { cloneElement, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import '../styles/Main.scss';
 import classNames from 'classnames';
 import ContentsBox from './ContentsBox';
 import Modal from './Modal';
 import axios from 'axios';
-import { GoogleMap, Marker } from 'react-google-maps';
-import { fireEvent } from '@testing-library/react';
-import { render } from 'node-sass';
-//https://yourang-server.link:5000
 
 declare global {
   interface Window {
@@ -22,6 +18,7 @@ interface menuState {
   hotel: boolean;
 }
 
+// main component
 function Main() {
   const location = useLocation<any>();
 
@@ -40,17 +37,23 @@ function Main() {
   // const [modalState, setModalState] = useState({
   //   isOn: false,
   // });
+  interface myListState {
+    count: number;
+    data: number;
+  }
 
   const [modalState, setModalState] = useState(false); ///////체크
-
   const [placeInput, setPlaceInput] = useState('');
   const [placeInfo, setPlaceInfo] = useState<any>([]);
   const [latLng, setLatLng] = useState<any>({});
   const [imgStatus, setImgStatus] = useState(false);
   const [placeTypeSelect, setPlaceTypeSelect] = useState('');
   const [currentLocation, setCurrentLocation] = useState('');
-
   const [modalInfo, setModalInfo] = useState({});
+  const [myList, setMyList] = useState<any>({
+    count: 0,
+    data: [],
+  });
 
   // 좌표를 보내, 주변 정보, 사진들 받아 {좌표, 장소들정보 배열}을 리턴하는 영상
   const getLocation = (place: any, placeType: string) => {
@@ -74,7 +77,7 @@ function Main() {
             placeType: { [placeType]: placeType },
           })
           .then((res) => {
-            let places = res.data.slice(0, 20); //응답받은 장소들
+            let places = res.data.slice(0, 2); //응답받은 장소들
 
             const placeIds: any = [];
             places.forEach((place: any) => {
@@ -105,7 +108,16 @@ function Main() {
     let mapOptions = {
       center: myLatlng,
       zoom: 15,
-      // mapTypeId: 'satellite',
+      // 기본 맵 옵션
+      mapTypeControl: false,
+      zoomControl: true,
+      zoomControlOptions: {
+        position: google.maps.ControlPosition.RIGHT_BOTTOM,
+      },
+      streetViewControl: true,
+      streetViewControlOptions: {
+        position: google.maps.ControlPosition.RIGHT_CENTER,
+      },
     };
 
     const map = new window.google.maps.Map(
@@ -132,9 +144,15 @@ function Main() {
   useEffect(() => {
     setLatLng(location.state.latLng);
     setPlaceInfo(location.state.places);
+    // 리스트 셋업
+    setMyList({
+      ...myList,
+      data: myList.data.concat([...location.state.places]),
+    });
     setCurrentLocation(location.state.placeInput);
   }, [location.state.latLng, location.state.places]);
 
+  console.log(myList);
   useEffect(() => {
     renderMap();
   }, [latLng]);
@@ -218,6 +236,7 @@ function Main() {
             ? placeInfo.map((content: any) => (
                 <ContentsBox
                   // key={content.place_id}
+
                   imgSrc={content.photoUrl}
                   title={content.detail.result.name}
                   desc={content.detail.result.rating}
@@ -232,6 +251,12 @@ function Main() {
         {modalState && (
           <Modal closeModalState={closeModalState} place={modalInfo} />
         )}
+        <div id="section_myList" className={classNames({ onShow: modalState })}>
+          <button id="myList_btn">
+            My List
+            <span id="list_count">{myList.count}</span>
+          </button>
+        </div>
         <div id="map" className={classNames({ onShow: modalState })}></div>
       </div>
     </div>

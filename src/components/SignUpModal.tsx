@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+
 import '../styles/SignUpModal.scss';
 import googleIcon from '../image/google_icon.png';
 import naverIcon from '../image/naver_icon.png';
@@ -22,6 +24,21 @@ function SignUpModal({
   });
   const [isValidFail, setIsValidFail] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const signUpButtonHandler = () => {
+    const { userId, email, mobile, password } = signUpInfo;
+    axios
+      .post('https://localhost:5001/user/signup', {
+        id: userId,
+        email: email,
+        pasword: password,
+        phone: mobile,
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log('회원가입 응답', res);
+      });
+  };
 
   const signUpInfoHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     // input창에 입력한 내용 state로 저장하는 로직
@@ -58,6 +75,8 @@ function SignUpModal({
 
   const validationCheck = (e: React.MouseEvent<HTMLElement>) => {
     // Sign-up버튼을 눌렀을 때, signUpInfo를 바탕으로 진행하는 유효성 검사.
+    let isValid = true;
+
     const { userId, email, mobile, password, confirmPassword } = signUpInfo;
 
     const error1 = '입력정보를 모두 입력해 주세요';
@@ -65,15 +84,18 @@ function SignUpModal({
     const error3 = '비밀번호가 일치하지 않습니다';
 
     if (password !== confirmPassword) {
+      isValid = false;
       setIsValidFail(!isValidFail);
       setErrorMessage(error3);
     }
 
     if (!userId || !email || !mobile || !password || !confirmPassword) {
+      isValid = false;
       setIsValidFail(!isValidFail);
       setErrorMessage(error1);
     }
 
+    return isValid;
     //유효성 검사에 문제가 없고, 모든 정보가 입력이 됐을 때, 서버에 사인업 요청하는 로직을 보내야 함.
   };
 
@@ -105,6 +127,8 @@ function SignUpModal({
                 className="signUp_modal_container_wrap_body_field_idInput_input"
                 placeholder="아이디"
                 onChange={signUpInfoHandler}
+                minLength={4}
+                maxLength={12}
               />
               <button className="signUp_modal_container_wrap_body_field_idInput_btn">
                 중복체크
@@ -117,6 +141,7 @@ function SignUpModal({
                 className="signUp_modal_container_wrap_body_field_pwInput_input"
                 placeholder="이메일"
                 onChange={signUpInfoHandler}
+                maxLength={20}
               />
               <button className="signUp_modal_container_wrap_body_field_pwInput_btn">
                 중복체크
@@ -140,6 +165,7 @@ function SignUpModal({
               className="signIn_modal_container_wrap_body_pwInput"
               placeholder="비밀번호"
               onChange={signUpInfoHandler}
+              maxLength={14}
             />
             <input
               type="password"
@@ -147,11 +173,15 @@ function SignUpModal({
               className="signIn_modal_container_wrap_body_pwConfiemInput"
               placeholder="비밀번호 확인"
               onChange={signUpInfoHandler}
+              maxLength={14}
             />
 
             <button
               className="signUp_modal_container_wrap_body_signUpBtn"
-              onClick={validationCheck}
+              onClick={(e: React.MouseEvent<HTMLElement>) => {
+                signUpButtonHandler();
+                validationCheck(e);
+              }}
             >
               회원가입
             </button>

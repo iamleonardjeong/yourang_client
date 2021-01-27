@@ -74,7 +74,7 @@ function Main() {
             placeType: { [placeType]: placeType },
           })
           .then((res) => {
-            let places = res.data.slice(0, 20); //응답받은 장소들
+            let places = res.data.slice(0, 1); //응답받은 장소들
 
             const placeIds: any = [];
             places.forEach((place: any) => {

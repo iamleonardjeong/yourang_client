@@ -46,7 +46,7 @@ function Home() {
             placeType: { tourist_attraction: 'tourist_attraction' },
           })
           .then((res) => {
-            let places = res.data.slice(0, 20); //응답받은 장소들
+            let places = res.data.slice(0, 1); //응답받은 장소들
 
             const placeIds: any = [];
 
@@ -63,6 +63,7 @@ function Home() {
               })
               .then((res) => {
                 places = res.data;
+                console.log(places);
                 // 다음 페이지로 이동
                 history.push('/main', { latLng, places, placeInput });
               });

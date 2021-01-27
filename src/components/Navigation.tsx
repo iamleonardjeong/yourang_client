@@ -1,8 +1,8 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
-import '../styles/Navigation.scss';
-import { Link } from 'react-router-dom';
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import "../styles/Navigation.scss";
+import { Link } from "react-router-dom";
 
-import axios from 'axios';
+import axios from "axios";
 
 const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
 // const history = useHistory();
@@ -13,8 +13,8 @@ interface NavigationProps {
 
 function Navigation({ submit }: NavigationProps) {
   const [value, setValue] = useState({
-    data: '',
-    foo: '',
+    data: "",
+    foo: "",
   });
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {

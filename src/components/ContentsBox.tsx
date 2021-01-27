@@ -5,7 +5,7 @@ interface ContentsBoxProps {
   imgSrc?: string;
   title: string;
   desc: string;
-  onModalState: () => void;
+  onModalState: (title: string) => void;
   imgStatusHandler: () => void;
 }
 
@@ -17,7 +17,7 @@ function ContentsBox({
   imgStatusHandler,
 }: ContentsBoxProps) {
   return (
-    <div className="contentsBox" onClick={onModalState}>
+    <div className="contentsBox" onClick={() => onModalState(title)}>
       <div className="contentsImg">
         <img
           src={imgSrc}

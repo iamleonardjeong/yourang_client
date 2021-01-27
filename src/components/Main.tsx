@@ -9,6 +9,7 @@ import { GoogleMap, Marker } from 'react-google-maps';
 import { fireEvent } from '@testing-library/react';
 import { render } from 'node-sass';
 //https://yourang-server.link:5000
+
 declare global {
   interface Window {
     google: any;
@@ -36,9 +37,11 @@ function Main() {
     hotel: false,
   });
 
-  const [modalState, setModalState] = useState({
-    isOn: false,
-  });
+  // const [modalState, setModalState] = useState({
+  //   isOn: false,
+  // });
+
+  const [modalState, setModalState] = useState(false); ///////체크
 
   const [placeInput, setPlaceInput] = useState('');
   const [placeInfo, setPlaceInfo] = useState<any>([]);
@@ -47,11 +50,12 @@ function Main() {
   const [placeTypeSelect, setPlaceTypeSelect] = useState('');
   const [currentLocation, setCurrentLocation] = useState('');
 
+  const [modalInfo, setModalInfo] = useState({});
+
   // 좌표를 보내, 주변 정보, 사진들 받아 {좌표, 장소들정보 배열}을 리턴하는 영상
   const getLocation = (place: any, placeType: string) => {
     let latLng;
     let places: any;
-    console.log('메인페이지 55번째 줄', place);
     axios
       .get(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${place}&key=${apiKey}`
@@ -63,7 +67,6 @@ function Main() {
       .then((latLng) => {
         console.log('좌표받기 성공', latLng);
         // 추천장소 카테고리 선택에 따라 서버로 보낼 장소 카테고리를 정하는 로직
-        console.log('장소카테고리는??', placeType);
         axios
           .post('https://localhost:5001/google/map', {
             data: latLng,
@@ -86,14 +89,14 @@ function Main() {
                 withCredentials: true,
               })
               .then((res) => {
-                console.log(res.data);
-                //서버에서 응답을 받고 새로운 좌표와, 장소들 정보를 state에 할당하는 로직
+                places = res.data;
+                setPlaceInfo(places);
                 setLatLng(latLng);
-                setPlaceInfo(res.data);
               });
           });
       });
   };
+
   // google map
   const renderMap = () => {
     //지도 만들고 마커 찍는 로직
@@ -104,22 +107,24 @@ function Main() {
       zoom: 15,
       // mapTypeId: 'satellite',
     };
+
     const map = new window.google.maps.Map(
       document.getElementById('map') as HTMLElement,
       mapOptions
     );
+
     axios.post('https://localhost:5001/google/map', {
       data: latLng,
       withCredentials: true,
     });
 
     placeInfo.forEach((content: any) => {
-      console.log('메인콤포넌트 119번줄');
       const marker = new window.google.maps.Marker({
         position: content.detail.result.geometry.location,
         title: content.detail.result.name,
         visible: true,
       });
+
       marker.setMap(map);
     });
   };
@@ -135,7 +140,6 @@ function Main() {
   }, [latLng]);
 
   const placeTypeHandler = (selectedPlaceType: string) => {
-    console.log('메인 콤포넌트  138', currentLocation, selectedPlaceType);
     getLocation(currentLocation, selectedPlaceType);
   };
 
@@ -165,18 +169,18 @@ function Main() {
   };
 
   // 컨텐츠 상세 모달 on
-  const onModalState = () => {
-    setModalState({
-      ...modalState,
-      isOn: true,
-    });
+  const onModalState = (title: string) => {
+    const infoForModal = placeInfo.filter(
+      (place: any) => place.detail.result.name === title
+    );
+
+    setModalInfo(infoForModal[0]);
+    setModalState(!modalState);
   };
-  // 컨텐츠 상세 모달 off
+
+  //컨텐츠 상세 모달 off
   const closeModalState = () => {
-    setModalState({
-      ...modalState,
-      isOn: false,
-    });
+    setModalState(!modalState);
   };
 
   return (
@@ -225,10 +229,13 @@ function Main() {
         </div>
       </div>
       <div id="rightContainer">
-        {modalState.isOn ? <Modal closeModalState={closeModalState} /> : ''}
-        <div id="map" className={classNames({ onShow: modalState.isOn })}></div>
+        {modalState && (
+          <Modal closeModalState={closeModalState} place={modalInfo} />
+        )}
+        <div id="map" className={classNames({ onShow: modalState })}></div>
       </div>
     </div>
   );
 }
+
 export default Main;

@@ -28,7 +28,6 @@ function Home() {
 
   const getLocation = (place: any) => {
     let latLng;
-    console.log('Home페이지 26번째 줄', place);
     axios
       .get(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${place}&key=${apiKey}`
@@ -57,20 +56,12 @@ function Home() {
               }
             });
 
-            console.log('사진있는 장소만 걸렀니?', placeIds);
-
             axios
               .post('https://localhost:5001/google/places_photo', {
                 place_ids: placeIds,
                 withCredentials: true,
               })
               .then((res) => {
-                console.log('홈 콤포넌트 디테일 응답:', res.data);
-                // for (let i = 0; i < places.length; i++) {
-                //   places[i].photo_url = res.data.data[i];
-                // }
-
-                // console.log(places);
                 places = res.data;
                 // 다음 페이지로 이동
                 history.push('/main', { latLng, places, placeInput });

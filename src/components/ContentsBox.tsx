@@ -1,11 +1,10 @@
-import React from "react";
-import "../styles/ContentsBox.scss";
+import React from 'react';
+import '../styles/ContentsBox.scss';
 
 interface ContentsBoxProps {
   imgSrc?: string;
   title: string;
   desc: string;
-  id: number;
   onModalState: (title: string) => void;
   imgStatusHandler: () => void;
 }
@@ -16,7 +15,6 @@ function ContentsBox({
   desc,
   onModalState,
   imgStatusHandler,
-  id,
 }: ContentsBoxProps) {
   return (
     <div className="contentsBox" onClick={() => onModalState(title)}>

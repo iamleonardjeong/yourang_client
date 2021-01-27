@@ -34,11 +34,13 @@ function Home() {
       )
       .then((response) => {
         latLng = response.data.results[0].geometry.location;
+        console.log(latLng);
         setPlaceInput(latLng);
         return latLng;
       })
       .then((latLng) => {
         // 추천장소 카테고리 선택에 따라 서버로 보낼 장소 카테고리를 정하는 로직
+        console.log('좌표', latLng);
         axios
           .post('https://localhost:5001/google/map', {
             data: latLng,
@@ -85,7 +87,8 @@ function Home() {
 
   // push main page - 체험하기 버튼
   const onExplore = () => {
-    history.push('/main');
+    // history.push('/main');
+    getLocation('프라하');
   };
 
   // logIn modal pop

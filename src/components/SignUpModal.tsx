@@ -5,6 +5,7 @@ import '../styles/SignUpModal.scss';
 import googleIcon from '../image/google_icon.png';
 import naverIcon from '../image/naver_icon.png';
 import ErrorMessage from './ErrorMessage';
+import { userInfo } from 'os';
 
 interface SignUpModalProps {
   signInModalHandler: (e: React.MouseEvent<HTMLElement>) => void;
@@ -31,7 +32,7 @@ function SignUpModal({
       .post('https://localhost:5001/user/signup', {
         id: userId,
         email: email,
-        pasword: password,
+        password: password,
         phone: mobile,
         withCredentials: true,
       })
@@ -71,6 +72,38 @@ function SignUpModal({
         [name]: value.substring(0, value.length - 1),
       });
     }
+  };
+
+  const userIdValidCheck = () => {
+    axios
+      .post('https://localhost:5001/user/check_id', {
+        id: signUpInfo.userId,
+      })
+      .then((res) => {
+        if (res.data.result) {
+          setIsValidFail(!isValidFail);
+          setErrorMessage('중복되는 아이디가 있습니다.');
+        } else {
+          setIsValidFail(!isValidFail);
+          setErrorMessage('사용 가능한 아이디 입니다.');
+        }
+      });
+  };
+
+  const emailValidCheck = () => {
+    axios
+      .post('https://localhost:5001/user/check_email', {
+        email: signUpInfo.email,
+      })
+      .then((res) => {
+        if (res.data.result) {
+          setIsValidFail(!isValidFail);
+          setErrorMessage('중복되는 이메일이 있습니다.');
+        } else {
+          setIsValidFail(!isValidFail);
+          setErrorMessage('사용 가능한 이메일 입니다.');
+        }
+      });
   };
 
   const validationCheck = (e: React.MouseEvent<HTMLElement>) => {
@@ -130,7 +163,10 @@ function SignUpModal({
                 minLength={4}
                 maxLength={12}
               />
-              <button className="signUp_modal_container_wrap_body_field_idInput_btn">
+              <button
+                className="signUp_modal_container_wrap_body_field_idInput_btn"
+                onClick={userIdValidCheck}
+              >
                 중복체크
               </button>
             </div>
@@ -143,7 +179,10 @@ function SignUpModal({
                 onChange={signUpInfoHandler}
                 maxLength={20}
               />
-              <button className="signUp_modal_container_wrap_body_field_pwInput_btn">
+              <button
+                className="signUp_modal_container_wrap_body_field_pwInput_btn"
+                onClick={emailValidCheck}
+              >
                 중복체크
               </button>
             </div>

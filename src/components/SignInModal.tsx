@@ -3,6 +3,7 @@ import '../styles/SignInModal.scss';
 import googleIcon from '../image/google_icon.png';
 import naverIcon from '../image/naver_icon.png';
 import ErrorMessage from './ErrorMessage';
+import axios from 'axios';
 
 interface SignInModalProps {
   signInModalHandler: (e: React.MouseEvent<HTMLElement>) => void;
@@ -21,6 +22,16 @@ function SignInModal({
   const loginInfoHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
     setLoginInfo({ ...loginInfo, [name]: value });
+  };
+
+  const loginButtonHandler = () => {
+    axios
+      .post('https://localhost:5001/user/login', {
+        id: loginInfo.userId,
+        password: loginInfo.password,
+        withCredentials: true,
+      })
+      .then((res) => console.log(res));
   };
 
   const validationCheck = (e: React.MouseEvent<HTMLElement>) => {
@@ -74,7 +85,10 @@ function SignInModal({
 
             <button
               className="signIn_modal_container_wrap_body_loginBtn"
-              onClick={validationCheck}
+              onClick={(e: React.MouseEvent<HTMLElement>) => {
+                validationCheck(e);
+                loginButtonHandler();
+              }}
             >
               로그인
             </button>

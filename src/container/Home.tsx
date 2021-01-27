@@ -39,35 +39,41 @@ function Home() {
         return latLng;
       })
       .then((latLng) => {
-        console.log('좌표받기 성공', latLng);
         // 추천장소 카테고리 선택에 따라 서버로 보낼 장소 카테고리를 정하는 로직
         axios
           .post('https://localhost:5001/google/map', {
             data: latLng,
             withCredentials: true,
-            placeType: 'place',
+            placeType: { tourist_attraction: 'tourist_attraction' },
           })
           .then((res) => {
-            console.log('nearby search 응답', res);
-            let places = res.data.slice(0, 3); //응답받은 장소들
-            const placeIds = places.map((placeId: any) => {
-              return placeId.place_id;
+            let places = res.data.slice(0, 20); //응답받은 장소들
+
+            const placeIds: any = [];
+
+            places.forEach((place: any) => {
+              if (place.photos !== undefined) {
+                placeIds.push(place.place_id);
+              }
             });
+
+            console.log('사진있는 장소만 걸렀니?', placeIds);
 
             axios
               .post('https://localhost:5001/google/places_photo', {
-                placeIds: placeIds,
+                place_ids: placeIds,
                 withCredentials: true,
               })
               .then((res) => {
-                console.log('사진 URL 응답', res.data.data);
-                for (let i = 0; i < places.length; i++) {
-                  places[i].photo_url = res.data.data[i];
-                }
+                console.log('홈 콤포넌트 디테일 응답:', res.data);
+                // for (let i = 0; i < places.length; i++) {
+                //   places[i].photo_url = res.data.data[i];
+                // }
 
                 // console.log(places);
+                places = res.data;
                 // 다음 페이지로 이동
-                history.push('/main', { latLng, places });
+                history.push('/main', { latLng, places, placeInput });
               });
           });
       });

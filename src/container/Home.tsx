@@ -94,7 +94,7 @@ function Home() {
   const signInModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
 
-    if (target === "Log in") {
+    if (target === "로그인 페이지로") {
       setIsSignUpOpen(!isSignUpOpen);
       setIsSignInOpen(!isSignInOpen);
     } else {
@@ -108,7 +108,7 @@ function Home() {
 
     if (target === "+") {
       setIsSignUpOpen(!isSignUpOpen);
-    } else if (target === "Sign up") {
+    } else if (target === "회원가입") {
       setIsSignUpOpen(!isSignUpOpen);
       setIsSignInOpen(!isSignInOpen);
     }

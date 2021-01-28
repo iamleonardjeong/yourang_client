@@ -6,73 +6,63 @@ import SignInModal from '../components/SignInModal';
 import SignUpModal from '../components/SignUpModal';
 import backgroundVideo from '../video/yourang-home_video.mp4'; // background video
 import axios from 'axios';
-
 declare const google: any;
-
 let map: google.maps.Map;
 const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
-
 function Home() {
   // useState
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [placeInput, setPlaceInput] = useState('');
-
   // useHistory
   const history = useHistory();
-
   // Input Change
   const onChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setPlaceInput(e.currentTarget.value);
   };
-
-  const getLocation = (place: any) => {
+  const getLocation = async (place: any) => {
     let latLng;
-    console.log('Home페이지 26번째 줄', place);
-    axios
+    await axios
       .get(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${place}&key=${apiKey}`
       )
       .then((response) => {
         latLng = response.data.results[0].geometry.location;
+        console.log(latLng);
         setPlaceInput(latLng);
         return latLng;
       })
-      .then((latLng) => {
-        console.log('좌표받기 성공', latLng);
+      .then(async (latLng) => {
         // 추천장소 카테고리 선택에 따라 서버로 보낼 장소 카테고리를 정하는 로직
-        axios
+        console.log('좌표', latLng);
+        await axios
           .post('https://localhost:5001/google/map', {
             data: latLng,
             withCredentials: true,
-            placeType: 'place',
+            placeType: 'tourist_attraction',
           })
-          .then((res) => {
-            console.log('nearby search 응답', res);
+          .then(async (res) => {
             let places = res.data.slice(0, 3); //응답받은 장소들
-            const placeIds = places.map((placeId: any) => {
-              return placeId.place_id;
+            const placeIds: any = [];
+            places.forEach((place: any) => {
+              if (place.photos !== undefined) {
+                placeIds.push(place.place_id);
+              }
             });
-
-            axios
+            await axios
               .post('https://localhost:5001/google/places_photo', {
-                placeIds: placeIds,
+                place_ids: placeIds,
                 withCredentials: true,
               })
               .then((res) => {
-                console.log('사진 URL 응답', res.data.data);
-                for (let i = 0; i < places.length; i++) {
-                  places[i].photo_url = res.data.data[i];
-                }
-
+                places = res.data;
                 console.log(places);
                 // 다음 페이지로 이동
-                history.push('/main', { latLng, places });
+                history.push('/main', { latLng, places, placeInput });
               });
           });
       });
   };
-
   let onEnterCount = 0;
   const onEnterDownHander = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -84,36 +74,31 @@ function Home() {
       // history.push('/main', placeInput);
     }
   };
-
   // push main page - 체험하기 버튼
   const onExplore = () => {
-    history.push('/main');
+    // history.push('/main');
+    getLocation('프라하');
   };
-
   // logIn modal pop
   const signInModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
-
-    if (target === 'Log in') {
+    if (target === '로그인 페이지로') {
       setIsSignUpOpen(!isSignUpOpen);
       setIsSignInOpen(!isSignInOpen);
     } else {
       setIsSignInOpen(!isSignInOpen);
     }
   };
-
   // signUp modal pop
   const signUpModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
-
     if (target === '+') {
       setIsSignUpOpen(!isSignUpOpen);
-    } else if (target === 'Sign up') {
+    } else if (target === '회원가입') {
       setIsSignUpOpen(!isSignUpOpen);
       setIsSignInOpen(!isSignInOpen);
     }
   };
-
   return (
     <div className="home">
       <video className="home_video" autoPlay loop muted>
@@ -132,7 +117,6 @@ function Home() {
             로그인
           </div>
         </div>
-
         <div className="home_contents_body">
           <div className="home_contents_body_title">
             대한민국 어디로 떠나고 싶으세요?
@@ -153,7 +137,6 @@ function Home() {
             signUpModalHandler={signUpModalHandler}
           />
         ) : null}
-
         {isSignUpOpen ? (
           <SignUpModal
             signInModalHandler={signInModalHandler}
@@ -164,5 +147,4 @@ function Home() {
     </div>
   );
 }
-
 export default Home;

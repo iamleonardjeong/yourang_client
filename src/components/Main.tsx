@@ -77,7 +77,7 @@ function Main() {
             placeType: { [placeType]: placeType },
           })
           .then((res) => {
-            let places = res.data.slice(0, 2); //응답받은 장소들
+            let places = res.data.slice(0, 1); //응답받은 장소들
 
             const placeIds: any = [];
             places.forEach((place: any) => {
@@ -103,7 +103,11 @@ function Main() {
   // google map
   const renderMap = () => {
     //지도 만들고 마커 찍는 로직
-    let myLatlng = new google.maps.LatLng(latLng.lat, latLng.lng);
+    let myLatlng = new google.maps.LatLng(
+      location.state.latLng.lat || latLng.lat,
+      location.state.latLng.lng || latLng.lng
+    );
+
     // latLng;
     let mapOptions = {
       center: myLatlng,

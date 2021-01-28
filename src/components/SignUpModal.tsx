@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+
 import '../styles/SignUpModal.scss';
 import googleIcon from '../image/google_icon.png';
 import naverIcon from '../image/naver_icon.png';
 import ErrorMessage from './ErrorMessage';
+import { userInfo } from 'os';
 
 interface SignUpModalProps {
   signInModalHandler: (e: React.MouseEvent<HTMLElement>) => void;
@@ -22,6 +25,21 @@ function SignUpModal({
   });
   const [isValidFail, setIsValidFail] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const signUpButtonHandler = () => {
+    const { userId, email, mobile, password } = signUpInfo;
+    axios
+      .post('https://localhost:5001/user/signup', {
+        id: userId,
+        email: email,
+        password: password,
+        phone: mobile,
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log('회원가입 응답', res);
+      });
+  };
 
   const signUpInfoHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     // input창에 입력한 내용 state로 저장하는 로직
@@ -56,8 +74,42 @@ function SignUpModal({
     }
   };
 
+  const userIdValidCheck = () => {
+    axios
+      .post('https://localhost:5001/user/check_id', {
+        id: signUpInfo.userId,
+      })
+      .then((res) => {
+        if (res.data.result) {
+          setIsValidFail(!isValidFail);
+          setErrorMessage('중복되는 아이디가 있습니다.');
+        } else {
+          setIsValidFail(!isValidFail);
+          setErrorMessage('사용 가능한 아이디 입니다.');
+        }
+      });
+  };
+
+  const emailValidCheck = () => {
+    axios
+      .post('https://localhost:5001/user/check_email', {
+        email: signUpInfo.email,
+      })
+      .then((res) => {
+        if (res.data.result) {
+          setIsValidFail(!isValidFail);
+          setErrorMessage('중복되는 이메일이 있습니다.');
+        } else {
+          setIsValidFail(!isValidFail);
+          setErrorMessage('사용 가능한 이메일 입니다.');
+        }
+      });
+  };
+
   const validationCheck = (e: React.MouseEvent<HTMLElement>) => {
     // Sign-up버튼을 눌렀을 때, signUpInfo를 바탕으로 진행하는 유효성 검사.
+    let isValid = true;
+
     const { userId, email, mobile, password, confirmPassword } = signUpInfo;
 
     const error1 = '입력정보를 모두 입력해 주세요';
@@ -65,15 +117,18 @@ function SignUpModal({
     const error3 = '비밀번호가 일치하지 않습니다';
 
     if (password !== confirmPassword) {
+      isValid = false;
       setIsValidFail(!isValidFail);
       setErrorMessage(error3);
     }
 
     if (!userId || !email || !mobile || !password || !confirmPassword) {
+      isValid = false;
       setIsValidFail(!isValidFail);
       setErrorMessage(error1);
     }
 
+    return isValid;
     //유효성 검사에 문제가 없고, 모든 정보가 입력이 됐을 때, 서버에 사인업 요청하는 로직을 보내야 함.
   };
 
@@ -105,8 +160,13 @@ function SignUpModal({
                 className="signUp_modal_container_wrap_body_field_idInput_input"
                 placeholder="아이디"
                 onChange={signUpInfoHandler}
+                minLength={4}
+                maxLength={12}
               />
-              <button className="signUp_modal_container_wrap_body_field_idInput_btn">
+              <button
+                className="signUp_modal_container_wrap_body_field_idInput_btn"
+                onClick={userIdValidCheck}
+              >
                 중복체크
               </button>
             </div>
@@ -117,8 +177,12 @@ function SignUpModal({
                 className="signUp_modal_container_wrap_body_field_pwInput_input"
                 placeholder="이메일"
                 onChange={signUpInfoHandler}
+                maxLength={20}
               />
-              <button className="signUp_modal_container_wrap_body_field_pwInput_btn">
+              <button
+                className="signUp_modal_container_wrap_body_field_pwInput_btn"
+                onClick={emailValidCheck}
+              >
                 중복체크
               </button>
             </div>
@@ -140,6 +204,7 @@ function SignUpModal({
               className="signIn_modal_container_wrap_body_pwInput"
               placeholder="비밀번호"
               onChange={signUpInfoHandler}
+              maxLength={14}
             />
             <input
               type="password"
@@ -147,11 +212,15 @@ function SignUpModal({
               className="signIn_modal_container_wrap_body_pwConfiemInput"
               placeholder="비밀번호 확인"
               onChange={signUpInfoHandler}
+              maxLength={14}
             />
 
             <button
               className="signUp_modal_container_wrap_body_signUpBtn"
-              onClick={validationCheck}
+              onClick={(e: React.MouseEvent<HTMLElement>) => {
+                signUpButtonHandler();
+                validationCheck(e);
+              }}
             >
               회원가입
             </button>

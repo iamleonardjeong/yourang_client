@@ -30,15 +30,18 @@ function Main({ navPlaceInfo: {} }) {
     count: 0,
     data: [],
   });
+
   let map: google.maps.Map;
   // let curLocation = location.state.place || currentLocation;
   const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
+
   //Home 콤포넨트에서 입력된 장소 이름이 현재 콤포넌트로 잘 넘어오는지 테스트 하기 위함
   const [menuState, setMenuState] = useState<menuState>({
     restaurant: false,
     tourist_attraction: true,
     hotel: false,
   });
+
   // const [modalState, setModalState] = useState({
   //   isOn: false,
   // });
@@ -82,6 +85,7 @@ function Main({ navPlaceInfo: {} }) {
               })
               .then((res) => {
                 places = res.data;
+
                 setPlaceInfo(places);
                 setLatLng(latLng);
               });
@@ -127,6 +131,7 @@ function Main({ navPlaceInfo: {} }) {
       marker.setMap(map);
     });
   };
+
   useEffect(() => {
     setLatLng(location.state.latLng);
     setPlaceInfo(location.state.places);
@@ -137,22 +142,29 @@ function Main({ navPlaceInfo: {} }) {
     });
     setCurrentLocation(location.state.placeInput);
   }, [location.state.latLng, location.state.places]);
+
   console.log(myList);
+
   useEffect(() => {
     renderMap();
   }, [latLng]);
+
   const placeTypeHandler = (selectedPlaceType: string) => {
+    console.log('카테고리 눌렀니?', selectedPlaceType);
     getLocation(currentLocation, selectedPlaceType);
   };
+
   // useEffect(() => {
-  // const { latLng, places } = getLocation(placeTypeSelect);
-  // setLatLng(latLng);
-  // setPlaceInfo(places);
+  //   const { latLng, places } = getLocation(placeTypeSelect);
+  //   setLatLng(latLng);
+  //   setPlaceInfo(places);
   // }, [placeTypeSelect]);
+
   //콘텐츠 박스의 img가 onLoad되면 상태변경 -> re-render 유도
   const imgStatusHandler = () => {
     setImgStatus(true);
   };
+
   // leftContainer MenuTap State
   const onClick = async (e: string) => {
     // 사용자가 장소 카테고리를 바꾸면 거기에 맞는 장소들을 요청 및 응답, 화면을 렌더한다.

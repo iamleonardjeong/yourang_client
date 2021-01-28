@@ -8,7 +8,9 @@
 #leftContainer {
   flex: 3;
   min-width: 432px;
+  max-width: 432px;
 
+  // left container - lift menu tap
   #leftMenu {
     margin: 0;
     padding: 0;
@@ -19,6 +21,7 @@
     list-style: none;
     height: 52px;
 
+    // left container - lift menu tap - list
     li {
       width: 100%;
       height: 100%;
@@ -34,7 +37,7 @@
         color: rgba(0, 0, 0, 0.87);
         font-weight: 600;
       }
-      &.place {
+      &.tourist_attraction {
         color: rgba(0, 0, 0, 0.87);
         font-weight: 600;
       }
@@ -48,6 +51,7 @@
   #leftContents {
     display: flex;
     flex-wrap: wrap;
+    align-content: flex-start;
     padding: 10px 10px;
     height: calc(100% - 52px);
     overflow: scroll;
@@ -57,9 +61,56 @@
 // right Container
 #rightContainer {
   flex: 7;
+
+  // right Container - my list section
+  #section_myList {
+    z-index: 100;
+    padding: 10px;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.onShow {
+      display: none;
+    }
+
+    // right Container - my list section - btn
+    #myList_btn {
+      font-family: 'Montserrat';
+      width: 80px;
+      height: 40px;
+      background: none rgb(255, 255, 255);
+      border: none;
+      border-radius: 2px;
+      box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
+        0 3px 6px rgba(0, 0, 0, 0.23);
+      cursor: pointer;
+
+      // right Container - my list section - btn - list count
+      #list_count {
+        width: 24px;
+        height: 24px;
+        color: white;
+        background: #008f7a;
+        border-radius: 100%;
+        box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
+          0 3px 6px rgba(0, 0, 0, 0.23);
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+
+  // right Container - map
   #map {
     width: 100%;
     height: 100%;
+
     &.onShow {
       display: none;
     }

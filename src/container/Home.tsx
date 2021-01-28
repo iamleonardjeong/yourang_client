@@ -6,23 +6,28 @@ import SignInModal from '../components/SignInModal';
 import SignUpModal from '../components/SignUpModal';
 import backgroundVideo from '../video/yourang-home_video.mp4'; // background video
 import axios from 'axios';
+
 declare const google: any;
 let map: google.maps.Map;
 const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
+
 function Home() {
   // useState
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [placeInput, setPlaceInput] = useState('');
+
   // useHistory
   const history = useHistory();
   // Input Change
+
   const onChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setPlaceInput(e.currentTarget.value);
   };
-  const getLocation = async (place: any) => {
+
+  const getLocation = (place: any) => {
     let latLng;
-    await axios
+    axios
       .get(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${place}&key=${apiKey}`
       )
@@ -32,24 +37,25 @@ function Home() {
         setPlaceInput(latLng);
         return latLng;
       })
-      .then(async (latLng) => {
+      .then((latLng) => {
         // 추천장소 카테고리 선택에 따라 서버로 보낼 장소 카테고리를 정하는 로직
         console.log('좌표', latLng);
-        await axios
+        axios
           .post('https://localhost:5001/google/map', {
             data: latLng,
             withCredentials: true,
             placeType: 'tourist_attraction',
           })
-          .then(async (res) => {
+          .then((res) => {
             let places = res.data.slice(0, 3); //응답받은 장소들
+
             const placeIds: any = [];
             places.forEach((place: any) => {
               if (place.photos !== undefined) {
                 placeIds.push(place.place_id);
               }
             });
-            await axios
+            axios
               .post('https://localhost:5001/google/places_photo', {
                 place_ids: placeIds,
                 withCredentials: true,
@@ -63,7 +69,9 @@ function Home() {
           });
       });
   };
+
   let onEnterCount = 0;
+
   const onEnterDownHander = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       if (onEnterCount === 0) {

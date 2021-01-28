@@ -8,13 +8,10 @@ interface ErrorMessageProps {
 
 function ErrorMessage({ validationCheck, errorMessage }: ErrorMessageProps) {
   return (
-    <div className="error-modal">
-      <div className="error-modal_message">
+    <div className="modal_error">
+      <div className="modal_error_message">
         {errorMessage}
-        <button
-          className="error-modal_message_button"
-          onClick={validationCheck}
-        >
+        <button className="modal_error_message_btn" onClick={validationCheck}>
           확인
         </button>
       </div>

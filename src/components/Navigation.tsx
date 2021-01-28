@@ -1,6 +1,10 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import '../styles/Navigation.scss';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+
+const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
+// const history = useHistory();
 
 interface NavigationProps {
   searchBarInputHandler: (value: string) => void;

@@ -22,8 +22,21 @@ interface menuState {
 function Main() {
   const location = useLocation<any>();
 
+  const [modalState, setModalState] = useState(false); ///////체크
+  const [placeInput, setPlaceInput] = useState('');
+  const [placeInfo, setPlaceInfo] = useState<any>([]);
+  const [latLng, setLatLng] = useState<any>({});
+  const [imgStatus, setImgStatus] = useState(false);
+  const [placeTypeSelect, setPlaceTypeSelect] = useState('');
+  const [currentLocation, setCurrentLocation] = useState('');
+  const [modalInfo, setModalInfo] = useState({});
+  const [myList, setMyList] = useState<any>({
+    count: 0,
+    data: [],
+  });
+
   let map: google.maps.Map;
-  let curLocation = location.state.place;
+  let curLocation = location.state.place || currentLocation;
   const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
 
   //Home 콤포넨트에서 입력된 장소 이름이 현재 콤포넌트로 잘 넘어오는지 테스트 하기 위함
@@ -41,19 +54,6 @@ function Main() {
     count: number;
     data: number;
   }
-
-  const [modalState, setModalState] = useState(false); ///////체크
-  const [placeInput, setPlaceInput] = useState('');
-  const [placeInfo, setPlaceInfo] = useState<any>([]);
-  const [latLng, setLatLng] = useState<any>({});
-  const [imgStatus, setImgStatus] = useState(false);
-  const [placeTypeSelect, setPlaceTypeSelect] = useState('');
-  const [currentLocation, setCurrentLocation] = useState('');
-  const [modalInfo, setModalInfo] = useState({});
-  const [myList, setMyList] = useState<any>({
-    count: 0,
-    data: [],
-  });
 
   // 좌표를 보내, 주변 정보, 사진들 받아 {좌표, 장소들정보 배열}을 리턴하는 영상
   const getLocation = (place: any, placeType: string) => {

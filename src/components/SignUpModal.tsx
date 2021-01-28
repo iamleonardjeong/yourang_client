@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { GoogleLogin } from 'react-google-login';
 
 import '../styles/SignUpModal.scss';
 import googleIcon from '../image/google_icon.png';
@@ -34,6 +35,21 @@ function SignUpModal({
         email: email,
         password: password,
         phone: mobile,
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log('회원가입 응답', res);
+      });
+  };
+
+  const googleSignUpHandler = (res: any) => {
+    const { name, googleId, email } = res.profileObj;
+    axios
+      .post('https://localhost:5001/user/signup', {
+        id: name,
+        email: email,
+        password: googleId,
+        phone: 'none',
         withCredentials: true,
       })
       .then((res) => {
@@ -226,6 +242,15 @@ function SignUpModal({
             </button>
 
             <div className="signUp_modal_container_wrap_body_social_google">
+              <GoogleLogin
+                className="signUp_modal_container_wrap_body_google-oauth"
+                clientId="307554420471-jheed3l991je50b11ccl5t7t1d7sftlv.apps.googleusercontent.com"
+                buttonText=""
+                icon={false}
+                onSuccess={googleSignUpHandler}
+                onFailure={googleSignUpHandler}
+                cookiePolicy={'single_host_origin'}
+              />
               <img
                 src={googleIcon}
                 className="signUp_modal_container_wrap_body_social_google_icon"

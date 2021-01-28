@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { GoogleLogin } from 'react-google-login';
 import '../styles/SignInModal.scss';
 import googleIcon from '../image/google_icon.png';
 import naverIcon from '../image/naver_icon.png';
 import ErrorMessage from './ErrorMessage';
-import axios from 'axios';
 
 interface SignInModalProps {
   signInModalHandler: (e: React.MouseEvent<HTMLElement>) => void;
@@ -50,6 +51,18 @@ function SignInModal({
     }
   };
 
+  //Google Login
+  const googleLogInHandler = (res: any) => {
+    const { name, googleId } = res.profileObj;
+    axios
+      .post('https://localhost:5001/user/login', {
+        id: name,
+        password: googleId,
+        withCredentials: true,
+      })
+      .then((res) => console.log(res));
+  };
+
   return (
     <div className="signIn_modal">
       <div className="signIn_modal_container">
@@ -94,6 +107,15 @@ function SignInModal({
             </button>
             <div className="social_title">or</div>
             <div className="signIn_modal_container_wrap_body_social_google">
+              <GoogleLogin
+                className="signIn_modal_container_wrap_body_google-oauth"
+                clientId="307554420471-jheed3l991je50b11ccl5t7t1d7sftlv.apps.googleusercontent.com"
+                buttonText=""
+                icon={false}
+                onSuccess={googleLogInHandler}
+                onFailure={googleLogInHandler}
+                cookiePolicy={'single_host_origin'}
+              />
               <img
                 src={googleIcon}
                 className="signIn_modal_container_wrap_body_social_google_icon"

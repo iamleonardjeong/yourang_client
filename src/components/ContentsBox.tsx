@@ -9,7 +9,6 @@ interface ContentsBoxProps {
   onModalState: (title: string) => void;
   imgStatusHandler: () => void;
 }
-
 function ContentsBox({
   imgSrc,
   title,
@@ -18,6 +17,7 @@ function ContentsBox({
   imgStatusHandler,
 }: ContentsBoxProps) {
   const [selectState, setSelectState] = useState<null | boolean>(null);
+
   useEffect(() => {
     if (selectState === true) {
       console.log('ok true');
@@ -33,12 +33,14 @@ function ContentsBox({
       setSelectState(null);
     }
   };
+
   return (
     <div className="contentsBox">
       <div
         onClick={() => onModalState(title)}
         className="img_container"
         style={{ backgroundImage: `url(${imgSrc})` }}
+        onLoad={imgStatusHandler}
       >
         <div className="contentsImg"></div>
       </div>

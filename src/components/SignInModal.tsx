@@ -62,7 +62,6 @@ function SignInModal({
       })
       .then((res) => console.log(res));
   };
-
   return (
     <div className="signIn_modal">
       <div className="signIn_modal_container">
@@ -108,23 +107,16 @@ function SignInModal({
             <div className="social_title">or</div>
             <div className="signIn_modal_container_wrap_body_social_google">
               <GoogleLogin
-                className="signIn_modal_container_wrap_body_google-oauth"
+                className="signIn_modal_container_wrap_body_google_oauth"
                 clientId="307554420471-jheed3l991je50b11ccl5t7t1d7sftlv.apps.googleusercontent.com"
-                buttonText=""
-                icon={false}
+                buttonText="구글 계정으로 로그인"
+                icon={true}
                 onSuccess={googleLogInHandler}
                 onFailure={googleLogInHandler}
                 cookiePolicy={'single_host_origin'}
               />
-              <img
-                src={googleIcon}
-                className="signIn_modal_container_wrap_body_social_google_icon"
-              />
-              <div className="signIn_modal_container_wrap_body_social_google_text">
-                구글 계정으로 로그인
-              </div>
             </div>
-            <div className="signIn_modal_container_wrap_body_social_naver">
+            {/* <div className="signIn_modal_container_wrap_body_social_naver">
               <img
                 src={naverIcon}
                 className="signIn_modal_container_wrap_body_social_naver_icon"
@@ -132,7 +124,7 @@ function SignInModal({
               <div className="signIn_modal_container_wrap_body_social_naver_text">
                 네이버 계정으로 로그인
               </div>
-            </div>
+            </div> */}
             <div className="signUp_btn_Container">
               <button
                 name="toSignUp"

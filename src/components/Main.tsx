@@ -5,62 +5,63 @@ import classNames from "classnames";
 import ContentsBox from "./ContentsBox";
 import Modal from "./Modal";
 import axios from "axios";
-import { count } from "console";
-
 declare global {
   interface Window {
     google: any;
   }
 }
-
 interface menuState {
   restaurant: boolean;
   tourist_attraction: boolean;
-  hotel: boolean;
+  cafe: boolean;
+}
+
+interface mainProps {
+  navPlaceInfo: any;
+  curretPlaceInfoHandler: (curPlaceInfo: any) => void;
 }
 
 // main component
-function Main() {
+function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   const location = useLocation<any>();
-
   const [modalState, setModalState] = useState(false); ///////체크
-  const [placeInput, setPlaceInput] = useState("");
   const [placeInfo, setPlaceInfo] = useState<any>([]);
   const [latLng, setLatLng] = useState<any>({});
   const [imgStatus, setImgStatus] = useState(false);
-  const [placeTypeSelect, setPlaceTypeSelect] = useState("");
   const [currentLocation, setCurrentLocation] = useState("");
   const [modalInfo, setModalInfo] = useState({});
   const [myList, setMyList] = useState<any>({
     count: 0,
     data: [],
   });
+  // const [placeTypeSelect, setPlaceTypeSelect] = useState('');
+  // const [placeInput, setPlaceInput] = useState('');
 
   let map: google.maps.Map;
-  let curLocation = location.state.place || currentLocation;
+  // let curLocation = location.state.place || currentLocation;
   const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
 
   //Home 콤포넨트에서 입력된 장소 이름이 현재 콤포넌트로 잘 넘어오는지 테스트 하기 위함
-
   const [menuState, setMenuState] = useState<menuState>({
     restaurant: false,
     tourist_attraction: true,
-    hotel: false,
+    cafe: false,
   });
 
   // const [modalState, setModalState] = useState({
   //   isOn: false,
   // });
-  interface myListState {
-    count: number;
-    data: number;
-  }
+
+  // interface myListState {
+  //   count: number;
+  //   data: number;
+  // }
 
   // 좌표를 보내, 주변 정보, 사진들 받아 {좌표, 장소들정보 배열}을 리턴하는 영상
-  const getLocation = (place: any, placeType: string) => {
+  const getLocation = async (place: any, placeType: string) => {
     let latLng;
     let places: any;
-    axios
+    await axios
       .get(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${place}&key=${apiKey}`
       )
@@ -68,18 +69,18 @@ function Main() {
         latLng = response.data.results[0].geometry.location;
         return latLng;
       })
-      .then((latLng) => {
+      .then(async (latLng) => {
         console.log("좌표받기 성공", latLng);
         // 추천장소 카테고리 선택에 따라 서버로 보낼 장소 카테고리를 정하는 로직
-        axios
+        await axios
           .post("https://localhost:5001/google/map", {
             data: latLng,
             withCredentials: true,
-            placeType: { [placeType]: placeType },
+            placeType: placeType,
           })
-          .then((res) => {
-            let places = res.data.slice(0, 10); //응답받은 장소들
-
+          .then(async (res) => {
+            places = res.data.slice(0, 3); //응답받은 장소들
+            console.log("places", places);
             const placeIds: any = [];
             places.forEach((place: any) => {
               if (place.photos !== undefined) {
@@ -87,13 +88,17 @@ function Main() {
               }
             });
 
-            axios
+            console.log("placeIds", placeIds);
+
+            await axios
               .post("https://localhost:5001/google/places_photo", {
                 place_ids: placeIds,
                 withCredentials: true,
               })
               .then((res) => {
                 places = res.data;
+                console.log("타입 누르고 palces", places);
+
                 setPlaceInfo(places);
                 setLatLng(latLng);
               });
@@ -105,10 +110,9 @@ function Main() {
   const renderMap = () => {
     //지도 만들고 마커 찍는 로직
     let myLatlng = new google.maps.LatLng(
-      location.state.latLng.lat || latLng.lat,
-      location.state.latLng.lng || latLng.lng
+      latLng.lat || location.state.latLng.lat,
+      latLng.lng || location.state.latLng.lng
     );
-
     // latLng;
     let mapOptions = {
       center: myLatlng,
@@ -129,78 +133,96 @@ function Main() {
       document.getElementById("map") as HTMLElement,
       mapOptions
     );
-
     axios.post("https://localhost:5001/google/map", {
       data: latLng,
       withCredentials: true,
     });
-
     placeInfo.forEach((content: any) => {
       const marker = new window.google.maps.Marker({
         position: content.detail.result.geometry.location,
         title: content.detail.result.name,
         visible: true,
       });
-
       marker.setMap(map);
     });
   };
 
   useEffect(() => {
-    setLatLng(location.state.latLng);
-    setPlaceInfo(location.state.places);
-    // 리스트 셋업
-    setMyList({
-      ...myList,
-      data: myList.data.concat([...location.state.places]),
-    });
-    setCurrentLocation(location.state.placeInput);
+    if (location.state.latLng !== undefined) {
+      setLatLng(location.state.latLng);
+      setPlaceInfo(location.state.placeInfo);
+      // 리스트 셋업
+      setMyList({
+        ...myList,
+        data: myList.data.concat([...location.state.placeInfo]),
+      });
+      console.log(
+        "게스트로 들어오고나면 커렌트 로케이션이 정보가 있나?",
+        currentLocation
+      );
+      setCurrentLocation(location.state.currentLocation);
+    }
   }, [location.state.latLng, location.state.places]);
 
-  console.log(myList);
   useEffect(() => {
     renderMap();
   }, [latLng]);
 
+  // 메인  콤포넌트  상단 네비  바에서 검색하면, MainContainer에서 응답을 받고 메인콤포넌트 장소상태를 변경해주는 로직.
+  useEffect(() => {
+    if (navPlaceInfo.latLng !== undefined) {
+      const { latLng, placeInfo, currentLocation } = navPlaceInfo;
+      console.log(latLng, placeInfo, currentLocation);
+      setPlaceInfo(placeInfo);
+      setLatLng(latLng);
+      setCurrentLocation(currentLocation);
+    }
+  }, [navPlaceInfo]);
+
+  useEffect(() => {
+    curretPlaceInfoHandler({ latLng, placeInfo, currentLocation });
+  }, [latLng, placeInfo, currentLocation]);
+
   const placeTypeHandler = (selectedPlaceType: string) => {
+    console.log(
+      "체험하기로 들어왔을 떄정보",
+      currentLocation,
+      selectedPlaceType
+    );
     getLocation(currentLocation, selectedPlaceType);
   };
 
   // useEffect(() => {
-  // const { latLng, places } = getLocation(placeTypeSelect);
-  // setLatLng(latLng);
-  // setPlaceInfo(places);
+  //   const { latLng, places } = getLocation(placeTypeSelect);
+  //   setLatLng(latLng);
+  //   setPlaceInfo(places);
   // }, [placeTypeSelect]);
 
   //콘텐츠 박스의 img가 onLoad되면 상태변경 -> re-render 유도
   const imgStatusHandler = () => {
-    setImgStatus(true);
+    if (imgStatus === false) setImgStatus(true);
   };
 
   // leftContainer MenuTap State
   const onClick = async (e: string) => {
-    // 사용자가 장소 카테고리를 바꾸면 거기에 맞는 장소들을 요청 및 응답, 화면을 렌더한다.
+    // 사용자가 장소 카테고리를 바꾸면 거기에 맞는 장소들을 요청 및 응답, 화면을 렌더한다.
     placeTypeHandler(e);
-
     setMenuState({
       ...menuState,
       restaurant: false,
       tourist_attraction: false,
-      hotel: false,
+      cafe: false,
       [e]: true,
     });
   };
-
   // 컨텐츠 상세 모달 on
   const onModalState = (title: string) => {
     const infoForModal = placeInfo.filter(
       (place: any) => place.detail.result.name === title
     );
-
     setModalInfo(infoForModal[0]);
     setModalState(!modalState);
   };
-
   //컨텐츠 상세 모달 off
   const closeModalState = () => {
     setModalState(!modalState);
@@ -224,24 +246,23 @@ function Main() {
               tourist_attraction: menuState.tourist_attraction,
             })}
           >
-            명소
+            플레이스
           </li>
           <li
-            onClick={() => onClick("hotel")}
-            value="hotel"
-            className={classNames({ hotel: menuState.hotel })}
+            onClick={() => onClick("cafe")}
+            value="cafe"
+            className={classNames({ cafe: menuState.cafe })}
           >
-            숙박
+            카페
           </li>
         </ul>
         <div id="leftContents">
           {menuState.tourist_attraction ||
           menuState.restaurant ||
-          menuState.hotel
+          menuState.cafe
             ? placeInfo.map((content: any) => (
                 <ContentsBox
                   // key={content.place_id}
-
                   imgSrc={content.photoUrl}
                   title={content.detail.result.name}
                   desc={content.detail.result.rating}
@@ -267,5 +288,4 @@ function Main() {
     </div>
   );
 }
-
 export default Main;

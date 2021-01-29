@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import '../styles/EditInfo.scss';
+import React, { useState } from "react";
+import "../styles/EditInfo.scss";
+import axios from "axios";
 
 type EditInfoProp = {
   editOnModal: (e: any) => void;
@@ -14,14 +15,28 @@ type EditInfoProp = {
 
 function EditInfo({ editOnModal, userinfo }: EditInfoProp) {
   const [inputForm, setInputForm] = useState({
-    editEmail: '',
-    password: '',
-    inspect: '',
-    editPhone: '',
+    editEmail: "",
+    password: "",
+    inspect: "",
+    editPhone: "",
   });
 
+  const [img, setImage] = useState(null);
+
   const { editEmail, password, inspect, editPhone } = inputForm;
-  const { email, phone } = userinfo;
+  const { email } = userinfo;
+
+  const fileChangedHandler = (e: any) => {
+    console.log(e.target.files);
+    const newfile = e.target.files[0];
+    setImage(newfile);
+  };
+
+  // const onClickHandler = async (e: any) => {
+  //   const formData = new FormData();
+  //   formData.append("file", img);
+  //   const res = await axios.post("/api/upload", formData);
+  // };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -35,10 +50,10 @@ function EditInfo({ editOnModal, userinfo }: EditInfoProp) {
   const mobileInputHander = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // mobile전용 유효성 검사 및 입력제한 로직(출력 예시: 000-0000-0000 숫자로만 입력됨. "-"는 자동입력 됨)
     const { name, value, maxLength } = e.currentTarget;
-    let reg = new RegExp('^[0-9]');
+    let reg = new RegExp("^[0-9]");
     if (reg.test(e.key)) {
       if (value.length === 3 || value.length === 8) {
-        setInputForm({ ...inputForm, [name]: value + '-' + e.key });
+        setInputForm({ ...inputForm, [name]: value + "-" + e.key });
       } else {
         setInputForm({
           ...inputForm,
@@ -47,11 +62,11 @@ function EditInfo({ editOnModal, userinfo }: EditInfoProp) {
       }
     }
 
-    if (e.key === 'Backspace' && value.length === 9) {
+    if (e.key === "Backspace" && value.length === 9) {
       setInputForm({ ...inputForm, [name]: value.substring(0, 8) });
-    } else if (e.key === 'Backspace' && value.length === 4) {
+    } else if (e.key === "Backspace" && value.length === 4) {
       setInputForm({ ...inputForm, [name]: value.substring(0, 3) });
-    } else if (e.key === 'Backspace') {
+    } else if (e.key === "Backspace") {
       setInputForm({
         ...inputForm,
         [name]: value.substring(0, value.length - 1),
@@ -62,35 +77,43 @@ function EditInfo({ editOnModal, userinfo }: EditInfoProp) {
 
   return (
     <div className="editinfo">
-      <div className="editinfo_modal">
-        <div className="editinfo_modal_name">youRang</div>
-        <div className="editinfo_modal_form">
-          <div className="editinfo_modal_Email">
-            <div className="editinfo_modal_Email_title">Email</div>
-            <input
-              className="editinfo_modal_Email_value"
-              name="editEmail"
-              onChange={onChange}
-              defaultValue={editEmail ? editEmail : email}
-            />
+      <div className="editinfo_modal_container">
+        <div className="editinfo_modal_container_wrap">
+          <div className="editinfo_modal_container_wrap_titleBar">
+            <div className="editinfo_modal_container_wrap_titleBar_title">
+              회원정보 수정
+            </div>
           </div>
-          <div className="editinfo_modal_phone">
-            <div className="editinfo_modal_phone_title">Phone</div>
-            <input
-              type="text"
-              className="editinfo_modal_phone_value"
-              name="editPhone"
-              value={editPhone}
-              onKeyDown={mobileInputHander}
-              maxLength={12}
-            />
-          </div>
-          <div className="editinfo_modal_password">
-            <div className="editinfo_modal_password_title">Password</div>
+          <div className="editinfo_modal_container_wrap_body">
+            {/* <div className="editinfo_modal_container_wrap_body">
+              <div className="editinfo_modal_Email_title">Email</div>
+              <input
+                className="editinfo_modal_Email_value"
+                name="editEmail"
+                onChange={onChange}
+                defaultValue={editEmail ? editEmail : email}
+              />
+            </div>
+            <div className="editinfo_modal_phone">
+              <div className="editinfo_modal_phone_title">Phone</div>
+              <input
+                type="text"
+                className="editinfo_modal_phone_value"
+                name="editPhone"
+                value={editPhone}
+                onKeyDown={mobileInputHander}
+                maxLength={12}
+              />
+            </div> */}
+
+            {/* <div className="editinfo_modal_password_title">Password</div> */}
+            <input type="img" onChange={fileChangedHandler} />
+            {/* <button onClick={onClickHandler}>저장하기</button> */}
             <input
               type="password"
               className="editinfo_modal_password_value1"
               name="password"
+              placeholder="변경할 비밀번호"
               value={password}
               onChange={onChange}
             />
@@ -98,6 +121,7 @@ function EditInfo({ editOnModal, userinfo }: EditInfoProp) {
               className="editinfo_modal_password_value2"
               type="password"
               name="inspect"
+              placeholder="변경할 비밀번호 확인"
               value={inspect}
               onChange={onChange}
             />
@@ -106,13 +130,15 @@ function EditInfo({ editOnModal, userinfo }: EditInfoProp) {
                 작성된 비밀번호가 서로 다릅니다
               </div>
             ) : (
-              ''
+              ""
             )}
-          </div>
 
-          <button className="editinfo_modal_btn" onClick={editOnModal}>
-            작성완료
-          </button>
+            <div className="editinfo_btn_container">
+              <button className="editinfo_btn" onClick={editOnModal}>
+                변경
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -13,7 +13,7 @@ declare global {
 interface menuState {
   restaurant: boolean;
   tourist_attraction: boolean;
-  hotel: boolean;
+  cafe: boolean;
 }
 
 interface mainProps {
@@ -25,17 +25,17 @@ interface mainProps {
 function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   const location = useLocation<any>();
   const [modalState, setModalState] = useState(false); ///////체크
-  const [placeInput, setPlaceInput] = useState('');
   const [placeInfo, setPlaceInfo] = useState<any>([]);
   const [latLng, setLatLng] = useState<any>({});
   const [imgStatus, setImgStatus] = useState(false);
-  const [placeTypeSelect, setPlaceTypeSelect] = useState('');
   const [currentLocation, setCurrentLocation] = useState('');
   const [modalInfo, setModalInfo] = useState({});
   const [myList, setMyList] = useState<any>({
     count: 0,
     data: [],
   });
+  // const [placeTypeSelect, setPlaceTypeSelect] = useState('');
+  // const [placeInput, setPlaceInput] = useState('');
 
   let map: google.maps.Map;
   // let curLocation = location.state.place || currentLocation;
@@ -45,16 +45,17 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   const [menuState, setMenuState] = useState<menuState>({
     restaurant: false,
     tourist_attraction: true,
-    hotel: false,
+    cafe: false,
   });
 
   // const [modalState, setModalState] = useState({
   //   isOn: false,
   // });
-  interface myListState {
-    count: number;
-    data: number;
-  }
+
+  // interface myListState {
+  //   count: number;
+  //   data: number;
+  // }
 
   // 좌표를 보내, 주변 정보, 사진들 받아 {좌표, 장소들정보 배열}을 리턴하는 영상
   const getLocation = async (place: any, placeType: string) => {
@@ -78,7 +79,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
             placeType: placeType,
           })
           .then(async (res) => {
-            places = res.data.slice(0, 10); //응답받은 장소들
+            places = res.data.slice(0, 3); //응답받은 장소들
             console.log('places', places);
             const placeIds: any = [];
             places.forEach((place: any) => {
@@ -199,7 +200,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
 
   //콘텐츠 박스의 img가 onLoad되면 상태변경 -> re-render 유도
   const imgStatusHandler = () => {
-    setImgStatus(true);
+    if (imgStatus === false) setImgStatus(true);
   };
 
   // leftContainer MenuTap State
@@ -210,7 +211,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       ...menuState,
       restaurant: false,
       tourist_attraction: false,
-      hotel: false,
+      cafe: false,
       [e]: true,
     });
   };
@@ -245,20 +246,20 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
               tourist_attraction: menuState.tourist_attraction,
             })}
           >
-            명소
+            플레이스
           </li>
           <li
-            onClick={() => onClick('hotel')}
-            value="hotel"
-            className={classNames({ hotel: menuState.hotel })}
+            onClick={() => onClick('cafe')}
+            value="cafe"
+            className={classNames({ cafe: menuState.cafe })}
           >
-            숙박
+            카페
           </li>
         </ul>
         <div id="leftContents">
           {menuState.tourist_attraction ||
           menuState.restaurant ||
-          menuState.hotel
+          menuState.cafe
             ? placeInfo.map((content: any) => (
                 <ContentsBox
                   // key={content.place_id}

@@ -73,7 +73,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
         console.log('좌표받기 성공', latLng);
         // 추천장소 카테고리 선택에 따라 서버로 보낼 장소 카테고리를 정하는 로직
         await axios
-          .post('https://localhost:5001/google/map', {
+          .post('https://localhost:5000/google/map', {
             data: latLng,
             withCredentials: true,
             placeType: placeType,
@@ -91,7 +91,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
             console.log('placeIds', placeIds);
 
             await axios
-              .post('https://localhost:5001/google/places_photo', {
+              .post('https://localhost:5000/google/places_photo', {
                 place_ids: placeIds,
                 withCredentials: true,
               })
@@ -133,7 +133,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       document.getElementById('map') as HTMLElement,
       mapOptions
     );
-    axios.post('https://localhost:5001/google/map', {
+    axios.post('https://localhost:5000/google/map', {
       data: latLng,
       withCredentials: true,
     });

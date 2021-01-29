@@ -17,7 +17,7 @@ export const getLocation = async (place: any) => {
       // 추천장소 카테고리 선택에 따라 서버로 보낼 장소 카테고리를 정하는 로직
       console.log('좌표', latLng);
       await axios
-        .post('https://localhost:5001/google/map', {
+        .post('https://localhost:5000/google/map', {
           data: latLng,
           withCredentials: true,
           placeType: 'tourist_attraction',
@@ -33,7 +33,7 @@ export const getLocation = async (place: any) => {
           });
 
           await axios
-            .post('https://localhost:5001/google/places_photo', {
+            .post('https://localhost:5000/google/places_photo', {
               place_ids: placeIds,
               withCredentials: true,
             })

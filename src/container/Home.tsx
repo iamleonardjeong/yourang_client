@@ -15,31 +15,30 @@ function Home() {
   // useState
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
-  const [placeInput, setPlaceInput] = useState('');
+  const [currentLocation, setCurrentLocation] = useState('프라하');
 
   // useHistory
   const history = useHistory();
   // Input Change
 
   const onChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
-    setPlaceInput(e.currentTarget.value);
+    setCurrentLocation(e.currentTarget.value);
   };
 
-  const getLocation = (place: any) => {
+  const getLocation = (place: any = '프라하') => {
     let latLng;
+    let placeInfo;
+    setCurrentLocation(place);
     axios
       .get(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${place}&key=${apiKey}`
       )
       .then((response) => {
         latLng = response.data.results[0].geometry.location;
-        console.log(latLng);
-        setPlaceInput(latLng);
         return latLng;
       })
       .then((latLng) => {
         // 추천장소 카테고리 선택에 따라 서버로 보낼 장소 카테고리를 정하는 로직
-        console.log('좌표', latLng);
         axios
           .post('https://localhost:5001/google/map', {
             data: latLng,
@@ -47,10 +46,10 @@ function Home() {
             placeType: 'tourist_attraction',
           })
           .then((res) => {
-            let places = res.data.slice(0, 3); //응답받은 장소들
+            placeInfo = res.data.slice(0, 10); //응답받은 장소들
 
             const placeIds: any = [];
-            places.forEach((place: any) => {
+            placeInfo.forEach((place: any) => {
               if (place.photos !== undefined) {
                 placeIds.push(place.place_id);
               }
@@ -61,10 +60,9 @@ function Home() {
                 withCredentials: true,
               })
               .then((res) => {
-                places = res.data;
-                console.log(places);
+                placeInfo = res.data;
                 // 다음 페이지로 이동
-                history.push('/main', { latLng, places, placeInput });
+                history.push('/main', { latLng, placeInfo, currentLocation });
               });
           });
       });
@@ -77,15 +75,15 @@ function Home() {
       if (onEnterCount === 0) {
         onEnterCount++;
         console.log(e);
-        getLocation(placeInput);
+        getLocation(currentLocation);
       }
-      // history.push('/main', placeInput);
+      // history.push('/main', currentLocation);
     }
   };
   // push main page - 체험하기 버튼
   const onExplore = () => {
     // history.push('/main');
-    getLocation('프라하');
+    getLocation();
   };
   // logIn modal pop
   const signInModalHandler = (e: React.MouseEvent<HTMLElement>) => {

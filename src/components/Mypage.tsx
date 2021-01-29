@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import '../styles/Mypage.scss';
 import PlanList from './PlanList';
 import EditInfo from './EditInfo';
@@ -6,6 +7,9 @@ import Photo from '../image/photo.png';
 
 function Mypage() {
   // fake data - user info
+  const location = useLocation();
+
+  console.log('마이페이지로 넘어온 정보', location.state);
   const [userinfo, setUserinfo] = useState({
     name: '홍길동',
     userid: 'userId',

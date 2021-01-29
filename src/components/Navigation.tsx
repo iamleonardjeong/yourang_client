@@ -8,9 +8,13 @@ const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
 
 interface NavigationProps {
   searchBarInputHandler: (value: string) => void;
+  currentPlaceInfo: any;
 }
 
-function Navigation({ searchBarInputHandler }: NavigationProps) {
+function Navigation({
+  searchBarInputHandler,
+  currentPlaceInfo,
+}: NavigationProps) {
   const [value, setValue] = useState('');
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -48,11 +52,13 @@ function Navigation({ searchBarInputHandler }: NavigationProps) {
       </div>
       <div id="navMenus">
         <div id="navProfile">
-          <Link to="/main">Home</Link>
+          <Link to={{ pathname: '/main', state: currentPlaceInfo }}>Home</Link>
         </div>
         <div id="navProfile">Help</div>
         <div id="navProfile">
-          <Link to="/main/profile">Profile</Link>
+          <Link to={{ pathname: '/main/profile', state: currentPlaceInfo }}>
+            Profile
+          </Link>
         </div>
       </div>
     </header>

@@ -2,9 +2,9 @@ import axios from 'axios';
 const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
 
 export const getLocation = async (place: any) => {
-  const placeInput = place;
+  const currentLocation = place;
   let latLng: any;
-  let places: any;
+  let placeInfo: any;
   await axios
     .get(
       `https://maps.googleapis.com/maps/api/geocode/json?address=${place}&key=${apiKey}`
@@ -20,28 +20,30 @@ export const getLocation = async (place: any) => {
         .post('https://localhost:5001/google/map', {
           data: latLng,
           withCredentials: true,
-          placeType: { tourist_attraction: 'tourist_attraction' },
+          placeType: 'tourist_attraction',
         })
         .then(async (res) => {
-          places = res.data.slice(0, 3); //응답받은 장소들
+          placeInfo = res.data.slice(0, 10); //응답받은 장소들
+
           const placeIds: any = [];
-          places.forEach((place: any) => {
+          placeInfo.forEach((place: any) => {
             if (place.photos !== undefined) {
               placeIds.push(place.place_id);
             }
           });
+
           await axios
             .post('https://localhost:5001/google/places_photo', {
               place_ids: placeIds,
               withCredentials: true,
             })
             .then((res) => {
-              places = res.data;
-              console.log(places);
+              placeInfo = res.data;
+              console.log(placeInfo);
               // 다음 페이지로 이동
-              //   history.push('/main', { latLng, places, placeInput });
+              //   history.push('/main', { latLng, placeInfo, placeInput });
             });
         });
     });
-  return { latLng, places, placeInput };
+  return { latLng, placeInfo, currentLocation };
 };

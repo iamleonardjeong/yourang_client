@@ -41,6 +41,8 @@ header {
 
   #navMenus {
     display: flex;
+    align-items: center;
+    font-size: 1rem;
 
     #navProfile {
       a {
@@ -48,7 +50,8 @@ header {
         text-decoration: none;
       }
       cursor: pointer;
-      margin-left: 24px;
+      margin-left: 32px;
+
       &:hover {
         border-bottom: 1px solid white;
       }

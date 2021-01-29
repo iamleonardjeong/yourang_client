@@ -79,7 +79,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
             placeType: placeType,
           })
           .then(async (res) => {
-            places = res.data.slice(0, 3); //응답받은 장소들
+            places = res.data.slice(0, 1); //응답받은 장소들
             console.log('places', places);
             const placeIds: any = [];
             places.forEach((place: any) => {
@@ -156,10 +156,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
         ...myList,
         data: myList.data.concat([...location.state.placeInfo]),
       });
-      console.log(
-        '게스트로 들어오고나면 커렌트 로케이션이 정보가 있나?',
-        currentLocation
-      );
+      console.log(currentLocation);
       setCurrentLocation(location.state.currentLocation);
     }
   }, [location.state.latLng, location.state.places]);

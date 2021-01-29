@@ -23,7 +23,7 @@ export const getLocation = async (place: any) => {
           placeType: 'tourist_attraction',
         })
         .then(async (res) => {
-          placeInfo = res.data.slice(0, 3); //응답받은 장소들
+          placeInfo = res.data.slice(0, 1); //응답받은 장소들
 
           const placeIds: any = [];
           placeInfo.forEach((place: any) => {

@@ -21,7 +21,7 @@ function EditInfo({ editOnModal, userinfo }: EditInfoProp) {
   });
 
   const { editEmail, password, inspect, editPhone } = inputForm;
-  const { email, phone } = userinfo;
+  const { email } = userinfo;
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -62,35 +62,41 @@ function EditInfo({ editOnModal, userinfo }: EditInfoProp) {
 
   return (
     <div className="editinfo">
-      <div className="editinfo_modal">
-        <div className="editinfo_modal_name">youRang</div>
-        <div className="editinfo_modal_form">
-          <div className="editinfo_modal_Email">
-            <div className="editinfo_modal_Email_title">Email</div>
-            <input
-              className="editinfo_modal_Email_value"
-              name="editEmail"
-              onChange={onChange}
-              defaultValue={editEmail ? editEmail : email}
-            />
+      <div className="editinfo_modal_container">
+        <div className="editinfo_modal_container_wrap">
+          <div className="editinfo_modal_container_wrap_titleBar">
+            <div className="editinfo_modal_container_wrap_titleBar_title">
+              회원정보 수정
+            </div>
           </div>
-          <div className="editinfo_modal_phone">
-            <div className="editinfo_modal_phone_title">Phone</div>
-            <input
-              type="text"
-              className="editinfo_modal_phone_value"
-              name="editPhone"
-              value={editPhone}
-              onKeyDown={mobileInputHander}
-              maxLength={12}
-            />
-          </div>
-          <div className="editinfo_modal_password">
-            <div className="editinfo_modal_password_title">Password</div>
+          <div className="editinfo_modal_container_wrap_body">
+            {/* <div className="editinfo_modal_container_wrap_body">
+              <div className="editinfo_modal_Email_title">Email</div>
+              <input
+                className="editinfo_modal_Email_value"
+                name="editEmail"
+                onChange={onChange}
+                defaultValue={editEmail ? editEmail : email}
+              />
+            </div>
+            <div className="editinfo_modal_phone">
+              <div className="editinfo_modal_phone_title">Phone</div>
+              <input
+                type="text"
+                className="editinfo_modal_phone_value"
+                name="editPhone"
+                value={editPhone}
+                onKeyDown={mobileInputHander}
+                maxLength={12}
+              />
+            </div> */}
+
+            {/* <div className="editinfo_modal_password_title">Password</div> */}
             <input
               type="password"
               className="editinfo_modal_password_value1"
               name="password"
+              placeholder="변경할 비밀번호"
               value={password}
               onChange={onChange}
             />
@@ -98,6 +104,7 @@ function EditInfo({ editOnModal, userinfo }: EditInfoProp) {
               className="editinfo_modal_password_value2"
               type="password"
               name="inspect"
+              placeholder="변경할 비밀번호 확인"
               value={inspect}
               onChange={onChange}
             />
@@ -108,11 +115,13 @@ function EditInfo({ editOnModal, userinfo }: EditInfoProp) {
             ) : (
               ''
             )}
-          </div>
 
-          <button className="editinfo_modal_btn" onClick={editOnModal}>
-            작성완료
-          </button>
+            <div className="editinfo_btn_container">
+              <button className="editinfo_btn" onClick={editOnModal}>
+                변경
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Mypage from '../components/Mypage';
 import Main from '../components/Main';
 import Navigation from '../components/Navigation';
 import { getLocation } from '../helper/getLocation';
+import SignInModal from '../components/SignInModal';
+import SignUpModal from '../components/SignUpModal';
 
 const MainContainer = () => {
+  // fake login state
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isSignInOpen, setIsSignInOpen] = useState(false);
+  const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+
+  // 기존 state
   const [navPlaceInfo, setNavPlaceInfo] = useState({});
   const [currentPlaceInfo, setCurrentPlaceInfo] = useState({});
 
@@ -24,12 +32,49 @@ const MainContainer = () => {
     }
   };
 
+  // logIn modal pop
+  const signInModalHandler = (e: React.MouseEvent<HTMLElement>) => {
+    const target = e.currentTarget.textContent;
+    if (target === '로그인 페이지로') {
+      setIsSignUpOpen(!isSignUpOpen);
+      setIsSignInOpen(!isSignInOpen);
+    } else {
+      setIsSignInOpen(!isSignInOpen);
+    }
+  };
+
+  // signUp modal pop
+  const signUpModalHandler = (e: React.MouseEvent<HTMLElement>) => {
+    const target = e.currentTarget.textContent;
+    if (target === '+') {
+      setIsSignUpOpen(!isSignUpOpen);
+    } else if (target === '회원가입') {
+      setIsSignUpOpen(!isSignUpOpen);
+      setIsSignInOpen(!isSignInOpen);
+    }
+  };
+
   return (
     <>
+      {isSignInOpen ? (
+        <SignInModal
+          signInModalHandler={signInModalHandler}
+          signUpModalHandler={signUpModalHandler}
+        />
+      ) : null}
+      {isSignUpOpen ? (
+        <SignUpModal
+          signInModalHandler={signInModalHandler}
+          signUpModalHandler={signUpModalHandler}
+        />
+      ) : null}
+
       <Router>
         <Navigation
           searchBarInputHandler={searchBarInputHandler}
           currentPlaceInfo={currentPlaceInfo}
+          isLoggedIn={isLoggedIn}
+          signInModalHandler={signInModalHandler}
         />
         <Route
           path="/main"

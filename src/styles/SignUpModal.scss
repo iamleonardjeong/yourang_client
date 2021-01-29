@@ -2,6 +2,7 @@
 .signUp_modal {
   // modal container
   .signIn_modal_container {
+    z-index: 110;
     width: 100%;
     min-height: 100%;
     position: fixed;
@@ -33,6 +34,7 @@
           font-size: 2rem;
           font-weight: 300;
           text-align: center;
+          color: white;
           cursor: pointer;
           transform: rotate(45deg);
         }
@@ -44,6 +46,7 @@
           font-size: 1rem;
           font-weight: 400;
           text-align: center;
+          color: white;
         }
 
         // modal container - wrap - title bar - empty space

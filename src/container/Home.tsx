@@ -75,9 +75,9 @@ function Home() {
   let onEnterCount = 0;
   const onEnterDownHander = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      console.log('엔터가 몇번 눌렸나?', onEnterCount);
       if (onEnterCount === 0) {
         onEnterCount++;
-        console.log(e);
         getLocation(currentLocation);
       }
       // history.push('/main', currentLocation);
@@ -112,7 +112,6 @@ function Home() {
   };
 
   const modalSwitchHandler = () => {
-    console.log('눌렸음');
     setIsSignUpOpen(!isSignUpOpen);
     setIsSignInOpen(!isSignInOpen);
   };
@@ -149,7 +148,7 @@ function Home() {
             className="home_contents_body_input"
             maxLength={20}
             onChange={onChangeHandler}
-            onKeyDown={onEnterDownHander}
+            onKeyUp={onEnterDownHander}
           />
           <button onClick={onExplore}>체험하기</button>
         </div>

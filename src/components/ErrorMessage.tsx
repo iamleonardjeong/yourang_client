@@ -16,7 +16,9 @@ function ErrorMessage({
   // 확인 버튼만 누르면, 바로  모달이 닫히기 때문에, errorMessage에 할당된 메세지를 보고, 아래와 같을 때만, 회원가입이 성공했다 인지하고 모달전환.
   const modalSwitchHandlerChecker = () => {
     if (errorMessage === '회원가입에 성공하였습니다!') {
-      modalSwitchHandler();
+      if (modalSwitchHandler !== undefined) {
+        modalSwitchHandler();
+      }
     }
 
     return;

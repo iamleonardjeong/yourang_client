@@ -66,6 +66,7 @@ const MainContainer = () => {
         <SignUpModal
           signInModalHandler={signInModalHandler}
           signUpModalHandler={signUpModalHandler}
+          modalSwitchHandler={modalSwitchHandler}
         />
       ) : null}
 

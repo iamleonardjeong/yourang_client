@@ -13,7 +13,7 @@ declare global {
 interface menuState {
   restaurant: boolean;
   tourist_attraction: boolean;
-  hotel: boolean;
+  cafe: boolean;
 }
 
 interface mainProps {
@@ -45,7 +45,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   const [menuState, setMenuState] = useState<menuState>({
     restaurant: false,
     tourist_attraction: true,
-    hotel: false,
+    cafe: false,
   });
 
   // const [modalState, setModalState] = useState({
@@ -78,7 +78,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
             placeType: placeType,
           })
           .then(async (res) => {
-            places = res.data.slice(0, 10); //응답받은 장소들
+            places = res.data.slice(0, 1); //응답받은 장소들
             console.log('places', places);
             const placeIds: any = [];
             places.forEach((place: any) => {
@@ -155,10 +155,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
         ...myList,
         data: myList.data.concat([...location.state.placeInfo]),
       });
-      console.log(
-        '게스트로 들어오고나면 커렌트 로케이션이 정보가 있나?',
-        currentLocation
-      );
+      console.log(currentLocation);
       setCurrentLocation(location.state.currentLocation);
     }
   }, [location.state.latLng, location.state.places]);
@@ -210,7 +207,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       ...menuState,
       restaurant: false,
       tourist_attraction: false,
-      hotel: false,
+      cafe: false,
       [e]: true,
     });
   };
@@ -245,20 +242,20 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
               tourist_attraction: menuState.tourist_attraction,
             })}
           >
-            명소
+            플레이스
           </li>
           <li
-            onClick={() => onClick('hotel')}
-            value="hotel"
-            className={classNames({ hotel: menuState.hotel })}
+            onClick={() => onClick('cafe')}
+            value="cafe"
+            className={classNames({ cafe: menuState.cafe })}
           >
-            숙박
+            카페
           </li>
         </ul>
         <div id="leftContents">
           {menuState.tourist_attraction ||
           menuState.restaurant ||
-          menuState.hotel
+          menuState.cafe
             ? placeInfo.map((content: any) => (
                 <ContentsBox
                   // key={content.place_id}

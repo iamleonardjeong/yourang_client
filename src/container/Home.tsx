@@ -19,17 +19,18 @@ function Home() {
 
   // useHistory
   const history = useHistory();
-  // Input Change
 
+  // Input Change
   const onChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setCurrentLocation(e.currentTarget.value);
   };
 
-  const getLocation = (place: any = '프라하') => {
+  const getLocation = async (place: any = '프라하') => {
     let latLng;
     let placeInfo;
     setCurrentLocation(place);
-    axios
+
+    await axios
       .get(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${place}&key=${apiKey}`
       )
@@ -45,8 +46,8 @@ function Home() {
             withCredentials: true,
             placeType: 'tourist_attraction',
           })
-          .then((res) => {
-            placeInfo = res.data.slice(0, 10); //응답받은 장소들
+          .then(async (res) => {
+            placeInfo = res.data.slice(0, 1); //응답받은 장소들
 
             const placeIds: any = [];
             placeInfo.forEach((place: any) => {
@@ -54,22 +55,24 @@ function Home() {
                 placeIds.push(place.place_id);
               }
             });
-            axios
+
+            await axios
               .post('https://localhost:5001/google/places_photo', {
                 place_ids: placeIds,
                 withCredentials: true,
               })
-              .then((res) => {
-                placeInfo = res.data;
+              .then(async (res) => {
+                placeInfo = await res.data;
                 // 다음 페이지로 이동
+                console.log(latLng, placeInfo, currentLocation);
                 history.push('/main', { latLng, placeInfo, currentLocation });
               });
           });
       });
   };
 
+  // onEnterCount가 0일 때만 onEnterDownHander 실행. 유저가 엔터를 두, 세번 눌렀을 때 반응하지 않게 하기 위함.
   let onEnterCount = 0;
-
   const onEnterDownHander = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       if (onEnterCount === 0) {
@@ -85,6 +88,7 @@ function Home() {
     // history.push('/main');
     getLocation();
   };
+
   // logIn modal pop
   const signInModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
@@ -95,6 +99,7 @@ function Home() {
       setIsSignInOpen(!isSignInOpen);
     }
   };
+
   // signUp modal pop
   const signUpModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
@@ -105,6 +110,17 @@ function Home() {
       setIsSignInOpen(!isSignInOpen);
     }
   };
+
+  const modalSwitchHandler = () => {
+    console.log('눌렸음');
+    setIsSignUpOpen(!isSignUpOpen);
+    setIsSignInOpen(!isSignInOpen);
+  };
+
+  const loginSuccessHandler = () => {
+    getLocation('프라하');
+  };
+
   return (
     <div className="home">
       <video className="home_video" autoPlay loop muted>
@@ -125,7 +141,7 @@ function Home() {
         </div>
         <div className="home_contents_body">
           <div className="home_contents_body_title">
-            대한민국 어디로 떠나고 싶으세요?
+            어디로 떠나고 싶으세요?
           </div>
           <input
             type="text"
@@ -141,12 +157,15 @@ function Home() {
           <SignInModal
             signInModalHandler={signInModalHandler}
             signUpModalHandler={signUpModalHandler}
+            loginSuccessHandler={loginSuccessHandler}
+            modalSwitchHandler={modalSwitchHandler}
           />
         ) : null}
         {isSignUpOpen ? (
           <SignUpModal
             signInModalHandler={signInModalHandler}
             signUpModalHandler={signUpModalHandler}
+            modalSwitchHandler={modalSwitchHandler}
           />
         ) : null}
       </div>

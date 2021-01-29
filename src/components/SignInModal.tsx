@@ -9,11 +9,15 @@ import ErrorMessage from './ErrorMessage';
 interface SignInModalProps {
   signInModalHandler: (e: React.MouseEvent<HTMLElement>) => void;
   signUpModalHandler: (e: React.MouseEvent<HTMLElement>) => void;
+  loginSuccessHandler: () => void;
+  modalSwitchHandler: () => void;
 }
 
 function SignInModal({
   signInModalHandler,
   signUpModalHandler,
+  loginSuccessHandler,
+  modalSwitchHandler,
 }: SignInModalProps) {
   // useState
   const [loginInfo, setLoginInfo] = useState({ userId: '', password: '' });
@@ -32,7 +36,18 @@ function SignInModal({
         password: loginInfo.password,
         withCredentials: true,
       })
-      .then((res) => console.log(res));
+      .then((res) => {
+        console.log(res.data.message);
+        if (res.data.message === 'Login Successed') {
+          loginSuccessHandler();
+        }
+      })
+      .catch((err) => {
+        setIsValidFail(!isValidFail);
+        setErrorMessage(
+          '가입 되어있지 않은 계정입니다. 회원가입을 먼저 진행해 주세요.'
+        );
+      });
   };
 
   const validationCheck = (e: React.MouseEvent<HTMLElement>) => {
@@ -54,13 +69,24 @@ function SignInModal({
   //Google Login
   const googleLogInHandler = (res: any) => {
     const { name, googleId } = res.profileObj;
+
     axios
       .post('https://localhost:5001/user/login', {
         id: name,
         password: googleId,
         withCredentials: true,
       })
-      .then((res) => console.log(res));
+      .then((res) => {
+        if (res.data.message === 'Login Successed') {
+          loginSuccessHandler();
+        }
+      })
+      .catch((err) => {
+        setIsValidFail(!isValidFail);
+        setErrorMessage(
+          '가입 되어있지 않은 계정입니다. 회원가입을 먼저 진행해 주세요.'
+        );
+      });
   };
 
   return (
@@ -151,6 +177,7 @@ function SignInModal({
         <ErrorMessage
           validationCheck={validationCheck}
           errorMessage={errorMessage}
+          modalSwitchHandler={modalSwitchHandler}
         />
       ) : null}
     </div>

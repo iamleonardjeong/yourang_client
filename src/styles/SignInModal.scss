@@ -107,41 +107,48 @@
         .signIn_modal_container_wrap_body_social_google {
           width: 100%;
           height: 46px;
-          border-radius: 8px;
-          color: #008f7a;
-          border: 1px solid #008f7a;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          cursor: pointer;
-          position: relative;
 
-          .signIn_modal_container_wrap_body_google-oauth {
-            position: absolute;
+          // modal container - wrap - body - google - oauth
+          .signIn_modal_container_wrap_body_google_oauth {
             width: 100%;
-            opacity: 0;
             height: 46px;
+            box-shadow: none !important;
+            border-radius: 8px !important;
+            border: 1px solid #008f7a !important;
+            outline: none !important;
+            display: flex !important;
+            align-items: center !important;
+            opacity: 1 !important;
+            cursor: pointer;
+
+            // modal container - wrap - body - google - oauth - div
+            div {
+              width: 18px;
+              height: 46px;
+              margin-left: 10px !important;
+              margin-right: 0px !important;
+              padding: 0 !important;
+              background: none !important;
+              display: flex;
+              align-items: center;
+            }
+
+            // modal container - wrap - body - google - oauth - span
+            span {
+              color: #008f7a;
+              font-size: 0.9rem !important;
+              text-align: center;
+              margin: auto;
+            }
 
             &:hover {
-              opacity: 0 !important;
+              opacity: 1 !important;
+              outline: none !important;
             }
-          }
-
-          // modal container - wrap - body - google - icon
-          .signIn_modal_container_wrap_body_social_google_icon {
-            width: 24px;
-            margin-left: 10px;
-          }
-
-          // modal container - wrap - body - google - text
-          .signIn_modal_container_wrap_body_social_google_text {
-            font-size: 0.9rem;
-            text-align: center;
-            margin: auto;
           }
         }
 
-        // modal container - wrap - body - naver
+        /*   // modal container - wrap - body - naver
         .signIn_modal_container_wrap_body_social_naver {
           width: 100%;
           height: 46px;
@@ -166,7 +173,7 @@
             text-align: center;
             margin: auto;
           }
-        }
+        } */
 
         // modal container - wrap - body - sign up container
         .signUp_btn_Container {

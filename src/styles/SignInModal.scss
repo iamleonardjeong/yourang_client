@@ -114,6 +114,18 @@
           justify-content: center;
           align-items: center;
           cursor: pointer;
+          position: relative;
+
+          .signIn_modal_container_wrap_body_google-oauth {
+            position: absolute;
+            width: 100%;
+            opacity: 0;
+            height: 46px;
+
+            &:hover {
+              opacity: 0 !important;
+            }
+          }
 
           // modal container - wrap - body - google - icon
           .signIn_modal_container_wrap_body_social_google_icon {

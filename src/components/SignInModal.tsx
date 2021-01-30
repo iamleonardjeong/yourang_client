@@ -31,7 +31,7 @@ function SignInModal({
 
   const loginButtonHandler = () => {
     axios
-      .post('https://localhost:5001/user/login', {
+      .post('https://localhost:5000/user/login', {
         id: loginInfo.userId,
         password: loginInfo.password,
         withCredentials: true,
@@ -63,6 +63,8 @@ function SignInModal({
     if (!userId || !password) {
       setIsValidFail(!isValidFail);
       setErrorMessage(error1);
+    } else if (userId && password) {
+      loginButtonHandler();
     }
   };
 
@@ -71,7 +73,7 @@ function SignInModal({
     const { name, googleId } = res.profileObj;
 
     axios
-      .post('https://localhost:5001/user/login', {
+      .post('https://localhost:5000/user/login', {
         id: name,
         password: googleId,
         withCredentials: true,
@@ -125,7 +127,7 @@ function SignInModal({
               className="signIn_modal_container_wrap_body_loginBtn"
               onClick={(e: React.MouseEvent<HTMLElement>) => {
                 validationCheck(e);
-                loginButtonHandler();
+                // loginButtonHandler();
               }}
             >
               로그인
@@ -134,7 +136,7 @@ function SignInModal({
             <div className="signIn_modal_container_wrap_body_social_google">
               <GoogleLogin
                 className="signIn_modal_container_wrap_body_google_oauth"
-                clientId="307554420471-jheed3l991je50b11ccl5t7t1d7sftlv.apps.googleusercontent.com"
+                clientId="307554420471-19f0nnr1jp6lvf9qqea85e8i07j36vjc.apps.googleusercontent.com"
                 buttonText="구글 계정으로 로그인"
                 icon={true}
                 onSuccess={googleLogInHandler}

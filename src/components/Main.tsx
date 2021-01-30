@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import ReactDOMServer from 'react-dom/server';
 import { useLocation } from 'react-router-dom';
 import '../styles/Main.scss';
 import classNames from 'classnames';
 import ContentsBox from './ContentsBox';
 import Modal from './Modal';
 import axios from 'axios';
+import emailjs from 'emailjs-com';
+
 declare global {
   interface Window {
     google: any;
@@ -73,13 +76,13 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
         console.log('좌표받기 성공', latLng);
         // 추천장소 카테고리 선택에 따라 서버로 보낼 장소 카테고리를 정하는 로직
         await axios
-          .post('https://localhost:5001/google/map', {
+          .post('https://localhost:5000/google/map', {
             data: latLng,
             withCredentials: true,
             placeType: placeType,
           })
           .then(async (res) => {
-            places = res.data.slice(0, 1); //응답받은 장소들
+            places = res.data.slice(0, 3); //응답받은 장소들
             console.log('places', places);
             const placeIds: any = [];
             places.forEach((place: any) => {
@@ -91,7 +94,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
             console.log('placeIds', placeIds);
 
             await axios
-              .post('https://localhost:5001/google/places_photo', {
+              .post('https://localhost:5000/google/places_photo', {
                 place_ids: placeIds,
                 withCredentials: true,
               })
@@ -133,10 +136,11 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       document.getElementById('map') as HTMLElement,
       mapOptions
     );
-    axios.post('https://localhost:5001/google/map', {
+    axios.post('https://localhost:5000/google/map', {
       data: latLng,
       withCredentials: true,
     });
+    console.log(placeInfo, 'PlaceInfo');
     placeInfo.forEach((content: any) => {
       const marker = new window.google.maps.Marker({
         position: content.detail.result.geometry.location,
@@ -151,13 +155,12 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     if (location.state.latLng !== undefined) {
       setLatLng(location.state.latLng);
       setPlaceInfo(location.state.placeInfo);
+      setCurrentLocation(location.state.currentLocation);
       // 리스트 셋업
       setMyList({
         ...myList,
         data: myList.data.concat([...location.state.placeInfo]),
       });
-      console.log(currentLocation);
-      setCurrentLocation(location.state.currentLocation);
     }
   }, [location.state.latLng, location.state.places]);
 
@@ -189,12 +192,6 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     getLocation(currentLocation, selectedPlaceType);
   };
 
-  // useEffect(() => {
-  //   const { latLng, places } = getLocation(placeTypeSelect);
-  //   setLatLng(latLng);
-  //   setPlaceInfo(places);
-  // }, [placeTypeSelect]);
-
   //콘텐츠 박스의 img가 onLoad되면 상태변경 -> re-render 유도
   const imgStatusHandler = () => {
     if (imgStatus === false) setImgStatus(true);
@@ -225,6 +222,49 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     setModalState(!modalState);
   };
 
+  //place.detail.result.name
+  //place.detail.result.formatted_phone_number
+  //place.detail.result.website
+
+  //place.photoUrl
+
+  // const htmlString = ReactDOMServer.renderToStaticMarkup(
+  //   placeInfo.map((place: any) => {
+  //     return <Modal closeModalState={closeModalState} place={place} />;
+  //   })
+  // );
+
+  const htmlString = ReactDOMServer.renderToStaticMarkup(
+    placeInfo.map((place: any) => {
+      return (
+        <div>
+          <img src={place.photoUrl} alt="" />
+          <h2>장소 이름: {place.detail.result.name}</h2>
+          <h3>웹사이트: {place.detail.result.website}</h3>
+          <h3>전화번호: {place.detail.result.formatted_phone_number}</h3>
+          <h3>평점: {place.detail.result.rating}</h3>
+        </div>
+      );
+    })
+  );
+
+  const toEmail = 'syd1215no@gmail.com';
+
+  const sendEmail = () => {
+    emailjs.send(
+      'service_9v5cs7d',
+      'template_w8ckiwq',
+      {
+        to_email: toEmail,
+        to_name: '이종원',
+        message: htmlString,
+      },
+      'user_viAPjBua2EXqACiVlL88n'
+    );
+
+    console.log('email sent');
+  };
+
   return (
     <div id="mainContainer">
       <div id="leftContainer">
@@ -253,6 +293,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
             카페
           </li>
         </ul>
+        <button onClick={sendEmail}>이메일 보내기</button>
         <div id="leftContents">
           {menuState.tourist_attraction ||
           menuState.restaurant ||

@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import ContentsBox from './ContentsBox';
 import Modal from './Modal';
 import axios from 'axios';
+import MyContentsBox from './MyContentsBox';
 declare global {
   interface Window {
     google: any;
@@ -14,12 +15,24 @@ interface menuState {
   restaurant: boolean;
   tourist_attraction: boolean;
   cafe: boolean;
+  myListTap: boolean;
 }
 
 interface mainProps {
   navPlaceInfo: any;
   curretPlaceInfoHandler: (curPlaceInfo: any) => void;
 }
+
+// myList localStorage
+// types
+interface myList {
+  title: string;
+  desc: string;
+  imgSrc: string | undefined;
+}
+
+// localStorage
+let data: myList[] = JSON.parse(localStorage.getItem('myList') || '[]');
 
 // main component
 function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
@@ -46,6 +59,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     restaurant: false,
     tourist_attraction: true,
     cafe: false,
+    myListTap: false,
   });
 
   // const [modalState, setModalState] = useState({
@@ -156,7 +170,6 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
         ...myList,
         data: myList.data.concat([...location.state.placeInfo]),
       });
-      console.log(currentLocation);
       setCurrentLocation(location.state.currentLocation);
     }
   }, [location.state.latLng, location.state.places]);
@@ -181,11 +194,6 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   }, [latLng, placeInfo, currentLocation]);
 
   const placeTypeHandler = (selectedPlaceType: string) => {
-    console.log(
-      '체험하기로 들어왔을 떄정보',
-      currentLocation,
-      selectedPlaceType
-    );
     getLocation(currentLocation, selectedPlaceType);
   };
 
@@ -203,12 +211,16 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   // leftContainer MenuTap State
   const onClick = async (e: string) => {
     // 사용자가 장소 카테고리를 바꾸면 거기에 맞는 장소들을 요청 및 응답, 화면을 렌더한다.
-    placeTypeHandler(e);
+    // console.log(e);
+    if (e !== 'myListTap') {
+      placeTypeHandler(e);
+    }
     setMenuState({
       ...menuState,
       restaurant: false,
       tourist_attraction: false,
       cafe: false,
+      myListTap: false,
       [e]: true,
     });
   };
@@ -223,6 +235,39 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   //컨텐츠 상세 모달 off
   const closeModalState = () => {
     setModalState(!modalState);
+  };
+
+  // myList append
+  const setMyLists = (title: string, desc: string, img?: string): void => {
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].title === title) {
+        return;
+      }
+    }
+    data.push({
+      title: title,
+      desc: desc,
+      imgSrc: img || 'No Images',
+    });
+
+    setMyList({
+      ...myList,
+      count: myList.count + 1,
+    });
+
+    localStorage.setItem('myList', JSON.stringify(data));
+  };
+
+  // myList remove
+  const removeMyLists = (title: string): any => {
+    data = data.filter((el) => title !== el.title);
+
+    setMyList({
+      ...myList,
+      count: myList.count + 1,
+    });
+
+    localStorage.setItem('myList', JSON.stringify(data));
   };
 
   return (
@@ -252,34 +297,74 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
           >
             카페
           </li>
+          <li
+            onClick={() => onClick('myListTap')}
+            value="myListTap"
+            className={classNames({ myListTap: menuState.myListTap })}
+          >
+            My List
+            <span id="list_count">{data.length}</span>
+          </li>
         </ul>
-        <div id="leftContents">
+
+        <div
+          id="leftContents"
+          className={classNames({ myListTapContainer: menuState.myListTap })}
+        >
+          <div
+            id="myListContents"
+            className={classNames({ myListContents: menuState.myListTap })}
+          >
+            {data.map((el) => (
+              <MyContentsBox
+                title={el.title}
+                imgSrc={el.imgSrc}
+                desc={el.desc}
+                removeMyLists={removeMyLists}
+              />
+            ))}
+          </div>
           {menuState.tourist_attraction ||
           menuState.restaurant ||
           menuState.cafe
-            ? placeInfo.map((content: any) => (
-                <ContentsBox
-                  // key={content.place_id}
-                  imgSrc={content.photoUrl}
-                  title={content.detail.result.name}
-                  desc={content.detail.result.rating}
-                  onModalState={onModalState}
-                  imgStatusHandler={imgStatusHandler}
-                />
-              ))
+            ? placeInfo.map((content: any) => {
+                let heartState = false;
+                data.map((el) => {
+                  if (el.title === content.detail.result.name) {
+                    heartState = true;
+                  }
+                });
+                return (
+                  <ContentsBox
+                    // key={content.place_id}
+                    imgSrc={content.photoUrl}
+                    title={content.detail.result.name}
+                    desc={content.detail.result.rating}
+                    onModalState={onModalState}
+                    imgStatusHandler={imgStatusHandler}
+                    setMyLists={setMyLists}
+                    removeMyLists={removeMyLists}
+                    heartState={heartState}
+                  />
+                );
+              })
             : ''}
+          <button
+            id="send_Email_Btn"
+            className={classNames({ myListTap: menuState.myListTap })}
+          >
+            My List 내 이메일로 전송
+          </button>
         </div>
       </div>
       <div id="rightContainer">
         {modalState && (
           <Modal closeModalState={closeModalState} place={modalInfo} />
         )}
-        <div id="section_myList" className={classNames({ onShow: modalState })}>
-          <button id="myList_btn">
-            My List
-            <span id="list_count">{myList.count}</span>
-          </button>
-        </div>
+        <div
+          id="section_myList"
+          className={classNames({ onShow: modalState })}
+        ></div>
         <div id="map" className={classNames({ onShow: modalState })}></div>
       </div>
     </div>

@@ -246,7 +246,7 @@ function SignUpModal({
             <div className="signUp_modal_container_wrap_body_social_google">
               <GoogleLogin
                 className="signUp_modal_container_wrap_body_google_oauth"
-                clientId="307554420471-jheed3l991je50b11ccl5t7t1d7sftlv.apps.googleusercontent.com"
+                clientId="307554420471-19f0nnr1jp6lvf9qqea85e8i07j36vjc.apps.googleusercontent.com"
                 buttonText="구글 계정으로 회원가입"
                 icon={true}
                 onSuccess={googleSignUpHandler}

@@ -45,6 +45,27 @@
         color: rgba(0, 0, 0, 0.87);
         font-weight: 600;
       }
+      &.myListTap {
+        color: rgba(0, 0, 0, 0.87);
+        font-weight: 600;
+      }
+
+      #list_count {
+        width: 24px;
+        height: 24px;
+        font-size: 0.8rem;
+        font-weight: 400;
+        color: white;
+        background: #008f7a;
+        border-radius: 100%;
+        box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
+          0 3px 6px rgba(0, 0, 0, 0.23);
+        position: relative;
+        top: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
     }
   }
 
@@ -55,6 +76,54 @@
     padding: 10px 10px;
     height: calc(100% - 52px);
     overflow: scroll;
+
+    &.myListTapContainer {
+      display: flex;
+      justify-content: flex-start;
+      align-content: center;
+      flex-wrap: wrap;
+      height: calc(100% - 52px);
+      overflow: scroll;
+      padding-bottom: 56px;
+    }
+
+    #myListContents {
+      display: none;
+      overflow: scroll;
+
+      &.myListContents {
+        display: block;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: flex-start;
+        width: 100%;
+        height: 100%;
+        overflow: scroll;
+      }
+    }
+
+    #send_Email_Btn {
+      display: none;
+      font-family: 'Montserrat';
+      width: 360px;
+      height: 46px;
+      font-size: 0.9rem;
+      color: white;
+      background: #008f7a;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      position: absolute;
+      left: 37px;
+      bottom: 10px;
+
+      &.myListTap {
+        display: inline-block;
+        box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
+          0 3px 6px rgba(0, 0, 0, 0.23);
+      }
+    }
   }
 }
 
@@ -88,21 +157,6 @@
       cursor: pointer;
 
       // right Container - my list section - btn - list count
-      #list_count {
-        width: 24px;
-        height: 24px;
-        color: white;
-        background: #008f7a;
-        border-radius: 100%;
-        box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
-          0 3px 6px rgba(0, 0, 0, 0.23);
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
     }
   }
 

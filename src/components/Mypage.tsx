@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "../styles/Mypage.scss";
 import PlanList from "./PlanList";
 import EditInfo from "./EditInfo";
 import Photo from "../image/photo.png";
+import axios from "axios";
 
 function Mypage() {
   // fake data - user info
@@ -11,11 +12,11 @@ function Mypage() {
 
   console.log("마이페이지로 넘어온 정보", location.state);
   const [userinfo, setUserinfo] = useState({
-    name: "홍길동",
-    userid: "userId",
-    email: "userId@gmail.com",
-    phone: "010-1234-5678",
-    created: "20.11.12",
+    name: "",
+    userid: "",
+    email: "",
+    phone: "",
+    created: "",
   });
 
   // fake data - plan list
@@ -140,7 +141,16 @@ function Mypage() {
     setOnModal(!onModal);
   };
 
-  
+  useEffect(() => {
+    const authorization = localStorage.getItem("authorization");
+    axios
+      .get("http://yourang-server.link:5000/user/info", {
+        headers: {
+          authorization,
+        },
+      })
+      .then((res) => console.log("유저인포로 가져온다", res));
+  });
 
   return (
     <div id="mypage">

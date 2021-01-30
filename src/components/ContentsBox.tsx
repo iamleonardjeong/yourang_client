@@ -11,6 +11,7 @@ interface ContentsBoxProps {
   address: string;
   onModalState: (title: string) => void;
   imgStatusHandler: () => void;
+
   setMyLists: (
     title: string,
     desc: string,
@@ -19,6 +20,8 @@ interface ContentsBoxProps {
     address: string,
     img?: string
   ) => void;
+
+  setMyLists: (title: string, desc: string, img?: string) => void;
   removeMyLists: (title: string) => void;
   heartState: boolean;
 }

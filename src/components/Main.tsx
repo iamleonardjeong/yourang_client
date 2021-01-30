@@ -35,9 +35,12 @@ interface myList {
   phone: string | undefined;
   address: string | undefined;
 }
+  
+let data: myList[] = JSON.parse(localStorage.getItem('myList') || '[]');
 
 // localStorage
 let data: myList[] = JSON.parse(localStorage.getItem('myList') || '[]');
+
 // main component
 function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   const location = useLocation<any>();
@@ -141,6 +144,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       document.getElementById('map') as HTMLElement,
       mapOptions
     );
+
     axios.post('http://yourang-server.link:5000/google/map', {
       data: latLng,
       withCredentials: true,
@@ -325,6 +329,39 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     console.log('email sent');
   };
 
+  // myList append
+  const setMyLists = (title: string, desc: string, img?: string): void => {
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].title === title) {
+        return;
+      }
+    }
+    data.push({
+      title: title,
+      desc: desc,
+      imgSrc: img || 'No Images',
+    });
+
+    setMyList({
+      ...myList,
+      count: myList.count + 1,
+    });
+
+    localStorage.setItem('myList', JSON.stringify(data));
+  };
+
+  // myList remove
+  const removeMyLists = (title: string): any => {
+    data = data.filter((el) => title !== el.title);
+
+    setMyList({
+      ...myList,
+      count: myList.count + 1,
+    });
+
+    localStorage.setItem('myList', JSON.stringify(data));
+  };
+
   return (
     <div id="mainContainer">
       <div id="leftContainer">
@@ -361,6 +398,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
             <span id="list_count">{data.length}</span>
           </li>
         </ul>
+
         <div
           id="leftContents"
           className={classNames({ myListTapContainer: menuState.myListTap })}

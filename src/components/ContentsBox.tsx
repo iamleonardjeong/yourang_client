@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { MouseEvent, useEffect, useState } from 'react';
 import '../styles/ContentsBox.scss';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 
@@ -8,30 +8,31 @@ interface ContentsBoxProps {
   desc: string;
   onModalState: (title: string) => void;
   imgStatusHandler: () => void;
+  setMyLists: (title: string, desc: string, img?: string) => void;
+  removeMyLists: (title: string) => void;
+  heartState: boolean;
 }
+
+interface myList {
+  title: string;
+  desc: string;
+  imgSrc: string | undefined;
+}
+
 function ContentsBox({
   imgSrc,
   title,
   desc,
   onModalState,
   imgStatusHandler,
+  setMyLists,
+  removeMyLists,
+  heartState,
 }: ContentsBoxProps) {
-  const [selectState, setSelectState] = useState<null | boolean>(null);
-
-  useEffect(() => {
-    if (selectState === true) {
-      console.log('ok true');
-    } else if (selectState === null) {
-      console.log('no false');
-    }
-  }, [selectState]);
+  const [selectState, setSelectState] = useState<boolean>(false);
 
   const selectClick = () => {
-    if (selectState === null) {
-      setSelectState(true);
-    } else if (selectState === true) {
-      setSelectState(null);
-    }
+    setSelectState((prev) => !prev);
   };
 
   return (
@@ -50,10 +51,13 @@ function ContentsBox({
       </div>
       <div className="contents_addMyList_btn_container">
         <button className="contents_addMyList_btn" onClick={selectClick}>
-          {selectState ? (
-            <AiFillHeart size="22" />
+          {heartState ? (
+            <AiFillHeart size="22" onClick={() => removeMyLists(title)} />
           ) : (
-            <AiOutlineHeart size="22" />
+            <AiOutlineHeart
+              size="22"
+              onClick={() => setMyLists(title, desc, imgSrc)}
+            />
           )}
         </button>
       </div>

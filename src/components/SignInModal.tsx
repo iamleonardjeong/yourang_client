@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { GoogleLogin } from "react-google-login";
-import "../styles/SignInModal.scss";
-import googleIcon from "../image/google_icon.png";
-import naverIcon from "../image/naver_icon.png";
-import ErrorMessage from "./ErrorMessage";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { GoogleLogin } from 'react-google-login';
+import '../styles/SignInModal.scss';
+import googleIcon from '../image/google_icon.png';
+import naverIcon from '../image/naver_icon.png';
+import ErrorMessage from './ErrorMessage';
 
 interface SignInModalProps {
   signInModalHandler: (e: React.MouseEvent<HTMLElement>) => void;
@@ -20,9 +20,9 @@ function SignInModal({
   modalSwitchHandler,
 }: SignInModalProps) {
   // useState
-  const [loginInfo, setLoginInfo] = useState({ userId: "", password: "" });
+  const [loginInfo, setLoginInfo] = useState({ userId: '', password: '' });
   const [isValidFail, setIsValidFail] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
 
   const loginInfoHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
@@ -31,33 +31,33 @@ function SignInModal({
 
   const loginButtonHandler = () => {
     axios
-      .post("http://localhost:5001/user/login", {
+      .post('http://yourang-server.link:5000/user/login', {
         id: loginInfo.userId,
         password: loginInfo.password,
         withCredentials: true,
       })
       .then((res) => {
         console.log(res.data.message);
-        if (res.data.message === "Login Successed") {
+        if (res.data.message === 'Login Successed') {
           loginSuccessHandler();
         }
       })
       .catch((err) => {
         setIsValidFail(!isValidFail);
         setErrorMessage(
-          "가입 되어있지 않은 계정입니다. 회원가입을 먼저 진행해 주세요."
+          '가입 되어있지 않은 계정입니다. 회원가입을 먼저 진행해 주세요.'
         );
       });
   };
 
   const validationCheck = (e: React.MouseEvent<HTMLElement>) => {
     // 유효성 검사 후 user가 확인 버튼을 눌렀을 때, LoginInfo를 초기화 하기 위한 로직
-    if (e.currentTarget.textContent === "확인") {
-      setLoginInfo({ userId: "", password: "" });
+    if (e.currentTarget.textContent === '확인') {
+      setLoginInfo({ userId: '', password: '' });
     }
 
-    const error1 = "아이디와 비밀번호를 입력해주세요";
-    const error2 = "아이디 혹은 비밀번가 맞지않습니다. 다시 입력해 주세요.";
+    const error1 = '아이디와 비밀번호를 입력해주세요';
+    const error2 = '아이디 혹은 비밀번가 맞지않습니다. 다시 입력해 주세요.';
     const { userId, password } = loginInfo;
 
     if (!userId || !password) {
@@ -71,20 +71,20 @@ function SignInModal({
     const { name, googleId } = res.profileObj;
 
     axios
-      .post("http://localhost:5001/user/login", {
+      .post('http://yourang-server.link:5000/user/login', {
         id: name,
         password: googleId,
         withCredentials: true,
       })
       .then((res) => {
-        if (res.data.message === "Login Successed") {
+        if (res.data.message === 'Login Successed') {
           loginSuccessHandler();
         }
       })
       .catch((err) => {
         setIsValidFail(!isValidFail);
         setErrorMessage(
-          "가입 되어있지 않은 계정입니다. 회원가입을 먼저 진행해 주세요."
+          '가입 되어있지 않은 계정입니다. 회원가입을 먼저 진행해 주세요.'
         );
       });
   };
@@ -134,12 +134,12 @@ function SignInModal({
             <div className="signIn_modal_container_wrap_body_social_google">
               <GoogleLogin
                 className="signIn_modal_container_wrap_body_google_oauth"
-                clientId="307554420471-jheed3l991je50b11ccl5t7t1d7sftlv.apps.googleusercontent.com"
+                clientId="307554420471-19f0nnr1jp6lvf9qqea85e8i07j36vjc.apps.googleusercontent.com"
                 buttonText="구글 계정으로 로그인"
                 icon={true}
                 onSuccess={googleLogInHandler}
                 onFailure={googleLogInHandler}
-                cookiePolicy={"single_host_origin"}
+                cookiePolicy={'single_host_origin'}
               />
             </div>
             {/* <div className="signIn_modal_container_wrap_body_social_naver">

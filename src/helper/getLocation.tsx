@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
 
 export const getLocation = async (place: any) => {
@@ -15,15 +15,15 @@ export const getLocation = async (place: any) => {
     })
     .then(async (latLng) => {
       // 추천장소 카테고리 선택에 따라 서버로 보낼 장소 카테고리를 정하는 로직
-      console.log("좌표", latLng);
+      console.log('좌표', latLng);
       await axios
-        .post("http://localhost:5001/google/map", {
+        .post('http://yourang-server.link:5000/google/map', {
           data: latLng,
           withCredentials: true,
-          placeType: "tourist_attraction",
+          placeType: 'tourist_attraction',
         })
         .then(async (res) => {
-          placeInfo = res.data.slice(0, 1); //응답받은 장소들
+          placeInfo = res.data.slice(0, 3); //응답받은 장소들
 
           const placeIds: any = [];
           placeInfo.forEach((place: any) => {
@@ -33,7 +33,7 @@ export const getLocation = async (place: any) => {
           });
 
           await axios
-            .post("http://localhost:5001/google/places_photo", {
+            .post('http://yourang-server.link:5000/google/places_photo', {
               place_ids: placeIds,
               withCredentials: true,
             })

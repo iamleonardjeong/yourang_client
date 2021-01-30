@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from 'react';
-import '../styles/EditInfo.scss';
-import { useHistory } from 'react-router-dom';
-import axios from 'axios';
+import React, { useEffect, useState, useRef } from "react";
+import "../styles/EditInfo.scss";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 type EditInfoProp = {
   editOnModal: (e: any) => void;
@@ -16,11 +16,11 @@ type EditInfoProp = {
 
 function EditInfo({ editOnModal, userinfo }: EditInfoProp) {
   const [inputForm, setInputForm] = useState({
-    editEmail: '',
-    currentPassword: '',
-    password: '',
-    inspect: '',
-    editPhone: '',
+    editEmail: "",
+    currentPassword: "",
+    password: "",
+    inspect: "",
+    editPhone: "",
   });
 
   const history = useHistory();
@@ -35,7 +35,7 @@ function EditInfo({ editOnModal, userinfo }: EditInfoProp) {
   } = inputForm;
   const { email } = userinfo;
 
-  const [img, setImage] = useState<any>('');
+  const [img, setImage] = useState<any>("");
   const [file, setFile] = useState<any>(null);
 
   const fileChangedHandler = (e: any) => {
@@ -56,19 +56,32 @@ function EditInfo({ editOnModal, userinfo }: EditInfoProp) {
 
   const onClickHandler = (e: any) => {
     let form = new FormData();
-    form.append('file', file, file.name);
+    const authorization = localStorage.getItem("authorization");
+    form.append("file", file, file.name);
+    console.log("파일의 형식", form);
     axios
-      .post('http://yourang-server.link:5000/user/modify', form)
-      .then((res) => console.log(res));
+      .post("http://yourang-server.link:5000/user/modify", form, {
+        headers: {
+          authorization,
+          "content-type": "multipart/form-data",
+        },
+      })
+      .then((res) => console.log("사진 보내기", res));
   };
 
   const submitHander = () => {
-    axios
-      .post('http://yourang-server.link:5000/user/modify-pass', {
+    const authorization = localStorage.getItem("authorization");
+    axios({
+      url: "http://yourang-server.link:5000/user/modify-pass",
+      method: "post",
+      headers: {
+        authorization: authorization,
+      },
+      data: {
         oriPassword: currentPassword,
         newPassword: password,
-      })
-      .then((res) => console.log(res));
+      },
+    }).then((res) => console.log("비번 변경 완료", res));
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,10 +96,10 @@ function EditInfo({ editOnModal, userinfo }: EditInfoProp) {
   const mobileInputHander = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // mobile전용 유효성 검사 및 입력제한 로직(출력 예시: 000-0000-0000 숫자로만 입력됨. "-"는 자동입력 됨)
     const { name, value, maxLength } = e.currentTarget;
-    let reg = new RegExp('^[0-9]');
+    let reg = new RegExp("^[0-9]");
     if (reg.test(e.key)) {
       if (value.length === 3 || value.length === 8) {
-        setInputForm({ ...inputForm, [name]: value + '-' + e.key });
+        setInputForm({ ...inputForm, [name]: value + "-" + e.key });
       } else {
         setInputForm({
           ...inputForm,
@@ -95,11 +108,11 @@ function EditInfo({ editOnModal, userinfo }: EditInfoProp) {
       }
     }
 
-    if (e.key === 'Backspace' && value.length === 9) {
+    if (e.key === "Backspace" && value.length === 9) {
       setInputForm({ ...inputForm, [name]: value.substring(0, 8) });
-    } else if (e.key === 'Backspace' && value.length === 4) {
+    } else if (e.key === "Backspace" && value.length === 4) {
       setInputForm({ ...inputForm, [name]: value.substring(0, 3) });
-    } else if (e.key === 'Backspace') {
+    } else if (e.key === "Backspace") {
       setInputForm({
         ...inputForm,
         [name]: value.substring(0, value.length - 1),
@@ -157,20 +170,20 @@ function EditInfo({ editOnModal, userinfo }: EditInfoProp) {
                 <div
                   className="profile_photo"
                   style={{
-                    backgroundColor: '#efefef',
-                    width: '150px',
-                    height: '150px',
-                    borderRadius: '500px',
+                    backgroundColor: "#efefef",
+                    width: "150px",
+                    height: "150px",
+                    borderRadius: "500px",
                   }}
                 ></div>
               ) : (
                 <img
                   src={img}
                   style={{
-                    backgroundColor: '#efefef',
-                    width: '150px',
-                    height: '150px',
-                    borderRadius: '500px',
+                    backgroundColor: "#efefef",
+                    width: "150px",
+                    height: "150px",
+                    borderRadius: "500px",
                   }}
                 ></img>
               )}
@@ -208,7 +221,7 @@ function EditInfo({ editOnModal, userinfo }: EditInfoProp) {
                 작성된 비밀번호가 서로 다릅니다
               </div>
             ) : (
-              ''
+              ""
             )}
 
             <div className="editinfo_btn_container">

@@ -1,7 +1,6 @@
-import React, { MouseEvent, useEffect, useState } from 'react';
-import '../styles/ContentsBox.scss';
-import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
-
+import React, { MouseEvent, useEffect, useState } from "react";
+import "../styles/ContentsBox.scss";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 interface ContentsBoxProps {
   imgSrc?: string;
   title: string;
@@ -10,7 +9,6 @@ interface ContentsBoxProps {
   phone: string;
   onModalState: (title: string) => void;
   imgStatusHandler: () => void;
-
   setMyLists: (
     title: string,
     desc: string,
@@ -18,12 +16,9 @@ interface ContentsBoxProps {
     phone: string,
     img?: string
   ) => void;
-
-  setMyLists: (title: string, desc: string, img?: string) => void;
   removeMyLists: (title: string) => void;
   heartState: boolean;
 }
-
 interface myList {
   title: string;
   desc: string;
@@ -31,7 +26,6 @@ interface myList {
   website: string;
   phone: string;
 }
-
 function ContentsBox({
   imgSrc,
   title,
@@ -45,11 +39,9 @@ function ContentsBox({
   heartState,
 }: ContentsBoxProps) {
   const [selectState, setSelectState] = useState<boolean>(false);
-
   const selectClick = () => {
     setSelectState((prev) => !prev);
   };
-
   return (
     <div className="contentsBox">
       <div
@@ -62,7 +54,7 @@ function ContentsBox({
       </div>
       <div className="contentsDisc" onClick={() => onModalState(title)}>
         <p className="contents_title">{title}</p>
-        <div className="contents_stars">{desc || 'no'} Stars</div>
+        <div className="contents_stars">{desc || "no"} Stars</div>
       </div>
       <div className="contents_addMyList_btn_container">
         <button className="contents_addMyList_btn" onClick={selectClick}>

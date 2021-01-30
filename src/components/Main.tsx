@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import ReactDOMServer from 'react-dom/server';
-import { useLocation } from 'react-router-dom';
-import '../styles/Main.scss';
-import classNames from 'classnames';
-import ContentsBox from './ContentsBox';
-import Modal from './Modal';
-import axios from 'axios';
-import MyContentsBox from './MyContentsBox';
-import emailjs from 'emailjs-com';
-
+import React, { useEffect, useState } from "react";
+import ReactDOMServer from "react-dom/server";
+import { useLocation } from "react-router-dom";
+import "../styles/Main.scss";
+import classNames from "classnames";
+import ContentsBox from "./ContentsBox";
+import Modal from "./Modal";
+import axios from "axios";
+import MyContentsBox from "./MyContentsBox";
+import emailjs from "emailjs-com";
 declare global {
   interface Window {
     google: any;
@@ -20,7 +19,6 @@ interface menuState {
   cafe: boolean;
   myListTap: boolean;
 }
-
 interface mainProps {
   navPlaceInfo: any;
   curretPlaceInfoHandler: (curPlaceInfo: any) => void;
@@ -34,12 +32,8 @@ interface myList {
   website: string | undefined;
   phone: string | undefined;
 }
-  
-let data: myList[] = JSON.parse(localStorage.getItem('myList') || '[]');
-
 // localStorage
-let data: myList[] = JSON.parse(localStorage.getItem('myList') || '[]');
-
+let data: myList[] = JSON.parse(localStorage.getItem("myList") || "[]");
 // main component
 function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   const location = useLocation<any>();
@@ -47,7 +41,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   const [placeInfo, setPlaceInfo] = useState<any>([]);
   const [latLng, setLatLng] = useState<any>({});
   const [imgStatus, setImgStatus] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState('');
+  const [currentLocation, setCurrentLocation] = useState("");
   const [modalInfo, setModalInfo] = useState({});
   const [myList, setMyList] = useState<any>({
     count: 0,
@@ -85,32 +79,32 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
         return latLng;
       })
       .then(async (latLng) => {
-        console.log('좌표받기 성공', latLng);
+        console.log("좌표받기 성공", latLng);
         // 추천장소 카테고리 선택에 따라 서버로 보낼 장소 카테고리를 정하는 로직
         await axios
-          .post('http://yourang-server.link:5000/google/map', {
+          .post("http://yourang-server.link:5000/google/map", {
             data: latLng,
             withCredentials: true,
             placeType: placeType,
           })
           .then(async (res) => {
             places = res.data.slice(0, 1); //응답받은 장소들
-            console.log('places', places);
+            console.log("places", places);
             const placeIds: any = [];
             places.forEach((place: any) => {
               if (place.photos !== undefined) {
                 placeIds.push(place.place_id);
               }
             });
-            console.log('placeIds', placeIds);
+            console.log("placeIds", placeIds);
             await axios
-              .post('http://yourang-server.link:5000/google/places_photo', {
+              .post("http://yourang-server.link:5000/google/places_photo", {
                 place_ids: placeIds,
                 withCredentials: true,
               })
               .then((res) => {
                 places = res.data;
-                console.log('타입 누르고 palces', places);
+                console.log("타입 누르고 palces", places);
                 setPlaceInfo(places);
                 setLatLng(latLng);
               });
@@ -140,11 +134,10 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       },
     };
     const map = new window.google.maps.Map(
-      document.getElementById('map') as HTMLElement,
+      document.getElementById("map") as HTMLElement,
       mapOptions
     );
-
-    axios.post('http://yourang-server.link:5000/google/map', {
+    axios.post("http://yourang-server.link:5000/google/map", {
       data: latLng,
       withCredentials: true,
     });
@@ -157,7 +150,6 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       marker.setMap(map);
     });
   };
-
   useEffect(() => {
     if (location.state.latLng !== undefined) {
       setLatLng(location.state.latLng);
@@ -170,7 +162,6 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       setCurrentLocation(location.state.currentLocation);
     }
   }, [location.state.latLng, location.state.places]);
-
   useEffect(() => {
     renderMap();
   }, [latLng]);
@@ -184,11 +175,9 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       setCurrentLocation(currentLocation);
     }
   }, [navPlaceInfo]);
-
   useEffect(() => {
     curretPlaceInfoHandler({ latLng, placeInfo, currentLocation });
   }, [latLng, placeInfo, currentLocation]);
-
   const placeTypeHandler = (selectedPlaceType: string) => {
     getLocation(currentLocation, selectedPlaceType);
   };
@@ -205,7 +194,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   const onClick = async (e: string) => {
     // 사용자가 장소 카테고리를 바꾸면 거기에 맞는 장소들을 요청 및 응답, 화면을 렌더한다.
     // console.log(e);
-    if (e !== 'myListTap') {
+    if (e !== "myListTap") {
       placeTypeHandler(e);
     }
     setMenuState({
@@ -245,16 +234,15 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     data.push({
       title: title,
       desc: desc,
-      imgSrc: img || 'No Images',
-      website: website || '제공된 웹사이트가 없습니다.',
-      phone: phone || '제공된 전화번호가 없습니다.',
+      imgSrc: img || "No Images",
+      website: website || "제공된 웹사이트가 없습니다.",
+      phone: phone || "제공된 전화번호가 없습니다.",
     });
-
     setMyList({
       ...myList,
       count: myList.count + 1,
     });
-    localStorage.setItem('myList', JSON.stringify(data));
+    localStorage.setItem("myList", JSON.stringify(data));
     console.log(data);
   };
   // myList remove
@@ -264,9 +252,8 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       ...myList,
       count: myList.count + 1,
     });
-    localStorage.setItem('myList', JSON.stringify(data));
+    localStorage.setItem("myList", JSON.stringify(data));
   };
-
   const htmlString = ReactDOMServer.renderToStaticMarkup(
     <div>
       {data.map((place) => {
@@ -282,70 +269,33 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       })}
     </div>
   );
-
-  const toEmail = 'iamleonardjeong@gmail.com';
-
+  const toEmail = "srparkgogo@gmail.com";
   const sendEmail = () => {
     emailjs.send(
-      'service_9v5cs7d',
-      'template_w8ckiwq',
+      "service_9v5cs7d",
+      "template_w8ckiwq",
       {
         to_email: toEmail,
-        to_name: '정훈',
+        to_name: "박상록",
         message: htmlString,
       },
-      'user_viAPjBua2EXqACiVlL88n'
+      "user_viAPjBua2EXqACiVlL88n"
     );
-
-    console.log('email sent');
+    console.log("email sent");
   };
-
-  // myList append
-  const setMyLists = (title: string, desc: string, img?: string): void => {
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].title === title) {
-        return;
-      }
-    }
-    data.push({
-      title: title,
-      desc: desc,
-      imgSrc: img || 'No Images',
-    });
-
-    setMyList({
-      ...myList,
-      count: myList.count + 1,
-    });
-
-    localStorage.setItem('myList', JSON.stringify(data));
-  };
-
-  // myList remove
-  const removeMyLists = (title: string): any => {
-    data = data.filter((el) => title !== el.title);
-
-    setMyList({
-      ...myList,
-      count: myList.count + 1,
-    });
-
-    localStorage.setItem('myList', JSON.stringify(data));
-  };
-
   return (
     <div id="mainContainer">
       <div id="leftContainer">
         <ul id="leftMenu">
           <li
-            onClick={() => onClick('restaurant')}
+            onClick={() => onClick("restaurant")}
             value="restaurant"
             className={classNames({ restaurant: menuState.restaurant })}
           >
             맛집
           </li>
           <li
-            onClick={() => onClick('tourist_attraction')}
+            onClick={() => onClick("tourist_attraction")}
             value="tourist_attraction"
             className={classNames({
               tourist_attraction: menuState.tourist_attraction,
@@ -354,14 +304,14 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
             플레이스
           </li>
           <li
-            onClick={() => onClick('cafe')}
+            onClick={() => onClick("cafe")}
             value="cafe"
             className={classNames({ cafe: menuState.cafe })}
           >
             카페
           </li>
           <li
-            onClick={() => onClick('myListTap')}
+            onClick={() => onClick("myListTap")}
             value="myListTap"
             className={classNames({ myListTap: menuState.myListTap })}
           >
@@ -369,7 +319,6 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
             <span id="list_count">{data.length}</span>
           </li>
         </ul>
-
         <div
           id="leftContents"
           className={classNames({ myListTapContainer: menuState.myListTap })}
@@ -413,7 +362,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
                   />
                 );
               })
-            : ''}
+            : ""}
           <button
             id="send_Email_Btn"
             className={classNames({ myListTap: menuState.myListTap })}

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import '../styles/Main.scss';
-import classNames from 'classnames';
-import ContentsBox from './ContentsBox';
-import Modal from './Modal';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import "../styles/Main.scss";
+import classNames from "classnames";
+import ContentsBox from "./ContentsBox";
+import Modal from "./Modal";
+import axios from "axios";
 declare global {
   interface Window {
     google: any;
@@ -28,7 +28,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   const [placeInfo, setPlaceInfo] = useState<any>([]);
   const [latLng, setLatLng] = useState<any>({});
   const [imgStatus, setImgStatus] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState('');
+  const [currentLocation, setCurrentLocation] = useState("");
   const [modalInfo, setModalInfo] = useState({});
   const [myList, setMyList] = useState<any>({
     count: 0,
@@ -70,17 +70,17 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
         return latLng;
       })
       .then(async (latLng) => {
-        console.log('좌표받기 성공', latLng);
+        console.log("좌표받기 성공", latLng);
         // 추천장소 카테고리 선택에 따라 서버로 보낼 장소 카테고리를 정하는 로직
         await axios
-          .post('https://localhost:5000/google/map', {
+          .post("http://localhost:5001/google/map", {
             data: latLng,
             withCredentials: true,
             placeType: placeType,
           })
           .then(async (res) => {
             places = res.data.slice(0, 1); //응답받은 장소들
-            console.log('places', places);
+            console.log("places", places);
             const placeIds: any = [];
             places.forEach((place: any) => {
               if (place.photos !== undefined) {
@@ -88,16 +88,16 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
               }
             });
 
-            console.log('placeIds', placeIds);
+            console.log("placeIds", placeIds);
 
             await axios
-              .post('https://localhost:5000/google/places_photo', {
+              .post("http://localhost:5001/google/places_photo", {
                 place_ids: placeIds,
                 withCredentials: true,
               })
               .then((res) => {
                 places = res.data;
-                console.log('타입 누르고 palces', places);
+                console.log("타입 누르고 palces", places);
 
                 setPlaceInfo(places);
                 setLatLng(latLng);
@@ -130,10 +130,11 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     };
 
     const map = new window.google.maps.Map(
-      document.getElementById('map') as HTMLElement,
+      document.getElementById("map") as HTMLElement,
       mapOptions
     );
-    axios.post('https://localhost:5000/google/map', {
+
+    axios.post("http://localhost:5001/google/map", {
       data: latLng,
       withCredentials: true,
     });
@@ -182,7 +183,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
 
   const placeTypeHandler = (selectedPlaceType: string) => {
     console.log(
-      '체험하기로 들어왔을 떄정보',
+      "체험하기로 들어왔을 떄정보",
       currentLocation,
       selectedPlaceType
     );
@@ -230,14 +231,14 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       <div id="leftContainer">
         <ul id="leftMenu">
           <li
-            onClick={() => onClick('restaurant')}
+            onClick={() => onClick("restaurant")}
             value="restaurant"
             className={classNames({ restaurant: menuState.restaurant })}
           >
             맛집
           </li>
           <li
-            onClick={() => onClick('tourist_attraction')}
+            onClick={() => onClick("tourist_attraction")}
             value="tourist_attraction"
             className={classNames({
               tourist_attraction: menuState.tourist_attraction,
@@ -246,7 +247,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
             플레이스
           </li>
           <li
-            onClick={() => onClick('cafe')}
+            onClick={() => onClick("cafe")}
             value="cafe"
             className={classNames({ cafe: menuState.cafe })}
           >
@@ -267,7 +268,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
                   imgStatusHandler={imgStatusHandler}
                 />
               ))
-            : ''}
+            : ""}
         </div>
       </div>
       <div id="rightContainer">

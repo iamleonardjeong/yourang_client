@@ -1,12 +1,13 @@
-import React from 'react';
+import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
-} from 'react-router-dom';
-import Home from './container/Home';
-import MainContainer from './container/MainContainer';
+} from "react-router-dom";
+import Mypage from "./components/Mypage";
+import Home from "./container/Home";
+import MainContainer from "./container/MainContainer";
 
 function App() {
   return (

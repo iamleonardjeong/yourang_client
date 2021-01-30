@@ -1,126 +1,126 @@
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import '../styles/Mypage.scss';
-import PlanList from './PlanList';
-import EditInfo from './EditInfo';
-import Photo from '../image/photo.png';
+import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
+import "../styles/Mypage.scss";
+import PlanList from "./PlanList";
+import EditInfo from "./EditInfo";
+import Photo from "../image/photo.png";
 
 function Mypage() {
   // fake data - user info
   const location = useLocation();
 
-  console.log('마이페이지로 넘어온 정보', location.state);
+  console.log("마이페이지로 넘어온 정보", location.state);
   const [userinfo, setUserinfo] = useState({
-    name: '홍길동',
-    userid: 'userId',
-    email: 'userId@gmail.com',
-    phone: '010-1234-5678',
-    created: '20.11.12',
+    name: "홍길동",
+    userid: "userId",
+    email: "userId@gmail.com",
+    phone: "010-1234-5678",
+    created: "20.11.12",
   });
 
   // fake data - plan list
   const [planList, setPlanList] = useState([
     {
       id: 0,
-      planName: '부산 여행',
-      inst: '부산은 역시 돼지국밥',
-      created: '20.11.12',
+      planName: "부산 여행",
+      inst: "부산은 역시 돼지국밥",
+      created: "20.11.12",
     },
     {
       id: 1,
-      planName: '서울 여행',
-      inst: '서울은 역시 강남',
-      created: '20.11.12',
+      planName: "서울 여행",
+      inst: "서울은 역시 강남",
+      created: "20.11.12",
     },
     {
       id: 2,
-      planName: '강원도 여행',
-      inst: '서울은 역시 감자',
-      created: '20.11.12',
+      planName: "강원도 여행",
+      inst: "서울은 역시 감자",
+      created: "20.11.12",
     },
     {
       id: 3,
-      planName: '제주도 여행',
-      inst: '제주도은 역시 한라봉',
-      created: '20.11.12',
+      planName: "제주도 여행",
+      inst: "제주도은 역시 한라봉",
+      created: "20.11.12",
     },
     {
       id: 4,
-      planName: '경주',
-      inst: '경주은 역시 불국사',
-      created: '20.11.12',
+      planName: "경주",
+      inst: "경주은 역시 불국사",
+      created: "20.11.12",
     },
     {
       id: 5,
-      planName: '전주',
-      inst: '전주은 역시 비빔밥',
-      created: '20.11.12',
+      planName: "전주",
+      inst: "전주은 역시 비빔밥",
+      created: "20.11.12",
     },
     {
       id: 6,
-      planName: '전주',
-      inst: '전주은 역시 비빔밥',
-      created: '20.11.12',
+      planName: "전주",
+      inst: "전주은 역시 비빔밥",
+      created: "20.11.12",
     },
     {
       id: 7,
-      planName: '전주',
-      inst: '전주은 역시 비빔밥',
-      created: '20.11.12',
+      planName: "전주",
+      inst: "전주은 역시 비빔밥",
+      created: "20.11.12",
     },
     {
       id: 8,
-      planName: '전주',
-      inst: '전주은 역시 비빔밥',
-      created: '20.11.12',
+      planName: "전주",
+      inst: "전주은 역시 비빔밥",
+      created: "20.11.12",
     },
     {
       id: 9,
-      planName: '전주',
-      inst: '전주은 역시 비빔밥',
-      created: '20.11.12',
+      planName: "전주",
+      inst: "전주은 역시 비빔밥",
+      created: "20.11.12",
     },
     {
       id: 10,
-      planName: '전주',
-      inst: '전주은 역시 비빔밥',
-      created: '20.11.12',
+      planName: "전주",
+      inst: "전주은 역시 비빔밥",
+      created: "20.11.12",
     },
     {
       id: 11,
-      planName: '전주',
-      inst: '전주은 역시 비빔밥',
-      created: '20.11.12',
+      planName: "전주",
+      inst: "전주은 역시 비빔밥",
+      created: "20.11.12",
     },
     {
       id: 12,
-      planName: '전주',
-      inst: '전주은 역시 비빔밥',
-      created: '20.11.12',
+      planName: "전주",
+      inst: "전주은 역시 비빔밥",
+      created: "20.11.12",
     },
     {
       id: 13,
-      planName: '전주',
-      inst: '전주은 역시 비빔밥',
-      created: '20.11.12',
+      planName: "전주",
+      inst: "전주은 역시 비빔밥",
+      created: "20.11.12",
     },
     {
       id: 14,
-      planName: '전주',
-      inst: '전주은 역시 비빔밥',
-      created: '20.11.12',
+      planName: "전주",
+      inst: "전주은 역시 비빔밥",
+      created: "20.11.12",
     },
     {
       id: 15,
-      planName: '전주',
-      inst: '전주은 역시 비빔밥',
-      created: '20.11.12',
+      planName: "전주",
+      inst: "전주은 역시 비빔밥",
+      created: "20.11.12",
     },
     {
       id: 16,
-      planName: '전주',
-      inst: '전주은 역시 비빔밥',
-      created: '20.11.12',
+      planName: "전주",
+      inst: "전주은 역시 비빔밥",
+      created: "20.11.12",
     },
   ]);
 
@@ -139,6 +139,8 @@ function Mypage() {
   const editOnModal = (e: any) => {
     setOnModal(!onModal);
   };
+
+  
 
   return (
     <div id="mypage">

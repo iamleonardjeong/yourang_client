@@ -73,13 +73,13 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
         console.log("좌표받기 성공", latLng);
         // 추천장소 카테고리 선택에 따라 서버로 보낼 장소 카테고리를 정하는 로직
         await axios
-          .post("https://localhost:5001/google/map", {
+          .post("http://localhost:5001/google/map", {
             data: latLng,
             withCredentials: true,
             placeType: placeType,
           })
           .then(async (res) => {
-            places = res.data.slice(0, 3); //응답받은 장소들
+            places = res.data.slice(0, 1); //응답받은 장소들
             console.log("places", places);
             const placeIds: any = [];
             places.forEach((place: any) => {
@@ -91,7 +91,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
             console.log("placeIds", placeIds);
 
             await axios
-              .post("https://localhost:5001/google/places_photo", {
+              .post("http://localhost:5001/google/places_photo", {
                 place_ids: placeIds,
                 withCredentials: true,
               })
@@ -133,7 +133,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       document.getElementById("map") as HTMLElement,
       mapOptions
     );
-    axios.post("https://localhost:5001/google/map", {
+    axios.post("http://localhost:5001/google/map", {
       data: latLng,
       withCredentials: true,
     });
@@ -156,10 +156,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
         ...myList,
         data: myList.data.concat([...location.state.placeInfo]),
       });
-      console.log(
-        "게스트로 들어오고나면 커렌트 로케이션이 정보가 있나?",
-        currentLocation
-      );
+      console.log(currentLocation);
       setCurrentLocation(location.state.currentLocation);
     }
   }, [location.state.latLng, location.state.places]);

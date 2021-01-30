@@ -9,7 +9,7 @@ import SignUpModal from '../components/SignUpModal';
 
 const MainContainer = () => {
   // fake login state
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
 
@@ -43,6 +43,10 @@ const MainContainer = () => {
     }
   };
 
+  const signInModalCloseHandler = () => {
+    setIsSignInOpen(!isSignInOpen);
+  };
+
   // signUp modal pop
   const signUpModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
@@ -54,18 +58,34 @@ const MainContainer = () => {
     }
   };
 
+  const modalSwitchHandler = () => {
+    setIsSignUpOpen(!isSignUpOpen);
+    setIsSignInOpen(!isSignInOpen);
+  };
+
+  // "메인  콘테이너에서 로그인하면 프라하를 검색하고 다시 맵을 로딩";
+  const loginSuccessHandler = async () => {
+    const placeInfo = await getLocation('프라하');
+    setNavPlaceInfo(placeInfo);
+    setIsLoggedIn(!isLoggedIn);
+    signInModalCloseHandler();
+  };
+
   return (
     <>
       {isSignInOpen ? (
         <SignInModal
           signInModalHandler={signInModalHandler}
           signUpModalHandler={signUpModalHandler}
+          modalSwitchHandler={modalSwitchHandler}
+          loginSuccessHandler={loginSuccessHandler}
         />
       ) : null}
       {isSignUpOpen ? (
         <SignUpModal
           signInModalHandler={signInModalHandler}
           signUpModalHandler={signUpModalHandler}
+          modalSwitchHandler={modalSwitchHandler}
         />
       ) : null}
 

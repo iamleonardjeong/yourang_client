@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import '../styles/Home.scss';
-import BGMusic from '../components/BGMusic';
-import SignInModal from '../components/SignInModal';
-import SignUpModal from '../components/SignUpModal';
-import backgroundVideo from '../video/yourang-home_video.mp4'; // background video
-import axios from 'axios';
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import "../styles/Home.scss";
+import BGMusic from "../components/BGMusic";
+import SignInModal from "../components/SignInModal";
+import SignUpModal from "../components/SignUpModal";
+import backgroundVideo from "../video/yourang-home_video.mp4"; // background video
+import axios from "axios";
 
 declare const google: any;
 let map: google.maps.Map;
@@ -15,21 +15,22 @@ function Home() {
   // useState
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState('프라하');
+  const [currentLocation, setCurrentLocation] = useState("프라하");
 
   // useHistory
   const history = useHistory();
-  // Input Change
 
+  // Input Change
   const onChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setCurrentLocation(e.currentTarget.value);
   };
 
-  const getLocation = (place: any = '프라하') => {
+  const getLocation = async (place: any = "프라하") => {
     let latLng;
     let placeInfo;
     setCurrentLocation(place);
-    axios
+
+    await axios
       .get(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${place}&key=${apiKey}`
       )
@@ -40,13 +41,13 @@ function Home() {
       .then((latLng) => {
         // 추천장소 카테고리 선택에 따라 서버로 보낼 장소 카테고리를 정하는 로직
         axios
-          .post('https://localhost:5001/google/map', {
+          .post("http://localhost:5001/google/map", {
             data: latLng,
             withCredentials: true,
-            placeType: 'tourist_attraction',
+            placeType: "tourist_attraction",
           })
-          .then((res) => {
-            placeInfo = res.data.slice(0, 3); //응답받은 장소들
+          .then(async (res) => {
+            placeInfo = res.data.slice(0, 1); //응답받은 장소들
 
             const placeIds: any = [];
             placeInfo.forEach((place: any) => {
@@ -54,27 +55,29 @@ function Home() {
                 placeIds.push(place.place_id);
               }
             });
-            axios
-              .post('https://localhost:5001/google/places_photo', {
+
+            await axios
+              .post("http://localhost:5001/google/places_photo", {
                 place_ids: placeIds,
                 withCredentials: true,
               })
-              .then((res) => {
-                placeInfo = res.data;
+              .then(async (res) => {
+                placeInfo = await res.data;
                 // 다음 페이지로 이동
-                history.push('/main', { latLng, placeInfo, currentLocation });
+                console.log(latLng, placeInfo, currentLocation);
+                history.push("/main", { latLng, placeInfo, currentLocation });
               });
           });
       });
   };
 
+  // onEnterCount가 0일 때만 onEnterDownHander 실행. 유저가 엔터를 두, 세번 눌렀을 때 반응하지 않게 하기 위함.
   let onEnterCount = 0;
-
   const onEnterDownHander = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
+      console.log("엔터가 몇번 눌렸나?", onEnterCount);
       if (onEnterCount === 0) {
         onEnterCount++;
-        console.log(e);
         getLocation(currentLocation);
       }
       // history.push('/main', currentLocation);
@@ -85,26 +88,38 @@ function Home() {
     // history.push('/main');
     getLocation();
   };
+
   // logIn modal pop
   const signInModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
-    if (target === '로그인 페이지로') {
+    if (target === "로그인 페이지로") {
       setIsSignUpOpen(!isSignUpOpen);
       setIsSignInOpen(!isSignInOpen);
     } else {
       setIsSignInOpen(!isSignInOpen);
     }
   };
+
   // signUp modal pop
   const signUpModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
-    if (target === '+') {
+    if (target === "+") {
       setIsSignUpOpen(!isSignUpOpen);
-    } else if (target === '회원가입') {
+    } else if (target === "회원가입") {
       setIsSignUpOpen(!isSignUpOpen);
       setIsSignInOpen(!isSignInOpen);
     }
   };
+
+  const modalSwitchHandler = () => {
+    setIsSignUpOpen(!isSignUpOpen);
+    setIsSignInOpen(!isSignInOpen);
+  };
+
+  const loginSuccessHandler = () => {
+    getLocation("프라하");
+  };
+
   return (
     <div className="home">
       <video className="home_video" autoPlay loop muted>
@@ -125,7 +140,7 @@ function Home() {
         </div>
         <div className="home_contents_body">
           <div className="home_contents_body_title">
-            대한민국 어디로 떠나고 싶으세요?
+            어디로 떠나고 싶으세요?
           </div>
           <input
             type="text"
@@ -133,7 +148,7 @@ function Home() {
             className="home_contents_body_input"
             maxLength={20}
             onChange={onChangeHandler}
-            onKeyDown={onEnterDownHander}
+            onKeyUp={onEnterDownHander}
           />
           <button onClick={onExplore}>체험하기</button>
         </div>
@@ -141,12 +156,15 @@ function Home() {
           <SignInModal
             signInModalHandler={signInModalHandler}
             signUpModalHandler={signUpModalHandler}
+            loginSuccessHandler={loginSuccessHandler}
+            modalSwitchHandler={modalSwitchHandler}
           />
         ) : null}
         {isSignUpOpen ? (
           <SignUpModal
             signInModalHandler={signInModalHandler}
             signUpModalHandler={signUpModalHandler}
+            modalSwitchHandler={modalSwitchHandler}
           />
         ) : null}
       </div>

@@ -10,6 +10,7 @@
     z-index: 110;
     width: 100%;
     min-height: 100%;
+    border: solid;
     position: fixed;
     top: 0;
     display: flex;
@@ -24,6 +25,7 @@
       border-radius: 8px;
       display: flex;
       flex-direction: column;
+      height: 600px;
 
       .editinfo_modal_container_wrap_titleBar {
         display: flex;
@@ -53,17 +55,18 @@
         }
 
         .editinfo_modal_password_value1 {
-          font-family: 'Montserrat';
+          font-family: "Montserrat";
           width: 100%;
           height: 46px;
           border: none;
           border-bottom: 1px solid #008f7a;
           outline: none;
           font-size: 0.9rem;
+          margin-top: 100px;
         }
 
         .editinfo_modal_password_value2 {
-          font-family: 'Montserrat';
+          font-family: "Montserrat";
           width: 100%;
           height: 46px;
           border: none;
@@ -72,6 +75,18 @@
           margin-top: 20px;
           font-size: 0.9rem;
         }
+
+        .editinfo_modal_password_value3 {
+          font-family: "Montserrat";
+          width: 100%;
+          height: 46px;
+          border: none;
+          border-bottom: 1px solid #008f7a;
+          outline: none;
+          margin-top: 20px;
+          font-size: 0.9rem;
+        }
+
         .editinfo_btn_container {
           width: 100%;
           margin: 20px 0 0 0;
@@ -80,7 +95,7 @@
           align-items: center;
 
           .editinfo_btn {
-            font-family: 'Montserrat';
+            font-family: "Montserrat";
             color: #008f7a;
             font-size: 0.9rem;
             background: none;
@@ -93,6 +108,17 @@
       }
     }
   }
+}
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload:hover {
+  cursor: copy;
+}
+
+.profile_photo:hover {
+  background-color: whitesmoke !important;
 }
 
 // .editinfo_modal_name {

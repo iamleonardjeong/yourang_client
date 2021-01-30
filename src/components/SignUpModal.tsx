@@ -28,7 +28,7 @@ function SignUpModal({
   const signUpButtonHandler = () => {
     const { userId, email, mobile, password } = signUpInfo;
     axios
-      .post('https://localhost:5000/user/signup', {
+      .post('http://yourang-server.link:5000/user/signup', {
         id: userId,
         email: email,
         password: password,
@@ -42,7 +42,7 @@ function SignUpModal({
   const googleSignUpHandler = (res: any) => {
     const { name, googleId, email } = res.profileObj;
     axios
-      .post('https://localhost:5000/user/signup', {
+      .post('http://yourang-server.link:5000/user/signup', {
         id: name,
         email: email,
         password: googleId,
@@ -85,7 +85,7 @@ function SignUpModal({
   };
   const userIdValidCheck = () => {
     axios
-      .post('https://localhost:5000/user/check_id', {
+      .post('http://yourang-server.link:5000/user/check_id', {
         id: signUpInfo.userId,
       })
       .then((res) => {
@@ -100,7 +100,7 @@ function SignUpModal({
   };
   const emailValidCheck = () => {
     axios
-      .post('https://localhost:5000/user/check_email', {
+      .post('http://yourang-server.link:5000/user/check_email', {
         email: signUpInfo.email,
       })
       .then((res) => {

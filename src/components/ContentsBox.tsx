@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { MouseEvent, useEffect, useState } from 'react';
 import '../styles/ContentsBox.scss';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 
@@ -6,32 +6,45 @@ interface ContentsBoxProps {
   imgSrc?: string;
   title: string;
   desc: string;
+  website: string;
+  phone: string;
   onModalState: (title: string) => void;
   imgStatusHandler: () => void;
+  setMyLists: (
+    title: string,
+    desc: string,
+    website: string,
+    phone: string,
+    img?: string
+  ) => void;
+  removeMyLists: (title: string) => void;
+  heartState: boolean;
 }
+
+interface myList {
+  title: string;
+  desc: string;
+  imgSrc: string | undefined;
+  website: string;
+  phone: string;
+}
+
 function ContentsBox({
   imgSrc,
   title,
   desc,
+  website,
+  phone,
   onModalState,
   imgStatusHandler,
+  setMyLists,
+  removeMyLists,
+  heartState,
 }: ContentsBoxProps) {
-  const [selectState, setSelectState] = useState<null | boolean>(null);
-
-  useEffect(() => {
-    if (selectState === true) {
-      console.log('ok true');
-    } else if (selectState === null) {
-      console.log('no false');
-    }
-  }, [selectState]);
+  const [selectState, setSelectState] = useState<boolean>(false);
 
   const selectClick = () => {
-    if (selectState === null) {
-      setSelectState(true);
-    } else if (selectState === true) {
-      setSelectState(null);
-    }
+    setSelectState((prev) => !prev);
   };
 
   return (
@@ -50,10 +63,13 @@ function ContentsBox({
       </div>
       <div className="contents_addMyList_btn_container">
         <button className="contents_addMyList_btn" onClick={selectClick}>
-          {selectState ? (
-            <AiFillHeart size="22" />
+          {heartState ? (
+            <AiFillHeart size="22" onClick={() => removeMyLists(title)} />
           ) : (
-            <AiOutlineHeart size="22" />
+            <AiOutlineHeart
+              size="22"
+              onClick={() => setMyLists(title, desc, website, phone, imgSrc)}
+            />
           )}
         </button>
       </div>

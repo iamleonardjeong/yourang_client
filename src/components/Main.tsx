@@ -147,6 +147,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       data: latLng,
       withCredentials: true,
     });
+
     placeInfo.forEach((content: any) => {
       const marker = new window.google.maps.Marker({
         position: content.detail.result.geometry.location,
@@ -187,15 +188,12 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   const placeTypeHandler = (selectedPlaceType: string) => {
     getLocation(currentLocation, selectedPlaceType);
   };
-  // useEffect(() => {
-  //   const { latLng, places } = getLocation(placeTypeSelect);
-  //   setLatLng(latLng);
-  //   setPlaceInfo(places);
-  // }, [placeTypeSelect]);
+
   //콘텐츠 박스의 img가 onLoad되면 상태변경 -> re-render 유도
   const imgStatusHandler = () => {
     if (imgStatus === false) setImgStatus(true);
   };
+
   // leftContainer MenuTap State
   const onClick = async (e: string) => {
     // 사용자가 장소 카테고리를 바꾸면 거기에 맞는 장소들을 요청 및 응답, 화면을 렌더한다.
@@ -203,6 +201,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     if (e !== 'myListTap') {
       placeTypeHandler(e);
     }
+
     setMenuState({
       ...menuState,
       restaurant: false,

@@ -31,7 +31,7 @@ function SignInModal({
 
   const loginButtonHandler = () => {
     axios
-      .post('https://localhost:5000/user/login', {
+      .post('http://yourang-server.link:5000/user/login', {
         id: loginInfo.userId,
         password: loginInfo.password,
         withCredentials: true,
@@ -71,7 +71,7 @@ function SignInModal({
     const { name, googleId } = res.profileObj;
 
     axios
-      .post('https://localhost:5000/user/login', {
+      .post('http://yourang-server.link:5000/user/login', {
         id: name,
         password: googleId,
         withCredentials: true,

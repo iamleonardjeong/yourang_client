@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ReactDOMServer from 'react-dom/server';
 import { useLocation } from 'react-router-dom';
 import '../styles/Main.scss';
 import classNames from 'classnames';
@@ -6,6 +7,7 @@ import ContentsBox from './ContentsBox';
 import Modal from './Modal';
 import axios from 'axios';
 import MyContentsBox from './MyContentsBox';
+import emailjs from 'emailjs-com';
 
 declare global {
   interface Window {
@@ -23,14 +25,17 @@ interface mainProps {
   navPlaceInfo: any;
   curretPlaceInfoHandler: (curPlaceInfo: any) => void;
 }
-
 // myList localStorage
 // types
 interface myList {
   title: string;
   desc: string;
   imgSrc: string | undefined;
+  website: string | undefined;
+  phone: string | undefined;
 }
+  
+let data: myList[] = JSON.parse(localStorage.getItem('myList') || '[]');
 
 // localStorage
 let data: myList[] = JSON.parse(localStorage.getItem('myList') || '[]');
@@ -50,11 +55,9 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   });
   // const [placeTypeSelect, setPlaceTypeSelect] = useState('');
   // const [placeInput, setPlaceInput] = useState('');
-
   let map: google.maps.Map;
   // let curLocation = location.state.place || currentLocation;
   const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
-
   //Home 콤포넨트에서 입력된 장소 이름이 현재 콤포넌트로 잘 넘어오는지 테스트 하기 위함
   const [menuState, setMenuState] = useState<menuState>({
     restaurant: false,
@@ -62,16 +65,13 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     cafe: false,
     myListTap: false,
   });
-
   // const [modalState, setModalState] = useState({
   //   isOn: false,
   // });
-
   // interface myListState {
   //   count: number;
   //   data: number;
   // }
-
   // 좌표를 보내, 주변 정보, 사진들 받아 {좌표, 장소들정보 배열}을 리턴하는 영상
   const getLocation = async (place: any, placeType: string) => {
     let latLng;
@@ -102,9 +102,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
                 placeIds.push(place.place_id);
               }
             });
-
             console.log('placeIds', placeIds);
-
             await axios
               .post('http://yourang-server.link:5000/google/places_photo', {
                 place_ids: placeIds,
@@ -113,14 +111,12 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
               .then((res) => {
                 places = res.data;
                 console.log('타입 누르고 palces', places);
-
                 setPlaceInfo(places);
                 setLatLng(latLng);
               });
           });
       });
   };
-
   // google map
   const renderMap = () => {
     //지도 만들고 마커 찍는 로직
@@ -143,7 +139,6 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
         position: google.maps.ControlPosition.RIGHT_CENTER,
       },
     };
-
     const map = new window.google.maps.Map(
       document.getElementById('map') as HTMLElement,
       mapOptions
@@ -179,7 +174,6 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   useEffect(() => {
     renderMap();
   }, [latLng]);
-
   // 메인  콤포넌트  상단 네비  바에서 검색하면, MainContainer에서 응답을 받고 메인콤포넌트 장소상태를 변경해주는 로직.
   useEffect(() => {
     if (navPlaceInfo.latLng !== undefined) {
@@ -198,18 +192,15 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   const placeTypeHandler = (selectedPlaceType: string) => {
     getLocation(currentLocation, selectedPlaceType);
   };
-
   // useEffect(() => {
   //   const { latLng, places } = getLocation(placeTypeSelect);
   //   setLatLng(latLng);
   //   setPlaceInfo(places);
   // }, [placeTypeSelect]);
-
   //콘텐츠 박스의 img가 onLoad되면 상태변경 -> re-render 유도
   const imgStatusHandler = () => {
     if (imgStatus === false) setImgStatus(true);
   };
-
   // leftContainer MenuTap State
   const onClick = async (e: string) => {
     // 사용자가 장소 카테고리를 바꾸면 거기에 맞는 장소들을 요청 및 응답, 화면을 렌더한다.
@@ -237,6 +228,76 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   //컨텐츠 상세 모달 off
   const closeModalState = () => {
     setModalState(!modalState);
+  };
+  // myList append
+  const setMyLists = (
+    title: string,
+    desc: string,
+    website: string,
+    phone: string,
+    img?: string
+  ): void => {
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].title === title) {
+        return;
+      }
+    }
+    data.push({
+      title: title,
+      desc: desc,
+      imgSrc: img || 'No Images',
+      website: website || '제공된 웹사이트가 없습니다.',
+      phone: phone || '제공된 전화번호가 없습니다.',
+    });
+
+    setMyList({
+      ...myList,
+      count: myList.count + 1,
+    });
+    localStorage.setItem('myList', JSON.stringify(data));
+    console.log(data);
+  };
+  // myList remove
+  const removeMyLists = (title: string): any => {
+    data = data.filter((el) => title !== el.title);
+    setMyList({
+      ...myList,
+      count: myList.count + 1,
+    });
+    localStorage.setItem('myList', JSON.stringify(data));
+  };
+
+  const htmlString = ReactDOMServer.renderToStaticMarkup(
+    <div>
+      {data.map((place) => {
+        return (
+          <div>
+            <img src={place.imgSrc} alt="" />
+            <h2>장소 이름: {place.title}</h2>
+            <h3>웹사이트: {place.website}</h3>
+            <h3>전화번호: {place.phone}</h3>
+            <h3>평점: {place.desc}</h3>
+          </div>
+        );
+      })}
+    </div>
+  );
+
+  const toEmail = 'iamleonardjeong@gmail.com';
+
+  const sendEmail = () => {
+    emailjs.send(
+      'service_9v5cs7d',
+      'template_w8ckiwq',
+      {
+        to_email: toEmail,
+        to_name: '정훈',
+        message: htmlString,
+      },
+      'user_viAPjBua2EXqACiVlL88n'
+    );
+
+    console.log('email sent');
   };
 
   // myList append
@@ -342,6 +403,8 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
                     imgSrc={content.photoUrl}
                     title={content.detail.result.name}
                     desc={content.detail.result.rating}
+                    website={content.detail.result.website}
+                    phone={content.detail.result.formatted_phone_number}
                     onModalState={onModalState}
                     imgStatusHandler={imgStatusHandler}
                     setMyLists={setMyLists}
@@ -354,6 +417,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
           <button
             id="send_Email_Btn"
             className={classNames({ myListTap: menuState.myListTap })}
+            onClick={sendEmail}
           >
             My List 내 이메일로 전송
           </button>

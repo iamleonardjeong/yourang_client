@@ -41,7 +41,7 @@ function Navigation({
   return (
     <header>
       <div id="logo">
-        <Link to="/main">YouRang</Link>
+        <Link to={{ pathname: '/main', state: currentPlaceInfo }}>YouRang</Link>
       </div>
       <div id="navSearch">
         <input

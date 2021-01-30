@@ -63,6 +63,8 @@ function SignInModal({
     if (!userId || !password) {
       setIsValidFail(!isValidFail);
       setErrorMessage(error1);
+    } else if (userId && password) {
+      loginButtonHandler();
     }
   };
 
@@ -125,7 +127,7 @@ function SignInModal({
               className="signIn_modal_container_wrap_body_loginBtn"
               onClick={(e: React.MouseEvent<HTMLElement>) => {
                 validationCheck(e);
-                loginButtonHandler();
+                // loginButtonHandler();
               }}
             >
               로그인

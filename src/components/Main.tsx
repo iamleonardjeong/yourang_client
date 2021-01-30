@@ -133,6 +133,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       document.getElementById("map") as HTMLElement,
       mapOptions
     );
+
     axios.post("http://localhost:5001/google/map", {
       data: latLng,
       withCredentials: true,

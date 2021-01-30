@@ -117,19 +117,23 @@ function SignUpModal({
     // Sign-up버튼을 눌렀을 때, signUpInfo를 바탕으로 진행하는 유효성 검사.
     let isValid = true;
     const { userId, email, mobile, password, confirmPassword } = signUpInfo;
+
     const error1 = "입력정보를 모두 입력해 주세요";
     const error2 = "아이디 혹은 비밀번가 맞지않습니다. 다시 입력해 주세요.";
     const error3 = "비밀번호가 일치하지 않습니다";
+
     if (password !== confirmPassword) {
       isValid = false;
       setIsValidFail(!isValidFail);
       setErrorMessage(error3);
     }
+    
     if (!userId || !email || !mobile || !password || !confirmPassword) {
       isValid = false;
       setIsValidFail(!isValidFail);
       setErrorMessage(error1);
     }
+    
     return isValid;
     //유효성 검사에 문제가 없고, 모든 정보가 입력이 됐을 때, 서버에 사인업 요청하는 로직을 보내야 함.
   };

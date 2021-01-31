@@ -73,7 +73,7 @@
     display: flex;
     flex-wrap: wrap;
     align-content: flex-start;
-    padding: 10px 10px;
+    // padding: 10px 10px;
     height: calc(100% - 52px);
     overflow: scroll;
 
@@ -84,12 +84,12 @@
       flex-wrap: wrap;
       height: calc(100% - 52px);
       overflow: scroll;
-      padding-bottom: 56px;
     }
 
     #myListContents {
       display: none;
       overflow: scroll;
+      padding-bottom: 56px;
 
       &.myListContents {
         display: block;
@@ -102,6 +102,81 @@
       }
     }
 
+    .inputState {
+      display: none;
+      bottom: 0;
+    }
+    #send_Email_Container {
+      display: none;
+      font-family: 'Montserrat';
+      width: 360px;
+      font-size: 0.9rem;
+      color: white;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      position: absolute;
+      left: 37px;
+      bottom: 10px;
+
+      #send_Email_Container_titleBar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: white;
+        border-radius: 8px;
+
+        #send_Email_Container_titleBar_title_closeBtn {
+          flex: 1;
+          font-size: 2rem;
+          font-weight: 300;
+          text-align: center;
+          color: #008f7a;
+          cursor: pointer;
+          transform: rotate(45deg);
+        }
+        #send_Email_Container_titleBar_title {
+          flex: 8;
+          margin: 13px;
+
+          input {
+            font-family: 'Montserrat';
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 0.9rem;
+          }
+        }
+
+        #send_Email_Container_titleBar_empty {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          flex: 1;
+          color: #008f7a;
+          outline: yellow;
+          svg {
+            // background-color: #008f7a;
+            path {
+              stroke: #008f7a;
+            }
+          }
+        }
+      }
+
+      &.myListTap {
+        display: inline-block;
+        box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
+          0 3px 6px rgba(0, 0, 0, 0.23);
+        bottom: 66px;
+        transition: 1s;
+      }
+
+      #send_Email_input {
+        width: 100%;
+      }
+    }
     #send_Email_Btn {
       display: none;
       font-family: 'Montserrat';

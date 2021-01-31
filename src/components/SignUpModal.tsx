@@ -121,7 +121,7 @@ function SignUpModal({
     const error1 = '입력정보를 모두 입력해 주세요';
     const error2 = '아이디 혹은 비밀번가 맞지않습니다. 다시 입력해 주세요.';
     const error3 = '비밀번호가 일치하지 않습니다';
-        
+
     if (password !== confirmPassword) {
       isValid = false;
       setIsValidFail(!isValidFail);

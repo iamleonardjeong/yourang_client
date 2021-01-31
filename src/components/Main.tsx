@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
-import ReactDOMServer from "react-dom/server";
-import { useLocation } from "react-router-dom";
-import "../styles/Main.scss";
-import classNames from "classnames";
-import ContentsBox from "./ContentsBox";
-import Modal from "./Modal";
-import axios from "axios";
-import MyContentsBox from "./MyContentsBox";
-import emailjs from "emailjs-com";
+import React, { useEffect, useState } from 'react';
+import ReactDOMServer from 'react-dom/server';
+import { useLocation } from 'react-router-dom';
+import '../styles/Main.scss';
+import classNames from 'classnames';
+import ContentsBox from './ContentsBox';
+import Modal from './Modal';
+import axios from 'axios';
+import MyContentsBox from './MyContentsBox';
+import emailjs from 'emailjs-com';
+
+import { GrSend } from 'react-icons/gr';
 declare global {
   interface Window {
     google: any;
@@ -35,7 +37,8 @@ interface myList {
 }
 
 // localStorage
-let data: myList[] = JSON.parse(localStorage.getItem("myList") || "[]");
+let data: myList[] = JSON.parse(localStorage.getItem('myList') || '[]');
+
 // main component
 function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   const location = useLocation<any>();
@@ -43,12 +46,13 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   const [placeInfo, setPlaceInfo] = useState<any>([]);
   const [latLng, setLatLng] = useState<any>({});
   const [imgStatus, setImgStatus] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState("");
+  const [currentLocation, setCurrentLocation] = useState('');
   const [modalInfo, setModalInfo] = useState({});
   const [myList, setMyList] = useState<any>({
     count: 0,
     data: [],
   });
+  const [emailInput, setEmailInput] = useState(true);
   // const [placeTypeSelect, setPlaceTypeSelect] = useState('');
   // const [placeInput, setPlaceInput] = useState('');
   let map: google.maps.Map;
@@ -81,32 +85,32 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
         return latLng;
       })
       .then(async (latLng) => {
-        console.log("좌표받기 성공", latLng);
+        console.log('좌표받기 성공', latLng);
         // 추천장소 카테고리 선택에 따라 서버로 보낼 장소 카테고리를 정하는 로직
         await axios
-          .post("http://yourang-server.link:5000/google/map", {
+          .post('http://yourang-server.link:5000/google/map', {
             data: latLng,
             withCredentials: true,
             placeType: placeType,
           })
           .then(async (res) => {
             places = res.data.slice(0, 1); //응답받은 장소들
-            console.log("places", places);
+            console.log('places', places);
             const placeIds: any = [];
             places.forEach((place: any) => {
               if (place.photos !== undefined) {
                 placeIds.push(place.place_id);
               }
             });
-            console.log("placeIds", placeIds);
+            console.log('placeIds', placeIds);
             await axios
-              .post("http://yourang-server.link:5000/google/places_photo", {
+              .post('http://yourang-server.link:5000/google/places_photo', {
                 place_ids: placeIds,
                 withCredentials: true,
               })
               .then((res) => {
                 places = res.data;
-                console.log("타입 누르고 palces", places);
+                console.log('타입 누르고 palces', places);
                 setPlaceInfo(places);
                 setLatLng(latLng);
               });
@@ -136,10 +140,10 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       },
     };
     const map = new window.google.maps.Map(
-      document.getElementById("map") as HTMLElement,
+      document.getElementById('map') as HTMLElement,
       mapOptions
     );
-    axios.post("http://yourang-server.link:5000/google/map", {
+    axios.post('http://yourang-server.link:5000/google/map', {
       data: latLng,
       withCredentials: true,
     });
@@ -196,7 +200,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   const onClick = async (e: string) => {
     // 사용자가 장소 카테고리를 바꾸면 거기에 맞는 장소들을 요청 및 응답, 화면을 렌더한다.
     // console.log(e);
-    if (e !== "myListTap") {
+    if (e !== 'myListTap') {
       placeTypeHandler(e);
     }
     setMenuState({
@@ -237,16 +241,16 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     data.push({
       title: title,
       desc: desc,
-      imgSrc: img || "No Images",
-      website: website || "no website",
-      phone: phone || "no phone number",
-      address: address || "no address",
+      imgSrc: img || 'No Images',
+      website: website || 'no website',
+      phone: phone || 'no phone number',
+      address: address || 'no address',
     });
     setMyList({
       ...myList,
       count: myList.count + 1,
     });
-    localStorage.setItem("myList", JSON.stringify(data));
+    localStorage.setItem('myList', JSON.stringify(data));
     console.log(data);
   };
   // myList remove
@@ -256,23 +260,23 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       ...myList,
       count: myList.count + 1,
     });
-    localStorage.setItem("myList", JSON.stringify(data));
+    localStorage.setItem('myList', JSON.stringify(data));
   };
 
   // 메일 보내는 곳 인라인 Css스타일을 주기 위한 Css 스타일링 타입지정.
   const firstDiv = {
-    fontSize: "20",
-    fontFamily: "Georgia",
+    fontSize: '20',
+    fontFamily: 'Georgia',
   } as React.CSSProperties;
 
   const emailContentStyle = {
-    fontSize: "25px",
-    textDecoration: "none",
+    fontSize: '25px',
+    textDecoration: 'none',
   } as React.CSSProperties;
 
   const widthEighty = {
-    margin: "0px",
-    width: "80%",
+    margin: '0px',
+    width: '80%',
   } as React.CSSProperties;
 
   const htmlString = ReactDOMServer.renderToStaticMarkup(
@@ -301,35 +305,40 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     </div>
   );
 
-  const toEmail = "srparkgogo@gmail.com";
+  const toEmail = 'srparkgogo@gmail.com';
 
   const sendEmail = () => {
     console.log(data);
     emailjs.send(
-      "service_9v5cs7d",
-      "template_xcmjbtw",
+      'service_9v5cs7d',
+      'template_xcmjbtw',
       {
         to_email: toEmail,
-        to_name: "박상록",
+        to_name: '박상록',
         message: htmlString,
       },
-      "user_viAPjBua2EXqACiVlL88n"
+      'user_viAPjBua2EXqACiVlL88n'
     );
-    console.log("email sent");
+    console.log('email sent');
   };
+
+  const emailInputHandler = () => {
+    setEmailInput((prev) => !prev);
+  };
+
   return (
     <div id="mainContainer">
       <div id="leftContainer">
         <ul id="leftMenu">
           <li
-            onClick={() => onClick("restaurant")}
+            onClick={() => onClick('restaurant')}
             value="restaurant"
             className={classNames({ restaurant: menuState.restaurant })}
           >
             맛집
           </li>
           <li
-            onClick={() => onClick("tourist_attraction")}
+            onClick={() => onClick('tourist_attraction')}
             value="tourist_attraction"
             className={classNames({
               tourist_attraction: menuState.tourist_attraction,
@@ -338,14 +347,14 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
             플레이스
           </li>
           <li
-            onClick={() => onClick("cafe")}
+            onClick={() => onClick('cafe')}
             value="cafe"
             className={classNames({ cafe: menuState.cafe })}
           >
             카페
           </li>
           <li
-            onClick={() => onClick("myListTap")}
+            onClick={() => onClick('myListTap')}
             value="myListTap"
             className={classNames({ myListTap: menuState.myListTap })}
           >
@@ -397,11 +406,46 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
                   />
                 );
               })
-            : ""}
+            : ''}
+          <div
+            className={classNames({
+              inputState: emailInput,
+            })}
+          >
+            <div
+              id="send_Email_Container"
+              className={classNames({
+                myListTap: menuState.myListTap,
+              })}
+            >
+              <div id="send_Email_Container_titleBar">
+                <div
+                  id="send_Email_Container_titleBar_title_closeBtn"
+                  onClick={emailInputHandler}
+                >
+                  +
+                </div>
+                <div id="send_Email_Container_titleBar_title">
+                  <input
+                    id="send_Email_input"
+                    placeholder="이메일 주소를 입력해주세요"
+                  />
+                </div>
+                <div id="send_Email_Container_titleBar_empty">
+                  <GrSend
+                    size="18"
+                    // color="#008f7a"
+                    style={{ color: '#008f7a' }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
           <button
             id="send_Email_Btn"
             className={classNames({ myListTap: menuState.myListTap })}
-            onClick={sendEmail}
+            onClick={emailInputHandler}
+            // onClick={sendEmail}
           >
             My List 내 이메일로 전송
           </button>

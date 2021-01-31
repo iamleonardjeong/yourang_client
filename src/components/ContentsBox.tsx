@@ -1,6 +1,6 @@
-import React, { MouseEvent, useEffect, useState } from "react";
-import "../styles/ContentsBox.scss";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import React, { MouseEvent, useEffect, useState } from 'react';
+import '../styles/ContentsBox.scss';
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 interface ContentsBoxProps {
   imgSrc?: string;
   title: string;
@@ -58,7 +58,7 @@ function ContentsBox({
       </div>
       <div className="contentsDisc" onClick={() => onModalState(title)}>
         <p className="contents_title">{title}</p>
-        <div className="contents_stars">{desc || "no"} Stars</div>
+        <div className="contents_stars">{desc || 'no'} Stars</div>
       </div>
       <div className="contents_addMyList_btn_container">
         <button className="contents_addMyList_btn" onClick={selectClick}>

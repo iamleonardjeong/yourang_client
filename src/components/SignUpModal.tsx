@@ -6,11 +6,13 @@ import googleIcon from '../image/google_icon.png';
 import naverIcon from '../image/naver_icon.png';
 import ErrorMessage from './ErrorMessage';
 import { userInfo } from 'os';
+
 interface SignUpModalProps {
   signInModalHandler: (e: React.MouseEvent<HTMLElement>) => void;
   signUpModalHandler: (e: React.MouseEvent<HTMLElement>) => void;
   modalSwitchHandler: () => void;
 }
+
 function SignUpModal({
   signInModalHandler,
   signUpModalHandler,
@@ -25,20 +27,51 @@ function SignUpModal({
   });
   const [isValidFail, setIsValidFail] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isEveryInfoCorrect, setIsEveryInfoCorrect] = useState({
+    userIdCheck: false,
+    emailCheck: false,
+    passwordCheck: false,
+    isEverythingFilled: false,
+  });
+
   const signUpButtonHandler = () => {
+    const {
+      userIdCheck,
+      emailCheck,
+      passwordCheck,
+      isEverythingFilled,
+    } = isEveryInfoCorrect;
+
+    if (!userIdCheck) {
+      setIsValidFail(!isValidFail);
+      setErrorMessage('아이디 중복검사를 실행해 주세요!');
+    } else if (!emailCheck) {
+      setIsValidFail(!isValidFail);
+      setErrorMessage('이메일 중복검사를 실행해주세요!');
+    }
+
     const { userId, email, mobile, password } = signUpInfo;
-    axios
-      .post('http://yourang-server.link:5000/user/signup', {
-        id: userId,
-        email: email,
-        password: password,
-        phone: mobile,
-        withCredentials: true,
-      })
-      .then((res) => {
-        console.log('회원가입 응답', res);
-      });
+
+    if (isEverythingFilled) {
+      axios
+        .post('http://yourang-server.link:5000/user/signup', {
+          id: userId,
+          email: email,
+          password: password,
+          phone: mobile,
+          withCredentials: true,
+        })
+        .then((res) => {
+          if (res.data.message === 'Signup Success') {
+            setIsValidFail(!isValidFail);
+            setErrorMessage('회원가입에 성공하였습니다!');
+
+            // modalSwitchHandler();
+          }
+        });
+    }
   };
+
   const googleSignUpHandler = (res: any) => {
     const { name, googleId, email } = res.profileObj;
     axios
@@ -50,14 +83,17 @@ function SignUpModal({
         withCredentials: true,
       })
       .then((res) => {
-        console.log('회원가입 응답', res);
+        if (res.data === 'Signup Success') {
+        }
       });
   };
+
   const signUpInfoHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     // input창에 입력한 내용 state로 저장하는 로직
     const { name, value } = e.currentTarget;
     setSignUpInfo({ ...signUpInfo, [name]: value });
   };
+
   const mobileInputHander = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // mobile전용 유효성 검사 및 입력제한 로직(출력 예시: 000-0000-0000 숫자로만 입력됨. "-"는 자동입력 됨)
     const { name, value, maxLength } = e.currentTarget;
@@ -72,6 +108,7 @@ function SignUpModal({
         });
       }
     }
+
     if (e.key === 'Backspace' && value.length === 9) {
       setSignUpInfo({ ...signUpInfo, [name]: value.substring(0, 8) });
     } else if (e.key === 'Backspace' && value.length === 4) {
@@ -83,6 +120,7 @@ function SignUpModal({
       });
     }
   };
+
   const userIdValidCheck = () => {
     axios
       .post('http://yourang-server.link:5000/user/check_id', {
@@ -90,14 +128,17 @@ function SignUpModal({
       })
       .then((res) => {
         if (res.data.result) {
+          setIsEveryInfoCorrect({ ...isEveryInfoCorrect, userIdCheck: false });
           setIsValidFail(!isValidFail);
           setErrorMessage('중복되는 아이디가 있습니다.');
         } else {
+          setIsEveryInfoCorrect({ ...isEveryInfoCorrect, userIdCheck: true });
           setIsValidFail(!isValidFail);
           setErrorMessage('사용 가능한 아이디 입니다.');
         }
       });
   };
+
   const emailValidCheck = () => {
     axios
       .post('http://yourang-server.link:5000/user/check_email', {
@@ -105,38 +146,59 @@ function SignUpModal({
       })
       .then((res) => {
         if (res.data.result) {
+          setIsEveryInfoCorrect({ ...isEveryInfoCorrect, emailCheck: false });
           setIsValidFail(!isValidFail);
           setErrorMessage('중복되는 이메일이 있습니다.');
         } else {
+          setIsEveryInfoCorrect({ ...isEveryInfoCorrect, emailCheck: true });
           setIsValidFail(!isValidFail);
           setErrorMessage('사용 가능한 이메일 입니다.');
         }
       });
   };
+
   const validationCheck = (e: React.MouseEvent<HTMLElement>) => {
     // Sign-up버튼을 눌렀을 때, signUpInfo를 바탕으로 진행하는 유효성 검사.
+    setIsValidFail(!isValidFail);
     let isValid = true;
+
     const { userId, email, mobile, password, confirmPassword } = signUpInfo;
-
-    const error1 = '입력정보를 모두 입력해 주세요';
-    const error2 = '아이디 혹은 비밀번가 맞지않습니다. 다시 입력해 주세요.';
-    const error3 = '비밀번호가 일치하지 않습니다';
-
+    const {
+      userIdCheck,
+      emailCheck,
+      passwordCheck,
+      isEverythingFilled,
+    } = isEveryInfoCorrect;
     if (password !== confirmPassword) {
       isValid = false;
       setIsValidFail(!isValidFail);
-      setErrorMessage(error3);
+      setErrorMessage('비밀번호가 일치하지 않습니다');
+      setIsEveryInfoCorrect({ ...isEveryInfoCorrect, passwordCheck: false });
+    } else if (password === confirmPassword) {
+      setIsEveryInfoCorrect({ ...isEveryInfoCorrect, passwordCheck: true });
     }
 
-    if (!userId || !email || !mobile || !password || !confirmPassword) {
+    if (!userId || !email || !password || !confirmPassword) {
       isValid = false;
+      setIsEveryInfoCorrect({
+        ...isEveryInfoCorrect,
+        isEverythingFilled: false,
+      });
       setIsValidFail(!isValidFail);
-      setErrorMessage(error1);
+      setErrorMessage('입력정보를 모두 입력해 주세요');
+    } else if (userIdCheck && emailCheck && passwordCheck) {
+      setIsEveryInfoCorrect({
+        ...isEveryInfoCorrect,
+        isEverythingFilled: true,
+      });
     }
 
-    return isValid;
+    if (isValid) {
+      signUpButtonHandler();
+    }
     //유효성 검사에 문제가 없고, 모든 정보가 입력이 됐을 때, 서버에 사인업 요청하는 로직을 보내야 함.
   };
+
   // 아이디 중복체크 함수 만들어야 함
   // 이메일 중복체크 함수 만들어야 함
   return (

@@ -6,6 +6,7 @@ import SignInModal from '../components/SignInModal';
 import SignUpModal from '../components/SignUpModal';
 import backgroundVideo from '../video/yourang-home_video.mp4'; // background video
 import axios from 'axios';
+import { getLocation } from '../helper/getLocation';
 
 declare const google: any;
 let map: google.maps.Map;
@@ -25,68 +26,71 @@ function Home() {
     setCurrentLocation(e.currentTarget.value);
   };
 
-  const getLocation = async (place: any = '프라하') => {
-    let latLng;
-    let placeInfo;
-    setCurrentLocation(place);
+  // const getLocation = async (place: any = '프라하') => {
+  //   let latLng;
+  //   let placeInfo;
+  //   setCurrentLocation(place);
 
-    await axios
-      .get(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${place}&key=${apiKey}`
-      )
-      .then((response) => {
-        latLng = response.data.results[0].geometry.location;
-        return latLng;
-      })
-      .then((latLng) => {
-        // 추천장소 카테고리 선택에 따라 서버로 보낼 장소 카테고리를 정하는 로직
-        axios
-          .post('http://yourang-server.link:5000/google/map', {
-            data: latLng,
-            withCredentials: true,
-            placeType: 'tourist_attraction',
-          })
-          .then(async (res) => {
-            placeInfo = res.data.slice(0, 3); //응답받은 장소들
+  //   await axios
+  //     .get(
+  //       `https://maps.googleapis.com/maps/api/geocode/json?address=${place}&key=${apiKey}`
+  //     )
+  //     .then((response) => {
+  //       latLng = response.data.results[0].geometry.location;
+  //       return latLng;
+  //     })
+  //     .then((latLng) => {
+  //       // 추천장소 카테고리 선택에 따라 서버로 보낼 장소 카테고리를 정하는 로직
+  //       axios
+  //         .post('http://yourang-server.link:5000/google/map', {
+  //           data: latLng,
+  //           withCredentials: true,
+  //           placeType: 'tourist_attraction',
+  //         })
+  //         .then(async (res) => {
+  //           placeInfo = res.data.slice(0, 3); //응답받은 장소들
 
-            const placeIds: any = [];
-            placeInfo.forEach((place: any) => {
-              if (place.photos !== undefined) {
-                placeIds.push(place.place_id);
-              }
-            });
+  //           const placeIds: any = [];
+  //           placeInfo.forEach((place: any) => {
+  //             if (place.photos !== undefined) {
+  //               placeIds.push(place.place_id);
+  //             }
+  //           });
 
-            await axios
-              .post('http://yourang-server.link:5000/google/places_photo', {
-                place_ids: placeIds,
-                withCredentials: true,
-              })
-              .then(async (res) => {
-                placeInfo = await res.data;
-                // 다음 페이지로 이동
-                console.log(latLng, placeInfo, currentLocation);
-                history.push('/main', { latLng, placeInfo, currentLocation });
-              });
-          });
-      });
-  };
+  //           await axios
+  //             .post('http://yourang-server.link:5000/google/places_photo', {
+  //               place_ids: placeIds,
+  //               withCredentials: true,
+  //             })
+  //             .then(async (res) => {
+  //               placeInfo = await res.data;
+  //               // 다음 페이지로 이동
+  //               console.log(latLng, placeInfo, currentLocation);
+  //               history.push('/main', { latLng, placeInfo, currentLocation });
+  //             });
+  //         });
+  //     });
+  // };
 
   // onEnterCount가 0일 때만 onEnterDownHander 실행. 유저가 엔터를 두, 세번 눌렀을 때 반응하지 않게 하기 위함.
   let onEnterCount = 0;
-  const onEnterDownHander = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const onEnterDownHander = async (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
     if (e.key === 'Enter') {
       console.log('엔터가 몇번 눌렸나?', onEnterCount);
       if (onEnterCount === 0) {
         onEnterCount++;
-        getLocation(currentLocation);
+        const { latLng, placeInfo } = await getLocation(currentLocation);
+        history.push('/main', { latLng, placeInfo, currentLocation });
       }
-      // history.push('/main', currentLocation);
     }
   };
+
   // push main page - 체험하기 버튼
-  const onExplore = () => {
-    // history.push('/main');
-    getLocation();
+  const onExplore = async () => {
+    const { latLng, placeInfo, currentLocation } = await getLocation();
+    history.push('/main', { latLng, placeInfo, currentLocation });
   };
 
   // logIn modal pop
@@ -111,13 +115,16 @@ function Home() {
     }
   };
 
+  // 회원입 성공시, 로그인 모달로 자동 전환
   const modalSwitchHandler = () => {
     setIsSignUpOpen(!isSignUpOpen);
     setIsSignInOpen(!isSignInOpen);
   };
 
-  const loginSuccessHandler = () => {
-    getLocation('프라하');
+  // 로그인 성공시, Main 콤포넌트로 화며 전환. 지도에 렌더되는 데이터들은 getLocation 함수 default 값인 '프라하'.
+  const loginSuccessHandler = async () => {
+    const { latLng, placeInfo, currentLocation } = await getLocation();
+    history.push('/main', { latLng, placeInfo, currentLocation });
   };
 
   return (

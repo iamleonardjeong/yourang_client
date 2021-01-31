@@ -1,6 +1,6 @@
-import axios from "axios";
-import React, { useEffect } from "react";
-import "../styles/Modal.scss";
+import axios from 'axios';
+import React, { useEffect } from 'react';
+import '../styles/Modal.scss';
 
 interface ModalProps {
   closeModalState: (e: React.MouseEvent<HTMLElement>) => void;
@@ -9,7 +9,7 @@ interface ModalProps {
 const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
 
 function Modal({ closeModalState, place }: ModalProps) {
-  console.log("모달안에서 place가 넘어오는지 확인", place);
+  console.log('모달안에서 place가 넘어오는지 확인', place);
   const {
     photoUrl,
     detail: {
@@ -27,34 +27,30 @@ function Modal({ closeModalState, place }: ModalProps) {
   return (
     <div id="modalContainer">
       <div id="contentsModal">
-        <div id="contentsHeader">
-          <div id="modal_title">
-            <h1>Please Travel</h1>
-            <button id="modalClose" onClick={closeModalState}>
-              Close
-            </button>
+        <div id="contents_wrap">
+          <div id="contentsHeader">
+            <div id="modal_title_wrap">
+              <div id="modal_title">{name}</div>
+              <button id="modalClose" onClick={closeModalState}>
+                Close
+              </button>
+            </div>
           </div>
-          <div id="modal_form">
-            <img id="ifif" src={photoUrl} alt="" />
-            <div id="modal_info">
-              <div id="modal_name_rating">
-                <div id="modal_name">{name}</div>
-                <div id="modal_rating"> {rating} Stars</div>
+          <div id="contentsBody">
+            <div
+              id="contentsBody_img"
+              style={{ backgroundImage: `url(${photoUrl})` }}
+            ></div>
+            <div id="contentsBody_contents">
+              <h3 id="contentsBody_contents_title">플레이스 평점</h3>
+              <div id="modal_rating"> {rating || 'No'} Stars</div>
+              <h3 id="contentsBody_contents_title">주소</h3>
+              <div id="modal_address">
+                {formatted_address || '주소 정보가 없습니다.'}
               </div>
-              <div id="modal_right">
-                <div id="1">
-                  <div>전화번호</div>
-                  <div id="modal_number">{formatted_phone_number}</div>
-                </div>
-                <div id="2">
-                  <div>주소</div>
-                  <div id="modal_address">{formatted_address}</div>
-                </div>
-                <div id="3">
-                  <div>좌표</div>
-                  <div>{lat}</div>
-                  <div>{lng}</div>
-                </div>
+              <h3 id="contentsBody_contents_title">전화번호</h3>
+              <div id="modal_number">
+                {formatted_phone_number || '전화번호 정보가 없습니다.'}
               </div>
             </div>
           </div>

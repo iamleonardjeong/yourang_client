@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Mypage from '../components/Mypage';
 import Main from '../components/Main';
@@ -6,6 +6,7 @@ import Navigation from '../components/Navigation';
 import { getLocation } from '../helper/getLocation';
 import SignInModal from '../components/SignInModal';
 import SignUpModal from '../components/SignUpModal';
+import axios from 'axios';
 
 const MainContainer = () => {
   // fake login state
@@ -16,6 +17,28 @@ const MainContainer = () => {
   // 기존 state
   const [navPlaceInfo, setNavPlaceInfo] = useState({});
   const [currentPlaceInfo, setCurrentPlaceInfo] = useState({});
+
+  useEffect(() => {
+    const authorization = localStorage.getItem('authorization');
+    if (authorization) {
+      axios({
+        method: 'post',
+        url: 'http://yourang-server.link:5000/user/auth',
+        headers: {
+          authorization: authorization,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          if (res.status === 200) {
+            setIsLoggedIn(true);
+          }
+        })
+        .catch((err) => setIsLoggedIn(false));
+    } else {
+      setIsLoggedIn(false);
+    }
+  });
 
   const curretPlaceInfoHandler = (curPlaceInfo: any) => {
     setCurrentPlaceInfo(curPlaceInfo);
@@ -102,8 +125,8 @@ const MainContainer = () => {
           signInModalHandler={signInModalHandler}
         />
         <Route
-          path="/main"
           exact
+          path="/main"
           render={() => (
             <Main
               navPlaceInfo={navPlaceInfo}
@@ -112,7 +135,7 @@ const MainContainer = () => {
             />
           )}
         />
-        <Route path="/main/profile" exact component={Mypage} />
+        <Route exact path="/main/profile" render={() => <Mypage />} />
       </Router>
     </>
   );

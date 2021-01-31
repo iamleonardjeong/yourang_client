@@ -65,6 +65,10 @@ function Mypage() {
     console.log("adsadsasddas", Photo);
   });
 
+  const addDefaultSrc = (e: any) => {
+    e.target.src = Photo;
+  };
+
   return (
     <div id="mypage">
       {onModal && <EditInfo editOnModal={editOnModal} userinfo={userinfo} photoChangeChecker={photoChangeChecker} />}

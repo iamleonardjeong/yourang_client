@@ -111,6 +111,7 @@ function SignInModal({
             <input
               type="text"
               name="userId"
+              value={loginInfo.userId}
               className="signIn_modal_container_wrap_body_idInput"
               placeholder="아이디"
               onChange={loginInfoHandler}
@@ -118,6 +119,7 @@ function SignInModal({
             <input
               type="password"
               name="password"
+              value={loginInfo.password}
               className="signIn_modal_container_wrap_body_pwInput"
               placeholder="비밀번호"
               onChange={loginInfoHandler}

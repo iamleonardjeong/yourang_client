@@ -1,130 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import "../styles/Mypage.scss";
-import PlanList from "./PlanList";
-import EditInfo from "./EditInfo";
-import Photo from "../image/photo.png";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import '../styles/Mypage.scss';
+import PlanList from './PlanList';
+import EditInfo from './EditInfo';
+import Photo from '../image/photo.png';
+import axios from 'axios';
 
 function Mypage() {
   // fake data - user info
   const location = useLocation();
 
-  console.log("마이페이지로 넘어온 정보", location.state);
+  console.log('마이페이지로 넘어온 정보', location.state);
   const [userinfo, setUserinfo] = useState({
     // name: "",
-    userid: "",
-    email: "",
-    phone: "",
-    created: "",
-    photo: "",
+    userid: '',
+    email: '',
+    phone: '',
+    created: '',
+    photo: '',
   });
-
-  // fake data - plan list
-  const [planList, setPlanList] = useState([
-    {
-      id: 0,
-      planName: "부산 여행",
-      inst: "부산은 역시 돼지국밥",
-      created: "20.11.12",
-    },
-    {
-      id: 1,
-      planName: "서울 여행",
-      inst: "서울은 역시 강남",
-      created: "20.11.12",
-    },
-    {
-      id: 2,
-      planName: "강원도 여행",
-      inst: "서울은 역시 감자",
-      created: "20.11.12",
-    },
-    {
-      id: 3,
-      planName: "제주도 여행",
-      inst: "제주도은 역시 한라봉",
-      created: "20.11.12",
-    },
-    {
-      id: 4,
-      planName: "경주",
-      inst: "경주은 역시 불국사",
-      created: "20.11.12",
-    },
-    {
-      id: 5,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
-    },
-    {
-      id: 6,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
-    },
-    {
-      id: 7,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
-    },
-    {
-      id: 8,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
-    },
-    {
-      id: 9,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
-    },
-    {
-      id: 10,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
-    },
-    {
-      id: 11,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
-    },
-    {
-      id: 12,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
-    },
-    {
-      id: 13,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
-    },
-    {
-      id: 14,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
-    },
-    {
-      id: 15,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
-    },
-    {
-      id: 16,
-      planName: "전주",
-      inst: "전주은 역시 비빔밥",
-      created: "20.11.12",
-    },
-  ]);
 
   // fake data - user info contents
   const { userid, email, phone, photo } = userinfo;
@@ -132,38 +26,22 @@ function Mypage() {
   // useState
   const [onModal, setOnModal] = useState(false);
 
-  // plan list element delete
-  const onRemove = (id: number): void => {
-    setPlanList(planList.filter((el) => el.id !== id));
-  };
-
   // user info modification pop
   const editOnModal = (e: any) => {
     setOnModal(!onModal);
   };
 
   useEffect(() => {
-    const authorization = localStorage.getItem("authorization");
+    const authorization = localStorage.getItem('authorization');
     axios
-      .get("http://yourang-server.link:5000/user/info", {
+      .get('http://yourang-server.link:5000/user/info', {
         headers: {
           authorization,
         },
       })
       .then((res) => {
-        console.log("유저인포로 가져온다", res);
-        //res.data.data
-        //         createdAt: "2021-01-30T16:05:35.000Z"
-        // email: "1234@1234.com"
-        // id: 1
-        // password: "12345"
-        // phone: "010-1234-1234"
-        // photo: "https://yourang-image.s3.ap-northeast-2.amazonaws.com/user_profile/1612064419093"
-        // updatedAt: "2021-01-31T06:19:04.000Z"
-        // user_id: "1234"
         setUserinfo({
           ...userinfo,
-          // name: "홍길동",
           userid: res.data.data.user_id,
           email: res.data.data.email,
           phone: res.data.data.phone,
@@ -174,8 +52,8 @@ function Mypage() {
   }, []);
 
   useEffect(() => {
-    console.log("이건 사진이야", photo);
-    console.log("adsadsasddas", Photo);
+    console.log('이건 사진이야', photo);
+    console.log('adsadsasddas', Photo);
   });
 
   return (
@@ -209,20 +87,20 @@ function Mypage() {
               <div id="detail_phone">전화번호</div>
               <div>{phone}</div>
             </div>
-            <div id="profileLeft_myInfo_detail_plans">
-              <div id="detail_plan">내 여행</div>
-              <div>{planList.length}</div>
-            </div>
           </div>
         </div>
+      </div>
+      <div id="profileRight_empty">
+        <button id="">로그아웃</button>
+        <button id="">회원탈퇴</button>
       </div>
       <div id="profileRight">
         <div id="profileRight_contents">
           <div id="profileRight_contents_titleBar">Plan List</div>
           <div id="profileRight_contents_planList">
-            {planList.map((el) => (
+            {/* {planList.map((el) => (
               <PlanList key={el.id} user={el} onRemove={onRemove} />
-            ))}
+            ))} */}
           </div>
         </div>
       </div>

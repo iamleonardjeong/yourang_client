@@ -7,6 +7,7 @@ interface ContentsBoxProps {
   desc: string;
   website: string;
   phone: string;
+  address: string;
   onModalState: (title: string) => void;
   imgStatusHandler: () => void;
   setMyLists: (
@@ -14,6 +15,7 @@ interface ContentsBoxProps {
     desc: string,
     website: string,
     phone: string,
+    address: string,
     img?: string
   ) => void;
   removeMyLists: (title: string) => void;
@@ -25,6 +27,7 @@ interface myList {
   imgSrc: string | undefined;
   website: string;
   phone: string;
+  address: string;
 }
 function ContentsBox({
   imgSrc,
@@ -32,6 +35,7 @@ function ContentsBox({
   desc,
   website,
   phone,
+  address,
   onModalState,
   imgStatusHandler,
   setMyLists,
@@ -63,7 +67,9 @@ function ContentsBox({
           ) : (
             <AiOutlineHeart
               size="22"
-              onClick={() => setMyLists(title, desc, website, phone, imgSrc)}
+              onClick={() =>
+                setMyLists(title, desc, website, phone, address, imgSrc)
+              }
             />
           )}
         </button>

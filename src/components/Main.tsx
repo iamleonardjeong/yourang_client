@@ -31,9 +31,12 @@ interface myList {
   imgSrc: string | undefined;
   website: string | undefined;
   phone: string | undefined;
+  address: string | undefined;
 }
+
 // localStorage
 let data: myList[] = JSON.parse(localStorage.getItem('myList') || '[]');
+
 // main component
 function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   const location = useLocation<any>();
@@ -224,6 +227,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     desc: string,
     website: string,
     phone: string,
+    address: string,
     img?: string
   ): void => {
     for (let i = 0; i < data.length; i++) {
@@ -235,8 +239,9 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       title: title,
       desc: desc,
       imgSrc: img || 'No Images',
-      website: website || '제공된 웹사이트가 없습니다.',
-      phone: phone || '제공된 전화번호가 없습니다.',
+      website: website || 'no website',
+      phone: phone || 'no phone number',
+      address: address || 'no address',
     });
     setMyList({
       ...myList,
@@ -254,26 +259,56 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     });
     localStorage.setItem('myList', JSON.stringify(data));
   };
+
+  // 메일 보내는 곳 인라인 Css스타일을 주기 위한 Css 스타일링 타입지정.
+  const firstDiv = {
+    fontSize: '20',
+    fontFamily: 'Georgia',
+  } as React.CSSProperties;
+
+  const emailContentStyle = {
+    fontSize: '25px',
+    textDecoration: 'none',
+  } as React.CSSProperties;
+
+  const widthEighty = {
+    margin: '0px',
+    width: '80%',
+  } as React.CSSProperties;
+
   const htmlString = ReactDOMServer.renderToStaticMarkup(
     <div>
       {data.map((place) => {
         return (
-          <div>
+          <div style={firstDiv}>
+            <h1 style={firstDiv}>{place.title}</h1>
             <img src={place.imgSrc} alt="" />
-            <h2>장소 이름: {place.title}</h2>
-            <h3>웹사이트: {place.website}</h3>
-            <h3>전화번호: {place.phone}</h3>
-            <h3>평점: {place.desc}</h3>
+            <h2>
+              Address: <span style={emailContentStyle}>{place.address}</span>
+            </h2>
+            <h2>
+              website: <span style={emailContentStyle}>{place.website}</span>
+            </h2>
+            <h2>
+              Phone: <span style={emailContentStyle}>{place.phone}</span>
+            </h2>
+            <h2>
+              Rate: <span style={emailContentStyle}>{place.desc}</span>
+            </h2>
+            <hr style={widthEighty} />
           </div>
         );
       })}
     </div>
   );
+
   const toEmail = 'srparkgogo@gmail.com';
+
   const sendEmail = () => {
+    console.log(data);
     emailjs.send(
       'service_9v5cs7d',
-      'template_w8ckiwq',
+      'template_xcmjbtw',
       {
         to_email: toEmail,
         to_name: '박상록',
@@ -354,6 +389,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
                     desc={content.detail.result.rating}
                     website={content.detail.result.website}
                     phone={content.detail.result.formatted_phone_number}
+                    address={content.detail.result.formatted_address}
                     onModalState={onModalState}
                     imgStatusHandler={imgStatusHandler}
                     setMyLists={setMyLists}

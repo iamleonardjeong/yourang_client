@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import '../styles/Mypage.scss';
-import PlanList from './PlanList';
-import EditInfo from './EditInfo';
-import Photo from '../image/photo.png';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import "../styles/Mypage.scss";
+import PlanList from "./PlanList";
+import EditInfo from "./EditInfo";
+import Photo from "../image/photo.png";
+import axios from "axios";
 
 function Mypage() {
   // fake data - user info
   const location = useLocation();
-
-  console.log('마이페이지로 넘어온 정보', location.state);
+  console.log("마이페이지로 넘어온 정보", location.state);
   const [userinfo, setUserinfo] = useState({
     // name: "",
-    userid: '',
-    email: '',
-    phone: '',
-    created: '',
-    photo: '',
+    userid: "",
+    email: "",
+    phone: "",
+    created: "",
+    photo: "",
   });
+
+  const [isPhotoChanged, setIsPhotoChanged] = useState(false);
 
   // fake data - user info contents
   const { userid, email, phone, photo } = userinfo;
@@ -27,14 +28,18 @@ function Mypage() {
   const [onModal, setOnModal] = useState(false);
 
   // user info modification pop
-  const editOnModal = (e: any) => {
+  const editOnModal = () => {
     setOnModal(!onModal);
   };
 
+  const addDefaultSrc = (e: any) => {
+    e.target.src = Photo;
+  };
+
   useEffect(() => {
-    const authorization = localStorage.getItem('authorization');
+    const authorization = localStorage.getItem("authorization");
     axios
-      .get('http://yourang-server.link:5000/user/info', {
+      .get("http://yourang-server.link:5000/user/info", {
         headers: {
           authorization,
         },
@@ -49,24 +54,27 @@ function Mypage() {
           photo: res.data.data.photo,
         });
       });
-  }, []);
+  }, [isPhotoChanged]);
+
+  const photoChangeChecker = () => {
+    setIsPhotoChanged(true);
+  };
 
   useEffect(() => {
-    console.log('이건 사진이야', photo);
-    console.log('adsadsasddas', Photo);
+    console.log("이건 사진이야", photo);
+    console.log("adsadsasddas", Photo);
   });
 
   return (
     <div id="mypage">
-      {onModal && <EditInfo editOnModal={editOnModal} userinfo={userinfo} />}
+      {onModal && <EditInfo editOnModal={editOnModal} userinfo={userinfo} photoChangeChecker={photoChangeChecker} />}
       <div id="profileLeft">
         <div id="profileLeft_profile">
-          {photo.length === 0 ? (
-            <img id="profileLeft_profile_photo" src={Photo} />
-          ) : (
-            <img id="profileLeft_profile_photo" src={photo} />
-          )}
-
+          <img
+            id="profileLeft_profile_photo"
+            src={photo}
+            onError={addDefaultSrc}
+          />
           <h1 id="profileLeft_profile_name">{userid}</h1>
           <button id="profileLeft_profile_editBtn" onClick={editOnModal}>
             EDIT

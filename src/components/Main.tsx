@@ -172,17 +172,19 @@ function Main({
   // leftContainer MenuTap State
   const onClick = async (e: string) => {
     // 사용자가 장소 카테고리를 바꾸면 거기에 맞는 장소들을 요청 및 응답, 화면을 렌더한다.
-    // if (e !== 'myListTap') {
-    //   placeTypeHandler(e);
-    // }
-    // setMenuState({
-    //   ...menuState,
-    //   restaurant: false,
-    //   tourist_attraction: false,
-    //   cafe: false,
-    //   myListTap: false,
-    //   [e]: true,
-    // });
+
+    if (e !== 'myListTap') {
+      placeTypeHandler(e);
+    }
+
+    setMenuState({
+      ...menuState,
+      restaurant: false,
+      tourist_attraction: false,
+      cafe: false,
+      myListTap: false,
+      [e]: true,
+    });
   };
 
   // 컨텐츠 상세 모달 on
@@ -256,6 +258,8 @@ function Main({
     margin: '0px',
     width: '80%',
   } as React.CSSProperties;
+
+  console.log('지금 선택되있는 장소', placeInfo);
 
   const htmlString = ReactDOMServer.renderToStaticMarkup(
     <div>

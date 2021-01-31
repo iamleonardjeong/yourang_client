@@ -4,12 +4,13 @@ import { useLocation } from 'react-router-dom';
 import '../styles/Main.scss';
 import classNames from 'classnames';
 import ContentsBox from './ContentsBox';
+import { GrSend } from 'react-icons/gr';
 import Modal from './Modal';
 import axios from 'axios';
+import { getLocation } from '../helper/getLocation';
 import MyContentsBox from './MyContentsBox';
 import emailjs from 'emailjs-com';
 
-import { GrSend } from 'react-icons/gr';
 declare global {
   interface Window {
     google: any;
@@ -52,12 +53,11 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     count: 0,
     data: [],
   });
+
   const [emailInput, setEmailInput] = useState(true);
   // const [placeTypeSelect, setPlaceTypeSelect] = useState('');
   // const [placeInput, setPlaceInput] = useState('');
-  let map: google.maps.Map;
-  // let curLocation = location.state.place || currentLocation;
-  const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
+
   //Home 콤포넨트에서 입력된 장소 이름이 현재 콤포넌트로 잘 넘어오는지 테스트 하기 위함
   const [menuState, setMenuState] = useState<menuState>({
     restaurant: false,
@@ -65,58 +65,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     cafe: false,
     myListTap: false,
   });
-  // const [modalState, setModalState] = useState({
-  //   isOn: false,
-  // });
-  // interface myListState {
-  //   count: number;
-  //   data: number;
-  // }
-  // 좌표를 보내, 주변 정보, 사진들 받아 {좌표, 장소들정보 배열}을 리턴하는 영상
-  const getLocation = async (place: any, placeType: string) => {
-    let latLng;
-    let places: any;
-    await axios
-      .get(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${place}&key=${apiKey}`
-      )
-      .then((response) => {
-        latLng = response.data.results[0].geometry.location;
-        return latLng;
-      })
-      .then(async (latLng) => {
-        console.log('좌표받기 성공', latLng);
-        // 추천장소 카테고리 선택에 따라 서버로 보낼 장소 카테고리를 정하는 로직
-        await axios
-          .post('http://yourang-server.link:5000/google/map', {
-            data: latLng,
-            withCredentials: true,
-            placeType: placeType,
-          })
-          .then(async (res) => {
-            places = res.data.slice(0, 1); //응답받은 장소들
-            console.log('places', places);
-            const placeIds: any = [];
-            places.forEach((place: any) => {
-              if (place.photos !== undefined) {
-                placeIds.push(place.place_id);
-              }
-            });
-            console.log('placeIds', placeIds);
-            await axios
-              .post('http://yourang-server.link:5000/google/places_photo', {
-                place_ids: placeIds,
-                withCredentials: true,
-              })
-              .then((res) => {
-                places = res.data;
-                console.log('타입 누르고 palces', places);
-                setPlaceInfo(places);
-                setLatLng(latLng);
-              });
-          });
-      });
-  };
+
   // google map
   const renderMap = () => {
     //지도 만들고 마커 찍는 로직
@@ -147,6 +96,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       data: latLng,
       withCredentials: true,
     });
+
     placeInfo.forEach((content: any) => {
       const marker = new window.google.maps.Marker({
         position: content.detail.result.geometry.location,
@@ -156,6 +106,8 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       marker.setMap(map);
     });
   };
+
+  // Home -> Main으로 올 때만 발생하는 맵, 콘텐츠 렌더하는 useEffect
   useEffect(() => {
     if (location.state.latLng !== undefined) {
       setLatLng(location.state.latLng);
@@ -168,10 +120,13 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       setCurrentLocation(location.state.currentLocation);
     }
   }, [location.state.latLng, location.state.places]);
+
+  // latLng(좌표) 위치변화가 있을 때 만 발생하는, 새 지도를 렌더하는 useEffect.
   useEffect(() => {
     renderMap();
   }, [latLng]);
-  // 메인  콤포넌트  상단 네비  바에서 검색하면, MainContainer에서 응답을 받고 메인콤포넌트 장소상태를 변경해주는 로직.
+
+  // Main 콤포넌트 상단 검색창에서 검색하면, MainContainer에서 응답을 받고 Main 콤포넌트 placeInfo sate를 변경해주는 로직.
   useEffect(() => {
     if (navPlaceInfo.latLng !== undefined) {
       const { latLng, placeInfo, currentLocation } = navPlaceInfo;
@@ -181,21 +136,27 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       setCurrentLocation(currentLocation);
     }
   }, [navPlaceInfo]);
+
+  // 새로운 장소를 검색하게 되면, 무조건 Main Container의 currentPlaceInfo state를 변경하기 위한 useEffect. 이게 필요한 상황이 한번(마이페이지 -> 메인 갈 때) 있긴한데, 이게 꼭 필요한지 생각해봐야 할 것 같음.
   useEffect(() => {
     curretPlaceInfoHandler({ latLng, placeInfo, currentLocation });
   }, [latLng, placeInfo, currentLocation]);
-  const placeTypeHandler = (selectedPlaceType: string) => {
-    getLocation(currentLocation, selectedPlaceType);
+
+  // 장소 타입을 선택하면 카테고리에 맞게 검색해서 맵, 콘텐츠를 렌더하는 함수
+  const placeTypeHandler = async (selectedPlaceType: string) => {
+    const { latLng, placeInfo } = await getLocation(
+      currentLocation,
+      selectedPlaceType
+    );
+    setPlaceInfo(placeInfo);
+    setLatLng(latLng);
   };
-  // useEffect(() => {
-  //   const { latLng, places } = getLocation(placeTypeSelect);
-  //   setLatLng(latLng);
-  //   setPlaceInfo(places);
-  // }, [placeTypeSelect]);
+
   //콘텐츠 박스의 img가 onLoad되면 상태변경 -> re-render 유도
   const imgStatusHandler = () => {
     if (imgStatus === false) setImgStatus(true);
   };
+
   // leftContainer MenuTap State
   const onClick = async (e: string) => {
     // 사용자가 장소 카테고리를 바꾸면 거기에 맞는 장소들을 요청 및 응답, 화면을 렌더한다.
@@ -203,6 +164,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     if (e !== 'myListTap') {
       placeTypeHandler(e);
     }
+
     setMenuState({
       ...menuState,
       restaurant: false,
@@ -212,6 +174,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       [e]: true,
     });
   };
+
   // 컨텐츠 상세 모달 on
   const onModalState = (title: string) => {
     const infoForModal = placeInfo.filter(
@@ -220,10 +183,12 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     setModalInfo(infoForModal[0]);
     setModalState(!modalState);
   };
+
   //컨텐츠 상세 모달 off
   const closeModalState = () => {
     setModalState(!modalState);
   };
+
   // myList append
   const setMyLists = (
     title: string,
@@ -238,6 +203,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
         return;
       }
     }
+
     data.push({
       title: title,
       desc: desc,
@@ -246,13 +212,16 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       phone: phone || 'no phone number',
       address: address || 'no address',
     });
+
     setMyList({
       ...myList,
       count: myList.count + 1,
     });
+
     localStorage.setItem('myList', JSON.stringify(data));
     console.log(data);
   };
+
   // myList remove
   const removeMyLists = (title: string): any => {
     data = data.filter((el) => title !== el.title);
@@ -263,7 +232,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     localStorage.setItem('myList', JSON.stringify(data));
   };
 
-  // 메일 보내는 곳 인라인 Css스타일을 주기 위한 Css 스타일링 타입지정.
+  // 메일 보내는 곳 인라인 Css스타일을 주기 위한 Css 스타일링 타입지정. 후에 모듈화 검토 해봐야 할 것 같음.
   const firstDiv = {
     fontSize: '20',
     fontFamily: 'Georgia',
@@ -305,15 +274,13 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     </div>
   );
 
-  const toEmail = 'srparkgogo@gmail.com';
-
+  // 입력된 이메일로 MyList 전송. to_name은 향 후 변수로 바꿔야 함.
   const sendEmail = () => {
-    console.log(data);
     emailjs.send(
       'service_9v5cs7d',
       'template_xcmjbtw',
       {
-        to_email: toEmail,
+        to_email: emailInput,
         to_name: '박상록',
         message: htmlString,
       },
@@ -436,6 +403,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
                     size="18"
                     // color="#008f7a"
                     style={{ color: '#008f7a' }}
+                    onClick={sendEmail}
                   />
                 </div>
               </div>

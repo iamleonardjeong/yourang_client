@@ -1,7 +1,10 @@
 import axios from 'axios';
 const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
 
-export const getLocation = async (place: any) => {
+export const getLocation = async (
+  place: any = '프라하',
+  placeType: string = 'tourist_attraction'
+) => {
   const currentLocation = place;
   let latLng: any;
   let placeInfo: any;
@@ -20,7 +23,7 @@ export const getLocation = async (place: any) => {
         .post('http://yourang-server.link:5000/google/map', {
           data: latLng,
           withCredentials: true,
-          placeType: 'tourist_attraction',
+          placeType: placeType,
         })
         .then(async (res) => {
           placeInfo = res.data.slice(0, 3); //응답받은 장소들

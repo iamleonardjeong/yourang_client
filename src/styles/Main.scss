@@ -73,7 +73,7 @@
     display: flex;
     flex-wrap: wrap;
     align-content: flex-start;
-    padding: 10px 10px;
+    // padding: 10px 10px;
     height: calc(100% - 52px);
     overflow: scroll;
 
@@ -84,12 +84,12 @@
       flex-wrap: wrap;
       height: calc(100% - 52px);
       overflow: scroll;
-      padding-bottom: 56px;
     }
 
     #myListContents {
       display: none;
       overflow: scroll;
+      padding-bottom: 56px;
 
       &.myListContents {
         display: block;

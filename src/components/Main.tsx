@@ -8,7 +8,6 @@ import Modal from './Modal';
 import axios from 'axios';
 import MyContentsBox from './MyContentsBox';
 import emailjs from 'emailjs-com';
-
 declare global {
   interface Window {
     google: any;
@@ -20,7 +19,6 @@ interface menuState {
   cafe: boolean;
   myListTap: boolean;
 }
-
 interface mainProps {
   navPlaceInfo: any;
   curretPlaceInfoHandler: (curPlaceInfo: any) => void;
@@ -34,12 +32,8 @@ interface myList {
   website: string | undefined;
   phone: string | undefined;
 }
-  
-let data: myList[] = JSON.parse(localStorage.getItem('myList') || '[]');
-
 // localStorage
 let data: myList[] = JSON.parse(localStorage.getItem('myList') || '[]');
-
 // main component
 function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   const location = useLocation<any>();
@@ -143,7 +137,6 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       document.getElementById('map') as HTMLElement,
       mapOptions
     );
-
     axios.post('http://yourang-server.link:5000/google/map', {
       data: latLng,
       withCredentials: true,
@@ -157,7 +150,6 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       marker.setMap(map);
     });
   };
-
   useEffect(() => {
     if (location.state.latLng !== undefined) {
       setLatLng(location.state.latLng);
@@ -170,7 +162,6 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       setCurrentLocation(location.state.currentLocation);
     }
   }, [location.state.latLng, location.state.places]);
-
   useEffect(() => {
     renderMap();
   }, [latLng]);
@@ -184,11 +175,9 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       setCurrentLocation(currentLocation);
     }
   }, [navPlaceInfo]);
-
   useEffect(() => {
     curretPlaceInfoHandler({ latLng, placeInfo, currentLocation });
   }, [latLng, placeInfo, currentLocation]);
-
   const placeTypeHandler = (selectedPlaceType: string) => {
     getLocation(currentLocation, selectedPlaceType);
   };
@@ -249,7 +238,6 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       website: website || '제공된 웹사이트가 없습니다.',
       phone: phone || '제공된 전화번호가 없습니다.',
     });
-
     setMyList({
       ...myList,
       count: myList.count + 1,
@@ -266,7 +254,6 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     });
     localStorage.setItem('myList', JSON.stringify(data));
   };
-
   const htmlString = ReactDOMServer.renderToStaticMarkup(
     <div>
       {data.map((place) => {
@@ -282,57 +269,20 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       })}
     </div>
   );
-
-  const toEmail = 'iamleonardjeong@gmail.com';
-
+  const toEmail = 'srparkgogo@gmail.com';
   const sendEmail = () => {
     emailjs.send(
       'service_9v5cs7d',
       'template_w8ckiwq',
       {
         to_email: toEmail,
-        to_name: '정훈',
+        to_name: '박상록',
         message: htmlString,
       },
       'user_viAPjBua2EXqACiVlL88n'
     );
-
     console.log('email sent');
   };
-
-  // myList append
-  const setMyLists = (title: string, desc: string, img?: string): void => {
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].title === title) {
-        return;
-      }
-    }
-    data.push({
-      title: title,
-      desc: desc,
-      imgSrc: img || 'No Images',
-    });
-
-    setMyList({
-      ...myList,
-      count: myList.count + 1,
-    });
-
-    localStorage.setItem('myList', JSON.stringify(data));
-  };
-
-  // myList remove
-  const removeMyLists = (title: string): any => {
-    data = data.filter((el) => title !== el.title);
-
-    setMyList({
-      ...myList,
-      count: myList.count + 1,
-    });
-
-    localStorage.setItem('myList', JSON.stringify(data));
-  };
-
   return (
     <div id="mainContainer">
       <div id="leftContainer">
@@ -369,7 +319,6 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
             <span id="list_count">{data.length}</span>
           </li>
         </ul>
-
         <div
           id="leftContents"
           className={classNames({ myListTapContainer: menuState.myListTap })}

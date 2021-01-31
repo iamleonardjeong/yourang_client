@@ -136,6 +136,7 @@
           cursor: pointer;
           transform: rotate(45deg);
         }
+
         #send_Email_Container_titleBar_title {
           flex: 8;
           margin: 13px;
@@ -170,7 +171,6 @@
         box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
           0 3px 6px rgba(0, 0, 0, 0.23);
         bottom: 66px;
-        transition: 1s;
       }
 
       #send_Email_input {

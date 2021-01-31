@@ -4,6 +4,7 @@
   height: calc(100% - 72px);
   font-size: 1.2rem;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 
@@ -11,14 +12,18 @@
   #profileLeft {
     flex: 1;
     height: 100%;
-    padding: 40px 20px 40px 40px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
+    align-content: center;
+    overflow: hidden;
 
     // left container - profile view
     #profileLeft_profile {
       flex: 1;
+      min-width: 800px;
+      max-width: 800px;
       padding: 30px;
       margin-bottom: 10px;
       border-radius: 8px;
@@ -27,9 +32,13 @@
       display: flex;
       align-items: center;
 
+      img {
+        object-fit: cover;
+      }
       // left container - profile view - photo
       #profileLeft_profile_photo {
-        width: 46px;
+        width: 52px;
+        height: 52px;
         border-radius: 100%;
         box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
           0 3px 6px rgba(0, 0, 0, 0.23);
@@ -44,13 +53,14 @@
       // left container - profile view - edit btn
       #profileLeft_profile_editBtn {
         font-family: 'Montserrat';
-        width: 56px;
-        height: 26px;
+        height: 36px;
         margin-left: 20px;
+        padding: 0 20px;
         color: white;
         background-color: #008f7a;
         border: none;
         border-radius: 8px;
+        justify-self: flex-end;
         cursor: pointer;
       }
     }
@@ -58,6 +68,7 @@
     // left container - user info
     #profileLeft_myInfo {
       flex: 4;
+      max-width: 800px;
       margin-top: 10px;
       border-radius: 8px;
       box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
@@ -84,7 +95,7 @@
         flex: 6;
         padding: 30px;
         display: flex;
-        justify-content: space-around;
+        justify-content: flex-start;
         flex-wrap: wrap;
         overflow: hidden;
 
@@ -132,7 +143,27 @@
   }
 
   // right container
+  #profileRight_empty {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+
+    button {
+      font-family: 'Montserrat';
+      padding: 0 20px;
+      height: 36px;
+      margin-left: 20px;
+      color: white;
+      background-color: #008f7a;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  }
+
+  // right container
   #profileRight {
+    display: none;
     flex: 1;
     height: 100%;
     padding: 40px 40px 40px 20px;

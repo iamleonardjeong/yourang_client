@@ -8,6 +8,8 @@ import Modal from './Modal';
 import axios from 'axios';
 import MyContentsBox from './MyContentsBox';
 import emailjs from 'emailjs-com';
+
+import { GrSend } from 'react-icons/gr';
 declare global {
   interface Window {
     google: any;
@@ -50,6 +52,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     count: 0,
     data: [],
   });
+  const [emailInput, setEmailInput] = useState(true);
   // const [placeTypeSelect, setPlaceTypeSelect] = useState('');
   // const [placeInput, setPlaceInput] = useState('');
   let map: google.maps.Map;
@@ -318,6 +321,11 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     );
     console.log('email sent');
   };
+
+  const emailInputHandler = () => {
+    setEmailInput((prev) => !prev);
+  };
+
   return (
     <div id="mainContainer">
       <div id="leftContainer">
@@ -399,10 +407,45 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
                 );
               })
             : ''}
+          <div
+            className={classNames({
+              inputState: emailInput,
+            })}
+          >
+            <div
+              id="send_Email_Container"
+              className={classNames({
+                myListTap: menuState.myListTap,
+              })}
+            >
+              <div id="send_Email_Container_titleBar">
+                <div
+                  id="send_Email_Container_titleBar_title_closeBtn"
+                  onClick={emailInputHandler}
+                >
+                  +
+                </div>
+                <div id="send_Email_Container_titleBar_title">
+                  <input
+                    id="send_Email_input"
+                    placeholder="이메일 주소를 입력해주세요"
+                  />
+                </div>
+                <div id="send_Email_Container_titleBar_empty">
+                  <GrSend
+                    size="18"
+                    // color="#008f7a"
+                    style={{ color: '#008f7a' }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
           <button
             id="send_Email_Btn"
             className={classNames({ myListTap: menuState.myListTap })}
-            onClick={sendEmail}
+            onClick={emailInputHandler}
+            // onClick={sendEmail}
           >
             My List 내 이메일로 전송
           </button>

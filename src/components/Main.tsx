@@ -25,6 +25,7 @@ interface menuState {
 interface mainProps {
   navPlaceInfo: any;
   curretPlaceInfoHandler: (curPlaceInfo: any) => void;
+  logInStatusHandler: () => void;
 }
 // myList localStorage
 // types
@@ -41,7 +42,11 @@ interface myList {
 let data: myList[] = JSON.parse(localStorage.getItem('myList') || '[]');
 
 // main component
-function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
+function Main({
+  navPlaceInfo,
+  curretPlaceInfoHandler,
+  logInStatusHandler,
+}: mainProps) {
   const location = useLocation<any>();
   const [modalState, setModalState] = useState(false); ///////체크
   const [placeInfo, setPlaceInfo] = useState<any>([]);
@@ -53,8 +58,8 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     count: 0,
     data: [],
   });
-
   const [emailInput, setEmailInput] = useState(true);
+  const [emailAddress, setEmailAddress] = useState('');
   // const [placeTypeSelect, setPlaceTypeSelect] = useState('');
   // const [placeInput, setPlaceInput] = useState('');
 
@@ -106,6 +111,13 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       marker.setMap(map);
     });
   };
+
+  //Home에서 로그인에 성공하고 Main으로 넘어올 때, MainContainer에 isLogin 상태를 true로 바꿔줌.
+  useEffect(() => {
+    if (location.state.isLogin) {
+      logInStatusHandler();
+    }
+  }, []);
 
   // Home -> Main으로 올 때만 발생하는 맵, 콘텐츠 렌더하는 useEffect
   useEffect(() => {
@@ -160,19 +172,17 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
   // leftContainer MenuTap State
   const onClick = async (e: string) => {
     // 사용자가 장소 카테고리를 바꾸면 거기에 맞는 장소들을 요청 및 응답, 화면을 렌더한다.
-    // console.log(e);
-    if (e !== 'myListTap') {
-      placeTypeHandler(e);
-    }
-
-    setMenuState({
-      ...menuState,
-      restaurant: false,
-      tourist_attraction: false,
-      cafe: false,
-      myListTap: false,
-      [e]: true,
-    });
+    // if (e !== 'myListTap') {
+    //   placeTypeHandler(e);
+    // }
+    // setMenuState({
+    //   ...menuState,
+    //   restaurant: false,
+    //   tourist_attraction: false,
+    //   cafe: false,
+    //   myListTap: false,
+    //   [e]: true,
+    // });
   };
 
   // 컨텐츠 상세 모달 on
@@ -219,7 +229,6 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
     });
 
     localStorage.setItem('myList', JSON.stringify(data));
-    console.log(data);
   };
 
   // myList remove
@@ -280,7 +289,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
       'service_9v5cs7d',
       'template_xcmjbtw',
       {
-        to_email: emailInput,
+        to_email: emailAddress,
         to_name: '박상록',
         message: htmlString,
       },
@@ -396,6 +405,7 @@ function Main({ navPlaceInfo, curretPlaceInfoHandler }: mainProps) {
                   <input
                     id="send_Email_input"
                     placeholder="이메일 주소를 입력해주세요"
+                    onChange={(e) => setEmailAddress(e.currentTarget.value)}
                   />
                 </div>
                 <div id="send_Email_Container_titleBar_empty">

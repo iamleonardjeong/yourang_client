@@ -37,7 +37,6 @@ function SignInModal({
         withCredentials: true,
       })
       .then((res) => {
-        console.log(res.data.message);
         if (res.status === 200) {
           localStorage.setItem("authorization", res.data.authorization);
           loginSuccessHandler();
@@ -46,8 +45,9 @@ function SignInModal({
       .catch((err) => {
         setIsValidFail(!isValidFail);
         setErrorMessage(
-          "가입 되어있지 않은 계정입니다. 회원가입을 먼저 진행해 주세요."
+          '가입 되어있지 않은 계정입니다. 아이디와 비밀번호를 확인해 주세요'
         );
+        setLoginInfo({ userId: '', password: '' });
       });
   };
 
@@ -57,13 +57,19 @@ function SignInModal({
       setLoginInfo({ userId: "", password: "" });
     }
 
+<<<<<<< HEAD
     const error1 = "아이디와 비밀번호를 입력해주세요";
     const error2 = "아이디 혹은 비밀번가 맞지않습니다. 다시 입력해 주세요.";
+=======
+    const error1 = '아이디와 비밀번호를 입력해주세요';
+>>>>>>> Fix: Keep login status when user login over components
     const { userId, password } = loginInfo;
 
     if (!userId || !password) {
       setIsValidFail(!isValidFail);
       setErrorMessage(error1);
+    } else {
+      loginButtonHandler();
     }
   };
 
@@ -78,7 +84,7 @@ function SignInModal({
         withCredentials: true,
       })
       .then((res) => {
-        if (res.data.message === "Login Successed") {
+        if (res.status === 200) {
           loginSuccessHandler();
         }
       })
@@ -126,7 +132,6 @@ function SignInModal({
               className="signIn_modal_container_wrap_body_loginBtn"
               onClick={(e: React.MouseEvent<HTMLElement>) => {
                 validationCheck(e);
-                loginButtonHandler();
               }}
             >
               로그인
@@ -143,15 +148,6 @@ function SignInModal({
                 cookiePolicy={"single_host_origin"}
               />
             </div>
-            {/* <div className="signIn_modal_container_wrap_body_social_naver">
-              <img
-                src={naverIcon}
-                className="signIn_modal_container_wrap_body_social_naver_icon"
-              />
-              <div className="signIn_modal_container_wrap_body_social_naver_text">
-                네이버 계정으로 로그인
-              </div>
-            </div> */}
             <div className="signUp_btn_Container">
               <button
                 name="toSignUp"

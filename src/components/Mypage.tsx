@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import "../styles/Mypage.scss";
-import PlanList from "./PlanList";
-import EditInfo from "./EditInfo";
-import Photo from "../image/photo.png";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import '../styles/Mypage.scss';
+import PlanList from './PlanList';
+import EditInfo from './EditInfo';
+import Photo from '../image/photo.png';
+import axios from 'axios';
 
 function Mypage() {
   // fake data - user info
   const location = useLocation();
-  console.log("마이페이지로 넘어온 정보", location.state);
+  console.log('마이페이지로 넘어온 정보', location.state);
   const [userinfo, setUserinfo] = useState({
     // name: "",
-    userid: "",
-    email: "",
-    phone: "",
-    created: "",
-    photo: "",
+    userid: '',
+    email: '',
+    phone: '',
+    created: '',
+    photo: '',
   });
 
   const [isPhotoChanged, setIsPhotoChanged] = useState(false);
@@ -37,9 +37,9 @@ function Mypage() {
   };
 
   useEffect(() => {
-    const authorization = localStorage.getItem("authorization");
+    const authorization = localStorage.getItem('authorization');
     axios
-      .get("http://yourang-server.link:5000/user/info", {
+      .get('http://yourang-server.link:5000/user/info', {
         headers: {
           authorization,
         },
@@ -61,13 +61,19 @@ function Mypage() {
   };
 
   useEffect(() => {
-    console.log("이건 사진이야", photo);
-    console.log("adsadsasddas", Photo);
+    console.log('이건 사진이야', photo);
+    console.log('adsadsasddas', Photo);
   });
 
   return (
     <div id="mypage">
-      {onModal && <EditInfo editOnModal={editOnModal} userinfo={userinfo} photoChangeChecker={photoChangeChecker} />}
+      {onModal && (
+        <EditInfo
+          editOnModal={editOnModal}
+          userinfo={userinfo}
+          photoChangeChecker={photoChangeChecker}
+        />
+      )}
       <div id="profileLeft">
         <div id="profileLeft_profile">
           <img

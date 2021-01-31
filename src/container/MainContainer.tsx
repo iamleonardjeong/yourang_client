@@ -71,6 +71,11 @@ const MainContainer = () => {
     signInModalCloseHandler();
   };
 
+  const logInStatusHandler = () => {
+    console.log('이게 실행 되나요?');
+    setIsLoggedIn(true);
+  };
+
   return (
     <>
       {isSignInOpen ? (
@@ -103,6 +108,7 @@ const MainContainer = () => {
             <Main
               navPlaceInfo={navPlaceInfo}
               curretPlaceInfoHandler={curretPlaceInfoHandler}
+              logInStatusHandler={logInStatusHandler}
             />
           )}
         />

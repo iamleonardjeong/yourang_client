@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { GoogleLogin } from "react-google-login";
-import "../styles/SignUpModal.scss";
-import googleIcon from "../image/google_icon.png";
-import naverIcon from "../image/naver_icon.png";
-import ErrorMessage from "./ErrorMessage";
-import { userInfo } from "os";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { GoogleLogin } from 'react-google-login';
+import '../styles/SignUpModal.scss';
+import googleIcon from '../image/google_icon.png';
+import naverIcon from '../image/naver_icon.png';
+import ErrorMessage from './ErrorMessage';
+import { userInfo } from 'os';
 
 interface SignUpModalProps {
   signInModalHandler: (e: React.MouseEvent<HTMLElement>) => void;
@@ -19,14 +19,14 @@ function SignUpModal({
   modalSwitchHandler,
 }: SignUpModalProps) {
   const [signUpInfo, setSignUpInfo] = useState({
-    userId: "",
-    email: "",
-    mobile: "",
-    password: "",
-    confirmPassword: "",
+    userId: '',
+    email: '',
+    mobile: '',
+    password: '',
+    confirmPassword: '',
   });
   const [isValidFail, setIsValidFail] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
   const [isEveryInfoCorrect, setIsEveryInfoCorrect] = useState({
     userIdCheck: false,
     emailCheck: false,
@@ -34,7 +34,7 @@ function SignUpModal({
     isEverythingFilled: false,
   });
 
-  const signUpButtonHandler = () => {
+  const singUpRequest = () => {
     const {
       userIdCheck,
       emailCheck,
@@ -44,17 +44,17 @@ function SignUpModal({
 
     if (!userIdCheck) {
       setIsValidFail(!isValidFail);
-      setErrorMessage("아이디 중복검사를 실행해 주세요!");
+      setErrorMessage('아이디 중복검사를 실행해 주세요!');
     } else if (!emailCheck) {
       setIsValidFail(!isValidFail);
-      setErrorMessage("이메일 중복검사를 실행해주세요!");
+      setErrorMessage('이메일 중복검사를 실행해주세요!');
     }
 
     const { userId, email, mobile, password } = signUpInfo;
 
     if (isEverythingFilled) {
       axios
-        .post("http://yourang-server.link:5000/user/signup", {
+        .post('http://yourang-server.link:5000/user/signup', {
           id: userId,
           email: email,
           password: password,
@@ -62,12 +62,13 @@ function SignUpModal({
           withCredentials: true,
         })
         .then((res) => {
-          if (res.data.message === "Signup Success") {
+          if (res.status === 200) {
             setIsValidFail(!isValidFail);
-            setErrorMessage("회원가입에 성공하였습니다!");
-
-            // modalSwitchHandler();
+            setErrorMessage('회원가입에 성공하였습니다!');
           }
+        })
+        .catch((err) => {
+          console.log(err);
         });
     }
   };
@@ -75,16 +76,22 @@ function SignUpModal({
   const googleSignUpHandler = (res: any) => {
     const { name, googleId, email } = res.profileObj;
     axios
-      .post("http://yourang-server.link:5000/user/signup", {
+      .post('http://yourang-server.link:5000/user/signup', {
         id: name,
         email: email,
         password: googleId,
-        phone: "none",
+        phone: 'none',
         withCredentials: true,
       })
       .then((res) => {
-        if (res.data === "Signup Success") {
+        if (res.status === 200) {
+          setIsValidFail(!isValidFail);
+          setErrorMessage('회원가입에 성공하였습니다!');
         }
+      })
+      .catch((err) => {
+        setIsValidFail(!isValidFail);
+        setErrorMessage('이미 동일 계정으로 회원가입이 되어있습니다');
       });
   };
 
@@ -97,10 +104,10 @@ function SignUpModal({
   const mobileInputHander = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // mobile전용 유효성 검사 및 입력제한 로직(출력 예시: 000-0000-0000 숫자로만 입력됨. "-"는 자동입력 됨)
     const { name, value, maxLength } = e.currentTarget;
-    let reg = new RegExp("^[0-9]");
+    let reg = new RegExp('^[0-9]');
     if (reg.test(e.key)) {
       if (value.length === 3 || value.length === 8) {
-        setSignUpInfo({ ...signUpInfo, [name]: value + "-" + e.key });
+        setSignUpInfo({ ...signUpInfo, [name]: value + '-' + e.key });
       } else {
         setSignUpInfo({
           ...signUpInfo,
@@ -109,11 +116,11 @@ function SignUpModal({
       }
     }
 
-    if (e.key === "Backspace" && value.length === 9) {
+    if (e.key === 'Backspace' && value.length === 9) {
       setSignUpInfo({ ...signUpInfo, [name]: value.substring(0, 8) });
-    } else if (e.key === "Backspace" && value.length === 4) {
+    } else if (e.key === 'Backspace' && value.length === 4) {
       setSignUpInfo({ ...signUpInfo, [name]: value.substring(0, 3) });
-    } else if (e.key === "Backspace") {
+    } else if (e.key === 'Backspace') {
       setSignUpInfo({
         ...signUpInfo,
         [name]: value.substring(0, value.length - 1),
@@ -123,36 +130,36 @@ function SignUpModal({
 
   const userIdValidCheck = () => {
     axios
-      .post("http://yourang-server.link:5000/user/check_id", {
+      .post('http://yourang-server.link:5000/user/check_id', {
         id: signUpInfo.userId,
       })
       .then((res) => {
         if (res.data.result) {
           setIsEveryInfoCorrect({ ...isEveryInfoCorrect, userIdCheck: false });
           setIsValidFail(!isValidFail);
-          setErrorMessage("중복되는 아이디가 있습니다.");
+          setErrorMessage('중복되는 아이디가 있습니다.');
         } else {
           setIsEveryInfoCorrect({ ...isEveryInfoCorrect, userIdCheck: true });
           setIsValidFail(!isValidFail);
-          setErrorMessage("사용 가능한 아이디 입니다.");
+          setErrorMessage('사용 가능한 아이디 입니다.');
         }
       });
   };
 
   const emailValidCheck = () => {
     axios
-      .post("http://yourang-server.link:5000/user/check_email", {
+      .post('http://yourang-server.link:5000/user/check_email', {
         email: signUpInfo.email,
       })
       .then((res) => {
         if (res.data.result) {
           setIsEveryInfoCorrect({ ...isEveryInfoCorrect, emailCheck: false });
           setIsValidFail(!isValidFail);
-          setErrorMessage("중복되는 이메일이 있습니다.");
+          setErrorMessage('중복되는 이메일이 있습니다.');
         } else {
           setIsEveryInfoCorrect({ ...isEveryInfoCorrect, emailCheck: true });
           setIsValidFail(!isValidFail);
-          setErrorMessage("사용 가능한 이메일 입니다.");
+          setErrorMessage('사용 가능한 이메일 입니다.');
         }
       });
   };
@@ -172,7 +179,7 @@ function SignUpModal({
     if (password !== confirmPassword) {
       isValid = false;
       setIsValidFail(!isValidFail);
-      setErrorMessage("비밀번호가 일치하지 않습니다");
+      setErrorMessage('비밀번호가 일치하지 않습니다');
       setIsEveryInfoCorrect({ ...isEveryInfoCorrect, passwordCheck: false });
     } else if (password === confirmPassword) {
       setIsEveryInfoCorrect({ ...isEveryInfoCorrect, passwordCheck: true });
@@ -185,7 +192,7 @@ function SignUpModal({
         isEverythingFilled: false,
       });
       setIsValidFail(!isValidFail);
-      setErrorMessage("입력정보를 모두 입력해 주세요");
+      setErrorMessage('입력정보를 모두 입력해 주세요');
     } else if (userIdCheck && emailCheck && passwordCheck) {
       setIsEveryInfoCorrect({
         ...isEveryInfoCorrect,
@@ -194,9 +201,9 @@ function SignUpModal({
     }
 
     if (isValid) {
-      signUpButtonHandler();
+      // 모든 유효성 검사가 통과 했을 때만 서버로 로그인 request 전달
+      singUpRequest();
     }
-    //유효성 검사에 문제가 없고, 모든 정보가 입력이 됐을 때, 서버에 사인업 요청하는 로직을 보내야 함.
   };
 
   // 아이디 중복체크 함수 만들어야 함
@@ -280,7 +287,6 @@ function SignUpModal({
             <button
               className="signUp_modal_container_wrap_body_signUpBtn"
               onClick={(e: React.MouseEvent<HTMLElement>) => {
-                signUpButtonHandler();
                 validationCheck(e);
               }}
             >
@@ -294,18 +300,9 @@ function SignUpModal({
                 icon={true}
                 onSuccess={googleSignUpHandler}
                 onFailure={googleSignUpHandler}
-                cookiePolicy={"single_host_origin"}
+                cookiePolicy={'single_host_origin'}
               />
             </div>
-            {/* <div className="signUp_modal_container_wrap_body_social_naver">
-              <img
-                src={naverIcon}
-                className="signUp_modal_container_wrap_body_social_google_icon"
-              />
-              <div className="signUp_modal_container_wrap_body_social_google_text">
-                네이버 계정으로 회원가입
-              </div>
-            </div> */}
             <div className="signIn_btn_Container">
               <button
                 name="toSignIn"

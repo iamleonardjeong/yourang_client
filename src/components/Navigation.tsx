@@ -24,19 +24,6 @@ function Navigation({
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    // let data;
-    // e.preventDefault();
-    // async function foo() {
-    //   data = axios
-    //     .get(
-    //       `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=Museum%20of%20Contemporary%20Art%20Australia&inputtype=textquery&fields=photos,formatted_address,name,rating,opening_hours,geometry&key=${apiKey}`
-    //       // `https://maps.googleapis.com/maps/api/geocode/json?address=${value.data}&key=${apiKey}`
-    //     )
-    //     .then(console.log);
-    // }
-    // foo();
-  };
 
   return (
     <header>

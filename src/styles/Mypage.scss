@@ -1,5 +1,6 @@
 // mypage component local
 #mypage {
+  position: absolute;
   width: 100%;
   height: calc(100% - 72px);
   font-size: 1.2rem;
@@ -7,6 +8,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: rgba(255, 255, 255, 0.3);
+  z-index: 1000;
 
   // left container
   #profileLeft {
@@ -20,55 +23,23 @@
     overflow: hidden;
 
     // left container - profile view
-    #profileLeft_profile {
-      flex: 1;
-      min-width: 800px;
-      max-width: 800px;
-      padding: 30px;
-      margin-bottom: 10px;
-      border-radius: 8px;
-      box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
-        0 3px 6px rgba(0, 0, 0, 0.23);
-      display: flex;
-      align-items: center;
 
-      img {
-        object-fit: cover;
-      }
-      // left container - profile view - photo
-      #profileLeft_profile_photo {
-        width: 52px;
-        height: 52px;
-        border-radius: 100%;
-        box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
-          0 3px 6px rgba(0, 0, 0, 0.23);
-      }
-
-      // left container - profile view - name
-      #profileLeft_profile_name {
-        font-size: 1.4rem;
-        margin-left: 16px;
-      }
-
-      // left container - profile view - edit btn
-      #profileLeft_profile_editBtn {
-        font-family: "Montserrat";
-        height: 36px;
-        margin-left: 20px;
-        padding: 0 20px;
-        color: white;
-        background-color: #008f7a;
-        border: none;
-        border-radius: 8px;
-        justify-self: flex-end;
-        cursor: pointer;
-      }
-    }
+    // flex: 1;
+    // min-width: 600px;
+    // max-width: 600px;
+    // padding: 30px;
+    // margin-bottom: 10px;
+    // border-radius: 8px;
+    // box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
+    //   0 3px 6px rgba(0, 0, 0, 0.23);
+    // display: flex;
+    // align-items: center;
+    // background: white;
 
     // left container - user info
     #profileLeft_myInfo {
       flex: 4;
-      max-width: 800px;
+      max-width: 600px;
       margin-top: 10px;
       border-radius: 8px;
       box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
@@ -76,18 +47,35 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      background: white;
 
       // left container - user info - title bar
       #profileLeft_myInfo_titleBar {
-        height: 56px;
-        padding-left: 30px;
-        font-size: 1.4rem;
-        font-weight: 600;
-        color: white;
-        background-color: #008f7a;
-        border-radius: 8px 8px 0px 0px;
         display: flex;
         align-items: center;
+        background: #008f7a;
+        border-radius: 8px 8px 0px 0px;
+
+        #profileLeft_myInfo_titleBar_title_closeBtn {
+          flex: 1;
+          font-size: 2rem;
+          font-weight: 300;
+          text-align: center;
+          color: white;
+          cursor: pointer;
+          transform: rotate(45deg);
+        }
+        #profileLeft_myInfo_titleBar_title {
+          flex: 8;
+          margin: 16px;
+          font-size: 1rem;
+          font-weight: 400;
+          text-align: center;
+          color: white;
+        }
+        #profileLeft_myInfo_titleBar_empty {
+          flex: 1;
+        }
       }
 
       // left container - user info - detail
@@ -99,9 +87,46 @@
         flex-wrap: wrap;
         overflow: hidden;
 
+        #profileLeft_profile_userInfo {
+          width: 100%;
+          display: flex;
+          img {
+            object-fit: cover;
+          }
+          // left container - profile view - photo
+          #profileLeft_profile_photo {
+            width: 52px;
+            height: 52px;
+            border-radius: 100%;
+            box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
+              0 3px 6px rgba(0, 0, 0, 0.23);
+          }
+
+          // left container - profile view - name
+          #profileLeft_profile_name {
+            font-size: 1.4rem;
+            margin-left: 16px;
+          }
+
+          // left container - profile view - edit btn
+          #profileLeft_profile_editBtn {
+            font-family: "Montserrat";
+            height: 36px;
+            margin-left: 20px;
+            padding: 0 20px;
+            color: white;
+            background-color: #008f7a;
+            border: none;
+            border-radius: 8px;
+            justify-self: flex-end;
+            cursor: pointer;
+          }
+        }
+
         // left container - user info - detail - user id
         #profileLeft_myInfo_detail_userId {
           width: 50%;
+          font-size: 1.1rem;
           #detail_title {
             height: 26px;
             font-weight: 600;
@@ -112,6 +137,7 @@
         // left container - user info - detail - email
         #profileLeft_myInfo_detail_email {
           width: 50%;
+          font-size: 1.1rem;
           #detail_email {
             height: 26px;
             font-weight: 600;
@@ -122,6 +148,7 @@
         // left container - user info - detail - phone
         #profileLeft_myInfo_detail_phone {
           width: 50%;
+          font-size: 1.1rem;
           #detail_phone {
             height: 26px;
             font-weight: 600;
@@ -144,9 +171,15 @@
 
   // right container
   #profileRight_empty {
-    position: absolute;
-    right: 20px;
-    bottom: 20px;
+    align-self: flex-end;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    // position: aboslute;
+    // right: 0;
+    // position: absolute;
+    // right: 20px;
+    // bottom: 20px;
 
     button {
       font-family: "Montserrat";

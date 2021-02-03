@@ -58,20 +58,24 @@ function EditInfo({ editOnModal, userinfo, photoChangeChecker }: EditInfoProp) {
   };
 
   const onClickHandler = (e: any) => {
-    let form = new FormData();
-    // const authorization = localStorage.getItem("authorization");
-    form.append("image", file, file.name);
-    console.log("파일의 형식", form);
-    axios
-      .post("http://yourang-server.link:5000/user/modify-photo", form, {
-        headers: {
-          authorization: authorization,
-        },
-      })
-      .then((res) => {
-        console.log("사진 보내기", res);
-        photoChangeChecker();
-      });
+    if (img.length === 0) {
+      alert("사진을 추가해주세요");
+    } else {
+      let form = new FormData();
+      // const authorization = localStorage.getItem("authorization");
+      form.append("image", file, file.name);
+      console.log("파일의 형식", form);
+      axios
+        .post("http://yourang-server.link:5000/user/modify-photo", form, {
+          headers: {
+            authorization: authorization,
+          },
+        })
+        .then((res) => {
+          console.log("사진 보내기", res);
+          photoChangeChecker();
+        });
+    }
   };
 
   const submitHander = () => {
@@ -129,10 +133,6 @@ function EditInfo({ editOnModal, userinfo, photoChangeChecker }: EditInfoProp) {
     console.log(e.key);
   };
 
-  useEffect(() => {
-    console.log({ file });
-  });
-
   return (
     <div className="editinfo">
       <div className="editinfo_modal_container">
@@ -164,12 +164,7 @@ function EditInfo({ editOnModal, userinfo, photoChangeChecker }: EditInfoProp) {
               )}
             </label>
 
-            <button
-              id="save_btn"
-              onClick={() =>
-                img.length === 0 ? <div>fuck you</div> : onClickHandler
-              }
-            >
+            <button id="save_btn" onClick={onClickHandler}>
               저장하기
             </button>
             <input

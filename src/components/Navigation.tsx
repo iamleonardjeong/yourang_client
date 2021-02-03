@@ -1,11 +1,9 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
-import '../styles/Navigation.scss';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
-
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import "../styles/Navigation.scss";
+import axios from "axios";
+import { Link } from "react-router-dom";
 const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
 // const history = useHistory();
-
 interface NavigationProps {
   searchBarInputHandler: (value: string) => void;
   currentPlaceInfo: any;
@@ -13,7 +11,6 @@ interface NavigationProps {
   signInModalHandler: (e: React.MouseEvent<HTMLElement>) => void;
   mainSwitchHandler: () => void;
 }
-
 function Navigation({
   searchBarInputHandler,
   currentPlaceInfo,
@@ -21,16 +18,14 @@ function Navigation({
   signInModalHandler,
   mainSwitchHandler,
 }: NavigationProps) {
-  const [value, setValue] = useState('');
-
+  const [value, setValue] = useState("");
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
-
   return (
     <header>
       <div id="logo">
-        <Link to={{ pathname: '/main', state: currentPlaceInfo }}>YouRang</Link>
+        <Link to={{ pathname: "/main", state: currentPlaceInfo }}>YouRang</Link>
       </div>
       <div id="navSearch">
         <input
@@ -43,10 +38,10 @@ function Navigation({
         />
       </div>
       <div id="navMenus">
-        <div id="navProfile">
-          {/* <Link to={{ pathname: '/main', state: currentPlaceInfo }}>지도</Link> */}
+        {/* <div id="navProfile">
+          <Link to={{ pathname: '/main', state: currentPlaceInfo }}>지도</Link>
           <a onClick={() => mainSwitchHandler()}>지도</a>
-        </div>
+        </div> */}
         <div id="navProfile">
           {isLoggedIn ? (
             // (
@@ -66,5 +61,4 @@ function Navigation({
     </header>
   );
 }
-
 export default Navigation;

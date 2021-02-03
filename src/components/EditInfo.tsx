@@ -64,7 +64,6 @@ function EditInfo({ editOnModal, userinfo, photoChangeChecker }: EditInfoProp) {
       let form = new FormData();
       // const authorization = localStorage.getItem("authorization");
       form.append("image", file, file.name);
-      console.log("파일의 형식", form);
       axios
         .post("http://yourang-server.link:5000/user/modify-photo", form, {
           headers: {
@@ -72,7 +71,7 @@ function EditInfo({ editOnModal, userinfo, photoChangeChecker }: EditInfoProp) {
           },
         })
         .then((res) => {
-          console.log("사진 보내기", res);
+          localStorage.setItem("authorization", res.data.authorization);
           photoChangeChecker();
         });
     }

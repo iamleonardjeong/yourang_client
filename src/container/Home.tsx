@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import '../styles/Home.scss';
-import BGMusic from '../components/BGMusic';
-import SignInModal from '../components/SignInModal';
-import SignUpModal from '../components/SignUpModal';
-import backgroundVideo from '../video/yourang-home_video.mp4'; // background video
-import { getLocation } from '../helper/getLocation';
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import "../styles/Home.scss";
+import BGMusic from "../components/BGMusic";
+import SignInModal from "../components/SignInModal";
+import SignUpModal from "../components/SignUpModal";
+import backgroundVideo from "../video/yourang-home_video.mp4"; // background video
+import { getLocation } from "../helper/getLocation";
 
 declare const google: any;
 
@@ -13,7 +13,7 @@ function Home() {
   // useState
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState('프라하');
+  const [currentLocation, setCurrentLocation] = useState("프라하");
 
   // useHistory
   const history = useHistory();
@@ -28,12 +28,12 @@ function Home() {
   const onEnterDownHander = async (
     e: React.KeyboardEvent<HTMLInputElement>
   ) => {
-    if (e.key === 'Enter') {
-      console.log('엔터가 몇번 눌렸나?', onEnterCount);
+    if (e.key === "Enter") {
+      console.log("엔터가 몇번 눌렸나?", onEnterCount);
       if (onEnterCount === 0) {
         onEnterCount++;
         const { latLng, placeInfo } = await getLocation(currentLocation);
-        history.push('/main', { latLng, placeInfo, currentLocation });
+        history.push("/main", { latLng, placeInfo, currentLocation });
       }
     }
   };
@@ -41,13 +41,13 @@ function Home() {
   // push main page - 체험하기 버튼
   const onExplore = async () => {
     const { latLng, placeInfo, currentLocation } = await getLocation();
-    history.push('/main', { latLng, placeInfo, currentLocation });
+    history.push("/main", { latLng, placeInfo, currentLocation });
   };
 
   // logIn modal pop
   const signInModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
-    if (target === '로그인 페이지로') {
+    if (target === "로그인 페이지로") {
       setIsSignUpOpen(!isSignUpOpen);
       setIsSignInOpen(!isSignInOpen);
     } else {
@@ -58,9 +58,9 @@ function Home() {
   // signUp modal pop
   const signUpModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
-    if (target === '+') {
+    if (target === "+") {
       setIsSignUpOpen(!isSignUpOpen);
-    } else if (target === '회원가입') {
+    } else if (target === "회원가입") {
       setIsSignUpOpen(!isSignUpOpen);
       setIsSignInOpen(!isSignInOpen);
     }
@@ -76,7 +76,7 @@ function Home() {
   const loginSuccessHandler = async () => {
     const { latLng, placeInfo, currentLocation } = await getLocation();
     const isLogin = true;
-    history.push('/main', {
+    history.push("/main", {
       latLng,
       placeInfo,
       currentLocation,

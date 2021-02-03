@@ -50,7 +50,7 @@ function EditInfo({ editOnModal, userinfo, photoChangeChecker }: EditInfoProp) {
         setImage(newImg.toString());
       }
     };
-    console.log(e.target.files);
+
     if (e.target.files[0]) {
       reader.readAsDataURL(e.target.files[0]); // 1. 파일을 읽어 버퍼에 저장합니다.
       setFile(e.target.files[0]); // 파일 상태 업데이트
@@ -91,14 +91,13 @@ function EditInfo({ editOnModal, userinfo, photoChangeChecker }: EditInfoProp) {
         newPassword: password,
       },
     }).then((res) => {
-      console.log("비번 변경 완료", res);
       editOnModal();
     });
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log(e.target.value);
+
     setInputForm({
       ...inputForm,
       [name]: value,
@@ -130,7 +129,6 @@ function EditInfo({ editOnModal, userinfo, photoChangeChecker }: EditInfoProp) {
         [name]: value.substring(0, value.length - 1),
       });
     }
-    console.log(e.key);
   };
 
   return (

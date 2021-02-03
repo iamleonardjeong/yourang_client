@@ -18,7 +18,6 @@ export const getLocation = async (
     })
     .then(async (latLng) => {
       // 추천장소 카테고리 선택에 따라 서버로 보낼 장소 카테고리를 정하는 로직
-      console.log("좌표", latLng);
       await axios
         .post("http://yourang-server.link:5000/google/map", {
           data: latLng,

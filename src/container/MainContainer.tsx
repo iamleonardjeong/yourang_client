@@ -13,6 +13,8 @@ const MainContainer = () => {
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isOnMypageModal, setIsOnMypageModal] = useState(false);
+  const [placeType, setPlaceType] = useState('');
+
   // 기존 state
   const [navPlaceInfo, setNavPlaceInfo] = useState({});
   const [currentPlaceInfo, setCurrentPlaceInfo] = useState({});
@@ -27,7 +29,6 @@ const MainContainer = () => {
         },
       })
         .then((res) => {
-          console.log(res);
           if (res.status === 200) {
             setIsLoggedIn(true);
           }
@@ -45,11 +46,11 @@ const MainContainer = () => {
     const navPlaceInput = input.target.defaultValue;
     if (input.key === "Enter") {
       // 장소를 입력하고 {좌표, 장소들정보 배열, 사용자가 입력한장소(string)}이 리턴 됨.
-      const placeInfo = await getLocation(navPlaceInput);
+      const placeInfo = await getLocation(navPlaceInput, placeType);
+      console.log('메인 콘테이너 장소', placeInfo);
       setNavPlaceInfo(placeInfo);
     }
   };
-  console.log("메인콘테이너 현재장소 정보", navPlaceInfo);
   // logIn modal pop
   const signInModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
@@ -85,12 +86,16 @@ const MainContainer = () => {
     signInModalCloseHandler();
   };
   const logInStatusHandler = () => {
-    console.log("이게 실행 되나요?");
     setIsLoggedIn(true);
   };
   const mainSwitchHandler = () => {
     setIsOnMypageModal(!isOnMypageModal);
   };
+
+  const getSelectedPlaceType = (placeType: string) => {
+    setPlaceType(placeType);
+  };
+
   return (
     <>
       {isSignInOpen ? (
@@ -122,6 +127,7 @@ const MainContainer = () => {
         navPlaceInfo={navPlaceInfo}
         currentPlaceInfoHandler={currentPlaceInfoHandler}
         logInStatusHandler={logInStatusHandler}
+        getSelectedPlaceType={getSelectedPlaceType}
       />
       {/* <Route exact path="/main/profile" render={() => <Mypage />} /> */}
     </>

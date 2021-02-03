@@ -1,10 +1,6 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import '../styles/Navigation.scss';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
-
-const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
-// const history = useHistory();
 
 interface NavigationProps {
   searchBarInputHandler: (value: string) => void;
@@ -43,20 +39,8 @@ function Navigation({
         />
       </div>
       <div id="navMenus">
-        {/* <div id="navProfile">
-          <Link to={{ pathname: '/main', state: currentPlaceInfo }}>지도</Link>
-          <a onClick={() => mainSwitchHandler()}>지도</a>
-        </div> */}
         <div id="navProfile">
           {isLoggedIn ? (
-            // (
-            //   <Link
-            //     to={{ pathname: '/main/profile', state: currentPlaceInfo }}
-            //     onClick={mainSwitchHandler}
-            //   >
-            //     내 정보
-            //   </Link>
-            // )
             <a onClick={() => mainSwitchHandler()}>내 정보</a>
           ) : (
             <a onClick={signInModalHandler}>로그인</a>
@@ -66,5 +50,4 @@ function Navigation({
     </header>
   );
 }
-
 export default Navigation;

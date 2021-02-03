@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Redirect, useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import '../styles/Mypage.scss';
-import PlanList from './PlanList';
 import EditInfo from './EditInfo';
-import Navigation from './Navigation';
 import Photo from '../image/photo.png';
 import axios from 'axios';
 
@@ -14,7 +12,6 @@ function Mypage({ mainSwitchHandler }: MypageProps) {
   // fake data - user info
   const location = useLocation();
   const history = useHistory();
-
   const [userinfo, setUserinfo] = useState({
     // name: "",
     userid: '',
@@ -25,18 +22,14 @@ function Mypage({ mainSwitchHandler }: MypageProps) {
   });
 
   const [isPhotoChanged, setIsPhotoChanged] = useState(false);
-
   // fake data - user info contents
   const { userid, email, phone, photo } = userinfo;
-
   // useState
   const [onModal, setOnModal] = useState(false);
-
   // user info modification pop
   const editOnModal = () => {
     setOnModal(!onModal);
   };
-
   const addDefaultSrc = (e: any) => {
     e.target.src = Photo;
   };
@@ -60,7 +53,6 @@ function Mypage({ mainSwitchHandler }: MypageProps) {
         });
       });
   }, [isPhotoChanged]);
-
   const photoChangeChecker = () => {
     setIsPhotoChanged(true);
   };
@@ -116,9 +108,7 @@ function Mypage({ mainSwitchHandler }: MypageProps) {
                 onClick={() => {
                   localStorage.removeItem('authorization');
                   localStorage.removeItem('myList');
-                  // window.location.replace('http://localhost:3000/');
-                  // window.location.replace('http://localhost:3000/');
-                  <Redirect to="/" />;
+                  history.push('/');
                 }}
               >
                 로그아웃
@@ -128,7 +118,6 @@ function Mypage({ mainSwitchHandler }: MypageProps) {
           </div>
         </div>
       </div>
-
       <div id="profileRight">
         <div id="profileRight_contents">
           <div id="profileRight_contents_titleBar">Plan List</div>
@@ -142,5 +131,4 @@ function Mypage({ mainSwitchHandler }: MypageProps) {
     </div>
   );
 }
-
 export default Mypage;

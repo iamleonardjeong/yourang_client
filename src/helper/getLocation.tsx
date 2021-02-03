@@ -26,7 +26,7 @@ export const getLocation = async (
           placeType: placeType,
         })
         .then(async (res) => {
-          placeInfo = res.data;
+          placeInfo = res.data.slice(0, 10); //응답받은 장소들
 
           const placeIds: any = [];
           placeInfo.forEach((place: any) => {

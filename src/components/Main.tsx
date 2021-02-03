@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import '../styles/Main.scss';
 import classNames from 'classnames';
 import ContentsBox from './ContentsBox';
@@ -24,7 +24,7 @@ interface menuState {
 }
 interface mainProps {
   navPlaceInfo: any;
-  curretPlaceInfoHandler: (curPlaceInfo: any) => void;
+  currentPlaceInfoHandler: (curPlaceInfo: any) => void;
   logInStatusHandler: () => void;
 }
 // myList localStorage
@@ -44,10 +44,11 @@ let data: myList[] = JSON.parse(localStorage.getItem('myList') || '[]');
 // main component
 function Main({
   navPlaceInfo,
-  curretPlaceInfoHandler,
+  currentPlaceInfoHandler,
   logInStatusHandler,
 }: mainProps) {
   const location = useLocation<any>();
+  const history = useHistory();
   const [modalState, setModalState] = useState(false); ///////체크
   const [placeInfo, setPlaceInfo] = useState<any>([]);
   const [latLng, setLatLng] = useState<any>({});
@@ -58,6 +59,7 @@ function Main({
     count: 0,
     data: [],
   });
+
   const [emailInput, setEmailInput] = useState(true);
   const [emailAddress, setEmailAddress] = useState('');
   // const [placeTypeSelect, setPlaceTypeSelect] = useState('');
@@ -119,6 +121,9 @@ function Main({
     }
   }, []);
 
+  console.log('메인페이지 정보들', placeInfo, currentLocation, latLng);
+  console.log('메인 페이지 로케이션 스테이트', location.state);
+
   // Home -> Main으로 올 때만 발생하는 맵, 콘텐츠 렌더하는 useEffect
   useEffect(() => {
     if (location.state.latLng !== undefined) {
@@ -130,8 +135,18 @@ function Main({
         data: myList.data.concat([...location.state.placeInfo]),
       });
       setCurrentLocation(location.state.currentLocation);
+      currentPlaceInfoHandler(location.state.placeInfo);
+    } else {
+      setLatLng(navPlaceInfo.latLng);
+      setPlaceInfo(navPlaceInfo.placeInfo);
+      // 리스트 셋업
+      setMyList({
+        ...myList,
+        data: myList.data.concat([...location.state.placeInfo]),
+      });
+      setCurrentLocation(navPlaceInfo.currentLocation);
     }
-  }, [location.state.latLng, location.state.places]);
+  }, [location.state.latLng, location.state.placeInfo]);
 
   // latLng(좌표) 위치변화가 있을 때 만 발생하는, 새 지도를 렌더하는 useEffect.
   useEffect(() => {
@@ -142,16 +157,16 @@ function Main({
   useEffect(() => {
     if (navPlaceInfo.latLng !== undefined) {
       const { latLng, placeInfo, currentLocation } = navPlaceInfo;
-      console.log(latLng, placeInfo, currentLocation);
       setPlaceInfo(placeInfo);
       setLatLng(latLng);
       setCurrentLocation(currentLocation);
+      history.replace('/main', { latLng, placeInfo, currentLocation });
     }
   }, [navPlaceInfo]);
 
   // 새로운 장소를 검색하게 되면, 무조건 Main Container의 currentPlaceInfo state를 변경하기 위한 useEffect. 이게 필요한 상황이 한번(마이페이지 -> 메인 갈 때) 있긴한데, 이게 꼭 필요한지 생각해봐야 할 것 같음.
   useEffect(() => {
-    curretPlaceInfoHandler({ latLng, placeInfo, currentLocation });
+    currentPlaceInfoHandler({ latLng, placeInfo, currentLocation });
   }, [latLng, placeInfo, currentLocation]);
 
   // 장소 타입을 선택하면 카테고리에 맞게 검색해서 맵, 콘텐츠를 렌더하는 함수
@@ -163,6 +178,8 @@ function Main({
     setPlaceInfo(placeInfo);
     setLatLng(latLng);
   };
+
+  console.log('로케이션 스테이트', location.state);
 
   //콘텐츠 박스의 img가 onLoad되면 상태변경 -> re-render 유도
   const imgStatusHandler = () => {

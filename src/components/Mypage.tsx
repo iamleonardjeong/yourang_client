@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Redirect, useHistory, useLocation } from 'react-router-dom';
 import '../styles/Mypage.scss';
 import PlanList from './PlanList';
 import EditInfo from './EditInfo';
+import Navigation from './Navigation';
 import Photo from '../image/photo.png';
 import axios from 'axios';
 
-function Mypage() {
+function Mypage(currentPlaceInfo: any) {
   // fake data - user info
   const location = useLocation();
+  const history = useHistory();
+
   console.log('마이페이지로 넘어온 정보', location.state);
+
   const [userinfo, setUserinfo] = useState({
     // name: "",
     userid: '',
@@ -35,6 +39,7 @@ function Mypage() {
   const addDefaultSrc = (e: any) => {
     e.target.src = Photo;
   };
+  console.log('마이페이지 커렌트 프렐이스', currentPlaceInfo);
 
   useEffect(() => {
     const authorization = localStorage.getItem('authorization');
@@ -105,7 +110,18 @@ function Mypage() {
         </div>
       </div>
       <div id="profileRight_empty">
-        <button id="">로그아웃</button>
+        <button
+          id=""
+          onClick={() => {
+            localStorage.removeItem('authorization');
+            localStorage.removeItem('myList');
+            // window.location.replace('http://localhost:3000/');
+            // window.location.replace('http://localhost:3000/');
+            <Redirect to="/" />;
+          }}
+        >
+          로그아웃
+        </button>
         <button id="">회원탈퇴</button>
       </div>
       <div id="profileRight">

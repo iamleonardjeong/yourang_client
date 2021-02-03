@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Mypage from '../components/Mypage';
 import Main from '../components/Main';
 import Navigation from '../components/Navigation';
@@ -13,6 +13,7 @@ const MainContainer = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+  const [isMainOrMyPage, setIsMainOrMyPage] = useState(false);
 
   // 기존 state
   const [navPlaceInfo, setNavPlaceInfo] = useState({});
@@ -40,7 +41,7 @@ const MainContainer = () => {
     }
   });
 
-  const curretPlaceInfoHandler = (curPlaceInfo: any) => {
+  const currentPlaceInfoHandler = (curPlaceInfo: any) => {
     setCurrentPlaceInfo(curPlaceInfo);
   };
 
@@ -49,11 +50,14 @@ const MainContainer = () => {
     const navPlaceInput = input.target.defaultValue;
 
     if (input.key === 'Enter') {
-      // 장소릃 입력하고 {좌표, 장소들정보 배열, 사용자가 입력한장소(string)}이 리턴 됨.
+      // 장소를 입력하고 {좌표, 장소들정보 배열, 사용자가 입력한장소(string)}이 리턴 됨.
       const placeInfo = await getLocation(navPlaceInput);
       setNavPlaceInfo(placeInfo);
+      mainSwitchHandler();
     }
   };
+
+  console.log('메인콘테이너 현재장소 정보', navPlaceInfo);
 
   // logIn modal pop
   const signInModalHandler = (e: React.MouseEvent<HTMLElement>) => {
@@ -99,6 +103,10 @@ const MainContainer = () => {
     setIsLoggedIn(true);
   };
 
+  const mainSwitchHandler = () => {
+    setIsMainOrMyPage(!isMainOrMyPage);
+  };
+
   return (
     <>
       {isSignInOpen ? (
@@ -117,26 +125,23 @@ const MainContainer = () => {
         />
       ) : null}
 
-      <Router>
-        <Navigation
-          searchBarInputHandler={searchBarInputHandler}
-          currentPlaceInfo={currentPlaceInfo}
-          isLoggedIn={isLoggedIn}
-          signInModalHandler={signInModalHandler}
-        />
-        <Route
-          exact
-          path="/main"
-          render={() => (
-            <Main
-              navPlaceInfo={navPlaceInfo}
-              curretPlaceInfoHandler={curretPlaceInfoHandler}
-              logInStatusHandler={logInStatusHandler}
-            />
-          )}
-        />
-        <Route exact path="/main/profile" render={() => <Mypage />} />
-      </Router>
+      <Navigation
+        searchBarInputHandler={searchBarInputHandler}
+        currentPlaceInfo={currentPlaceInfo}
+        isLoggedIn={isLoggedIn}
+        signInModalHandler={signInModalHandler}
+        mainSwitchHandler={mainSwitchHandler}
+      />
+
+      {isMainOrMyPage ? <Mypage /> : null}
+
+      <Main
+        navPlaceInfo={navPlaceInfo}
+        currentPlaceInfoHandler={currentPlaceInfoHandler}
+        logInStatusHandler={logInStatusHandler}
+      />
+
+      {/* <Route exact path="/main/profile" render={() => <Mypage />} /> */}
     </>
   );
 };

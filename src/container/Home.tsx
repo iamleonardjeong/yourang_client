@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Redirect, useHistory, withRouter } from 'react-router-dom';
 import '../styles/Home.scss';
 import BGMusic from '../components/BGMusic';
 import SignInModal from '../components/SignInModal';
@@ -17,6 +17,14 @@ function Home() {
 
   // useHistory
   const history = useHistory();
+
+  // useEffect(() => {
+  //   // 백버튼 누르면 다시 홈 콤포넌트로 오도록 만드는 로직
+  //   window.history.pushState(null, document.title, location.href);
+  //   window.addEventListener('popstate', function (event) {
+  //     window.history.pushState(null, document.title, location.href);
+  //   });
+  // });
 
   // Input Change
   const onChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
@@ -135,4 +143,4 @@ function Home() {
     </div>
   );
 }
-export default Home;
+export default withRouter(Home);

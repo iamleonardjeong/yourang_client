@@ -80,6 +80,7 @@ function SignInModal({
       })
       .then((res) => {
         if (res.status === 200) {
+          localStorage.setItem('authorization', res.data.authorization);
           loginSuccessHandler();
         }
       })

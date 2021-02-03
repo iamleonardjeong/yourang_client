@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Redirect, useHistory, withRouter } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useHistory, withRouter } from 'react-router-dom';
 import '../styles/Home.scss';
 import BGMusic from '../components/BGMusic';
 import SignInModal from '../components/SignInModal';

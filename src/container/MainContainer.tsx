@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Mypage from "../components/Mypage";
-import Main from "../components/Main";
-import Navigation from "../components/Navigation";
-import { getLocation } from "../helper/getLocation";
-import SignInModal from "../components/SignInModal";
-import SignUpModal from "../components/SignUpModal";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import Mypage from '../components/Mypage';
+import Main from '../components/Main';
+import Navigation from '../components/Navigation';
+import { getLocation } from '../helper/getLocation';
+import SignInModal from '../components/SignInModal';
+import SignUpModal from '../components/SignUpModal';
+import axios from 'axios';
+
 const MainContainer = () => {
   // fake login state
   const [isLoggedIn, setIsLoggedIn] = useState(false);

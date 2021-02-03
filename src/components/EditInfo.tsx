@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import "../styles/EditInfo.scss";
 import { useHistory } from "react-router-dom";
-import Photo from "../image/photo.png";
 import axios from "axios";
+import Photo from "../image/photo.png";
 
 type EditInfoProp = {
   editOnModal: () => void;

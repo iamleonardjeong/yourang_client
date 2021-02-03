@@ -43,10 +43,10 @@ function Navigation({
         />
       </div>
       <div id="navMenus">
-        <div id="navProfile">
-          {/* <Link to={{ pathname: '/main', state: currentPlaceInfo }}>지도</Link> */}
+        {/* <div id="navProfile">
+          <Link to={{ pathname: '/main', state: currentPlaceInfo }}>지도</Link>
           <a onClick={() => mainSwitchHandler()}>지도</a>
-        </div>
+        </div> */}
         <div id="navProfile">
           {isLoggedIn ? (
             // (

@@ -53,7 +53,6 @@ const MainContainer = () => {
       // 장소를 입력하고 {좌표, 장소들정보 배열, 사용자가 입력한장소(string)}이 리턴 됨.
       const placeInfo = await getLocation(navPlaceInput);
       setNavPlaceInfo(placeInfo);
-      mainSwitchHandler();
     }
   };
 

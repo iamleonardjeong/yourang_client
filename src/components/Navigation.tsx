@@ -11,6 +11,7 @@ interface NavigationProps {
   currentPlaceInfo: any;
   isLoggedIn: boolean;
   signInModalHandler: (e: React.MouseEvent<HTMLElement>) => void;
+  mainSwitchHandler: () => void;
 }
 
 function Navigation({
@@ -18,6 +19,7 @@ function Navigation({
   currentPlaceInfo,
   isLoggedIn,
   signInModalHandler,
+  mainSwitchHandler,
 }: NavigationProps) {
   const [value, setValue] = useState('');
 
@@ -42,13 +44,20 @@ function Navigation({
       </div>
       <div id="navMenus">
         <div id="navProfile">
-          <Link to={{ pathname: '/main', state: currentPlaceInfo }}>지도</Link>
+          {/* <Link to={{ pathname: '/main', state: currentPlaceInfo }}>지도</Link> */}
+          <a onClick={() => mainSwitchHandler()}>지도</a>
         </div>
         <div id="navProfile">
           {isLoggedIn ? (
-            <Link to={{ pathname: '/main/profile', state: currentPlaceInfo }}>
-              내 정보
-            </Link>
+            // (
+            //   <Link
+            //     to={{ pathname: '/main/profile', state: currentPlaceInfo }}
+            //     onClick={mainSwitchHandler}
+            //   >
+            //     내 정보
+            //   </Link>
+            // )
+            <a onClick={() => mainSwitchHandler()}>내 정보</a>
           ) : (
             <a onClick={signInModalHandler}>로그인</a>
           )}

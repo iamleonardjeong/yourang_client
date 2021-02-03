@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState } from 'react';
 import '../styles/WithdrawModal.scss';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';

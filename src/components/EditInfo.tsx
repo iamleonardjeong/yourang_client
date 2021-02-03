@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import '../styles/EditInfo.scss';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';

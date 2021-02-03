@@ -1,4 +1,4 @@
-import React, { MouseEvent, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import '../styles/ContentsBox.scss';
 import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 interface ContentsBoxProps {

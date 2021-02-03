@@ -9,7 +9,6 @@ interface ModalProps {
 const apiKey = process.env.REACT_APP_GOOGLE_MAP_API;
 
 function Modal({ closeModalState, place }: ModalProps) {
-  console.log('모달안에서 place가 넘어오는지 확인', place);
   const {
     photoUrl,
     detail: {

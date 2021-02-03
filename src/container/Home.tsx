@@ -37,7 +37,6 @@ function Home() {
     e: React.KeyboardEvent<HTMLInputElement>
   ) => {
     if (e.key === 'Enter') {
-      console.log('엔터가 몇번 눌렸나?', onEnterCount);
       if (onEnterCount === 0) {
         onEnterCount++;
         const { latLng, placeInfo } = await getLocation(currentLocation);

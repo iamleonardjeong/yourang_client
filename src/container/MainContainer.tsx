@@ -18,13 +18,12 @@ const MainContainer = () => {
   // 기존 state
   const [navPlaceInfo, setNavPlaceInfo] = useState({});
   const [currentPlaceInfo, setCurrentPlaceInfo] = useState({});
-
   useEffect(() => {
-    const authorization = localStorage.getItem('authorization');
+    const authorization = localStorage.getItem("authorization");
     if (authorization) {
       axios({
-        method: 'post',
-        url: 'http://yourang-server.link:5000/user/auth',
+        method: "post",
+        url: "http://yourang-server.link:5000/user/auth",
         headers: {
           authorization: authorization,
         },
@@ -39,66 +38,56 @@ const MainContainer = () => {
       setIsLoggedIn(false);
     }
   });
-
   const currentPlaceInfoHandler = (curPlaceInfo: any) => {
     setCurrentPlaceInfo(curPlaceInfo);
   };
-
   const searchBarInputHandler = async (input: any) => {
     //유저가 Main콤포넌트 Nav바에 검색한 장소
     const navPlaceInput = input.target.defaultValue;
-
-    if (input.key === 'Enter') {
+    if (input.key === "Enter") {
       // 장소를 입력하고 {좌표, 장소들정보 배열, 사용자가 입력한장소(string)}이 리턴 됨.
       const placeInfo = await getLocation(navPlaceInput, placeType);
       console.log('메인 콘테이너 장소', placeInfo);
       setNavPlaceInfo(placeInfo);
     }
   };
-
   // logIn modal pop
   const signInModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
-    if (target === '로그인 페이지로') {
+    if (target === "로그인 페이지로") {
       setIsSignUpOpen(!isSignUpOpen);
       setIsSignInOpen(!isSignInOpen);
     } else {
       setIsSignInOpen(!isSignInOpen);
     }
   };
-
   const signInModalCloseHandler = () => {
     setIsSignInOpen(!isSignInOpen);
   };
-
   // signUp modal pop
   const signUpModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
-    if (target === '+') {
+    if (target === "+") {
       setIsSignUpOpen(!isSignUpOpen);
-    } else if (target === '회원가입') {
+    } else if (target === "회원가입") {
       setIsSignUpOpen(!isSignUpOpen);
       setIsSignInOpen(!isSignInOpen);
     }
   };
-
   const modalSwitchHandler = () => {
     setIsSignUpOpen(!isSignUpOpen);
     setIsSignInOpen(!isSignInOpen);
   };
-
   // "메인  콘테이너에서 로그인하면 프라하를 검색하고 다시 맵을 로딩";
   const loginSuccessHandler = async () => {
-    const placeInfo = await getLocation('프라하');
+    const placeInfo = await getLocation("프라하");
     setNavPlaceInfo(placeInfo);
     setIsLoggedIn(!isLoggedIn);
     signInModalCloseHandler();
   };
-
   const logInStatusHandler = () => {
     setIsLoggedIn(true);
   };
-
   const mainSwitchHandler = () => {
     setIsOnMypageModal(!isOnMypageModal);
   };
@@ -124,7 +113,6 @@ const MainContainer = () => {
           modalSwitchHandler={modalSwitchHandler}
         />
       ) : null}
-
       <Navigation
         searchBarInputHandler={searchBarInputHandler}
         currentPlaceInfo={currentPlaceInfo}
@@ -132,21 +120,17 @@ const MainContainer = () => {
         signInModalHandler={signInModalHandler}
         mainSwitchHandler={mainSwitchHandler}
       />
-
       {isOnMypageModal ? (
         <Mypage mainSwitchHandler={mainSwitchHandler} />
       ) : null}
-
       <Main
         navPlaceInfo={navPlaceInfo}
         currentPlaceInfoHandler={currentPlaceInfoHandler}
         logInStatusHandler={logInStatusHandler}
         getSelectedPlaceType={getSelectedPlaceType}
       />
-
       {/* <Route exact path="/main/profile" render={() => <Mypage />} /> */}
     </>
   );
 };
-
 export default MainContainer;

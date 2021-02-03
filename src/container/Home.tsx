@@ -13,7 +13,7 @@ function Home() {
   // useState
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState('프라하');
+  const [currentLocation, setCurrentLocation] = useState("프라하");
 
   // useHistory
   const history = useHistory();
@@ -40,7 +40,7 @@ function Home() {
       if (onEnterCount === 0) {
         onEnterCount++;
         const { latLng, placeInfo } = await getLocation(currentLocation);
-        history.push('/main', { latLng, placeInfo, currentLocation });
+        history.push("/main", { latLng, placeInfo, currentLocation });
       }
     }
   };
@@ -48,13 +48,13 @@ function Home() {
   // push main page - 체험하기 버튼
   const onExplore = async () => {
     const { latLng, placeInfo, currentLocation } = await getLocation();
-    history.push('/main', { latLng, placeInfo, currentLocation });
+    history.push("/main", { latLng, placeInfo, currentLocation });
   };
 
   // logIn modal pop
   const signInModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
-    if (target === '로그인 페이지로') {
+    if (target === "로그인 페이지로") {
       setIsSignUpOpen(!isSignUpOpen);
       setIsSignInOpen(!isSignInOpen);
     } else {
@@ -65,9 +65,9 @@ function Home() {
   // signUp modal pop
   const signUpModalHandler = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.currentTarget.textContent;
-    if (target === '+') {
+    if (target === "+") {
       setIsSignUpOpen(!isSignUpOpen);
-    } else if (target === '회원가입') {
+    } else if (target === "회원가입") {
       setIsSignUpOpen(!isSignUpOpen);
       setIsSignInOpen(!isSignInOpen);
     }
@@ -83,7 +83,7 @@ function Home() {
   const loginSuccessHandler = async () => {
     const { latLng, placeInfo, currentLocation } = await getLocation();
     const isLogin = true;
-    history.push('/main', {
+    history.push("/main", {
       latLng,
       placeInfo,
       currentLocation,

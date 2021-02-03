@@ -9,7 +9,6 @@ interface NavigationProps {
   signInModalHandler: (e: React.MouseEvent<HTMLElement>) => void;
   mainSwitchHandler: () => void;
 }
-
 function Navigation({
   searchBarInputHandler,
   currentPlaceInfo,
@@ -17,16 +16,14 @@ function Navigation({
   signInModalHandler,
   mainSwitchHandler,
 }: NavigationProps) {
-  const [value, setValue] = useState('');
-
+  const [value, setValue] = useState("");
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
-
   return (
     <header>
       <div id="logo">
-        <Link to={{ pathname: '/main', state: currentPlaceInfo }}>YouRang</Link>
+        <Link to={{ pathname: "/main", state: currentPlaceInfo }}>YouRang</Link>
       </div>
       <div id="navSearch">
         <input

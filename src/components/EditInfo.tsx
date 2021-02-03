@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react';
-import '../styles/EditInfo.scss';
-import { useHistory } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useRef } from "react";
+import "../styles/EditInfo.scss";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import Photo from "../image/photo.png";
 
 type EditInfoProp = {
   editOnModal: () => void;
@@ -16,13 +17,13 @@ type EditInfoProp = {
 };
 
 function EditInfo({ editOnModal, userinfo, photoChangeChecker }: EditInfoProp) {
-  const authorization = localStorage.getItem('authorization');
+  const authorization = localStorage.getItem("authorization");
   const [inputForm, setInputForm] = useState({
-    editEmail: '',
-    currentPassword: '',
-    password: '',
-    inspect: '',
-    editPhone: '',
+    editEmail: "",
+    currentPassword: "",
+    password: "",
+    inspect: "",
+    editPhone: "",
   });
 
   const history = useHistory();
@@ -37,7 +38,7 @@ function EditInfo({ editOnModal, userinfo, photoChangeChecker }: EditInfoProp) {
   } = inputForm;
   const { email } = userinfo;
 
-  const [img, setImage] = useState<any>('');
+  const [img, setImage] = useState<any>("");
   const [file, setFile] = useState<any>(null);
 
   const fileChangedHandler = (e: any) => {
@@ -57,26 +58,30 @@ function EditInfo({ editOnModal, userinfo, photoChangeChecker }: EditInfoProp) {
   };
 
   const onClickHandler = (e: any) => {
-    let form = new FormData();
-    // const authorization = localStorage.getItem("authorization");
-    form.append('image', file, file.name);
-
-    axios
-      .post('http://yourang-server.link:5000/user/modify-photo', form, {
-        headers: {
-          authorization: authorization,
-        },
-      })
-      .then((res) => {
-        photoChangeChecker();
-      });
+    if (img.length === 0) {
+      alert("사진을 추가해주세요");
+    } else {
+      let form = new FormData();
+      // const authorization = localStorage.getItem("authorization");
+      form.append("image", file, file.name);
+      axios
+        .post("http://yourang-server.link:5000/user/modify-photo", form, {
+          headers: {
+            authorization: authorization,
+          },
+        })
+        .then((res) => {
+          localStorage.setItem("authorization", res.data.authorization);
+          photoChangeChecker();
+        });
+    }
   };
 
   const submitHander = () => {
     // const authorization = localStorage.getItem("authorization");
     axios({
-      url: 'http://yourang-server.link:5000/user/modify-pass',
-      method: 'post',
+      url: "http://yourang-server.link:5000/user/modify-pass",
+      method: "post",
       headers: {
         authorization: authorization,
       },
@@ -101,10 +106,10 @@ function EditInfo({ editOnModal, userinfo, photoChangeChecker }: EditInfoProp) {
   const mobileInputHander = (e: React.KeyboardEvent<HTMLInputElement>) => {
     // mobile전용 유효성 검사 및 입력제한 로직(출력 예시: 000-0000-0000 숫자로만 입력됨. "-"는 자동입력 됨)
     const { name, value, maxLength } = e.currentTarget;
-    let reg = new RegExp('^[0-9]');
+    let reg = new RegExp("^[0-9]");
     if (reg.test(e.key)) {
       if (value.length === 3 || value.length === 8) {
-        setInputForm({ ...inputForm, [name]: value + '-' + e.key });
+        setInputForm({ ...inputForm, [name]: value + "-" + e.key });
       } else {
         setInputForm({
           ...inputForm,
@@ -113,11 +118,11 @@ function EditInfo({ editOnModal, userinfo, photoChangeChecker }: EditInfoProp) {
       }
     }
 
-    if (e.key === 'Backspace' && value.length === 9) {
+    if (e.key === "Backspace" && value.length === 9) {
       setInputForm({ ...inputForm, [name]: value.substring(0, 8) });
-    } else if (e.key === 'Backspace' && value.length === 4) {
+    } else if (e.key === "Backspace" && value.length === 4) {
       setInputForm({ ...inputForm, [name]: value.substring(0, 3) });
-    } else if (e.key === 'Backspace') {
+    } else if (e.key === "Backspace") {
       setInputForm({
         ...inputForm,
         [name]: value.substring(0, value.length - 1),
@@ -150,7 +155,7 @@ function EditInfo({ editOnModal, userinfo, photoChangeChecker }: EditInfoProp) {
                 onChange={fileChangedHandler}
               />
               {img.length === 0 ? (
-                <div className="profile_photo"></div>
+                <img className="profile_photo" src={Photo}></img>
               ) : (
                 <img src={img}></img>
               )}
@@ -188,7 +193,7 @@ function EditInfo({ editOnModal, userinfo, photoChangeChecker }: EditInfoProp) {
                 작성된 비밀번호가 서로 다릅니다
               </div>
             ) : (
-              ''
+              ""
             )}
 
             <div className="editinfo_btn_container">

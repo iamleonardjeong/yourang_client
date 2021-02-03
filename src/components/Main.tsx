@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
-import '../styles/Main.scss';
-import classNames from 'classnames';
-import ContentsBox from './ContentsBox';
-import { GrSend } from 'react-icons/gr';
-import Modal from './Modal';
-import axios from 'axios';
-import { getLocation } from '../helper/getLocation';
-import setMailStyle from '../helper/setMailStyle';
-import MyContentsBox from './MyContentsBox';
-import emailjs from 'emailjs-com';
+import React, { useEffect, useState } from "react";
+import { useLocation, useHistory } from "react-router-dom";
+import "../styles/Main.scss";
+import classNames from "classnames";
+import ContentsBox from "./ContentsBox";
+import { GrSend } from "react-icons/gr";
+import Modal from "./Modal";
+import axios from "axios";
+import { getLocation } from "../helper/getLocation";
+import setMailStyle from "../helper/setMailStyle";
+import MyContentsBox from "./MyContentsBox";
+import emailjs from "emailjs-com";
 
 declare global {
   interface Window {
@@ -40,7 +40,7 @@ interface myList {
 }
 
 // localStorage
-let data: myList[] = JSON.parse(localStorage.getItem('myList') || '[]');
+let data: myList[] = JSON.parse(localStorage.getItem("myList") || "[]");
 
 // main component
 function Main({
@@ -56,14 +56,14 @@ function Main({
   const [placeInfo, setPlaceInfo] = useState<any>([]);
   const [latLng, setLatLng] = useState<any>({});
   const [imgStatus, setImgStatus] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState('');
+  const [currentLocation, setCurrentLocation] = useState("");
   const [modalInfo, setModalInfo] = useState({});
   const [myList, setMyList] = useState<any>({
     count: 0,
     data: [],
   });
   const [emailInput, setEmailInput] = useState(true);
-  const [emailAddress, setEmailAddress] = useState('');
+  const [emailAddress, setEmailAddress] = useState("");
 
   //Home 콤포넨트에서 입력된 장소 이름이 현재 콤포넌트로 잘 넘어오는지 테스트 하기 위함
   const [menuState, setMenuState] = useState<menuState>({
@@ -96,10 +96,10 @@ function Main({
       },
     };
     const map = new window.google.maps.Map(
-      document.getElementById('map') as HTMLElement,
+      document.getElementById("map") as HTMLElement,
       mapOptions
     );
-    axios.post('http://yourang-server.link:5000/google/map', {
+    axios.post("http://yourang-server.link:5000/google/map", {
       data: latLng,
       withCredentials: true,
     });
@@ -157,7 +157,7 @@ function Main({
       setPlaceInfo(placeInfo);
       setLatLng(latLng);
       setCurrentLocation(currentLocation);
-      history.replace('/main', { latLng, placeInfo, currentLocation });
+      history.replace("/main", { latLng, placeInfo, currentLocation });
     }
   }, [navPlaceInfo]);
 
@@ -184,7 +184,7 @@ function Main({
 
   // leftContainer MenuTap State
   const onClick = async (e: string) => {
-    if (e !== 'myListTap') {
+    if (e !== "myListTap") {
       placeTypeHandler(e);
     }
 
@@ -230,10 +230,10 @@ function Main({
     data.push({
       title: title,
       desc: desc,
-      imgSrc: img || 'No Images',
-      website: website || 'no website',
-      phone: phone || 'no phone number',
-      address: address || 'no address',
+      imgSrc: img || "No Images",
+      website: website || "no website",
+      phone: phone || "no phone number",
+      address: address || "no address",
     });
 
     setMyList({
@@ -241,7 +241,7 @@ function Main({
       count: myList.count + 1,
     });
 
-    localStorage.setItem('myList', JSON.stringify(data));
+    localStorage.setItem("myList", JSON.stringify(data));
   };
 
   // myList remove
@@ -251,20 +251,20 @@ function Main({
       ...myList,
       count: myList.count + 1,
     });
-    localStorage.setItem('myList', JSON.stringify(data));
+    localStorage.setItem("myList", JSON.stringify(data));
   };
 
   // 입력된 이메일로 MyList 전송. to_name은 향 후 변수로 바꿔야 함.
   const sendEmail = () => {
     emailjs.send(
-      'service_9v5cs7d',
-      'template_xcmjbtw',
+      "service_9v5cs7d",
+      "template_xcmjbtw",
       {
         to_email: emailAddress,
-        to_name: '박상록',
+        to_name: "박상록",
         message: setMailStyle(data), // 메일 css스타일을 in-line으로 지정해준 모듈. helper폴더 setMailStyle 함수 참고.
       },
-      'user_viAPjBua2EXqACiVlL88n'
+      "user_viAPjBua2EXqACiVlL88n"
     );
   };
 
@@ -277,14 +277,14 @@ function Main({
       <div id="leftContainer">
         <ul id="leftMenu">
           <li
-            onClick={() => onClick('restaurant')}
+            onClick={() => onClick("restaurant")}
             value="restaurant"
             className={classNames({ restaurant: menuState.restaurant })}
           >
             맛집
           </li>
           <li
-            onClick={() => onClick('tourist_attraction')}
+            onClick={() => onClick("tourist_attraction")}
             value="tourist_attraction"
             className={classNames({
               tourist_attraction: menuState.tourist_attraction,
@@ -293,14 +293,14 @@ function Main({
             플레이스
           </li>
           <li
-            onClick={() => onClick('cafe')}
+            onClick={() => onClick("cafe")}
             value="cafe"
             className={classNames({ cafe: menuState.cafe })}
           >
             카페
           </li>
           <li
-            onClick={() => onClick('myListTap')}
+            onClick={() => onClick("myListTap")}
             value="myListTap"
             className={classNames({ myListTap: menuState.myListTap })}
           >
@@ -352,7 +352,7 @@ function Main({
                   />
                 );
               })
-            : ''}
+            : ""}
           <div
             className={classNames({
               inputState: emailInput,
@@ -382,7 +382,7 @@ function Main({
                   <GrSend
                     size="18"
                     // color="#008f7a"
-                    style={{ color: '#008f7a' }}
+                    style={{ color: "#008f7a" }}
                     onClick={sendEmail}
                   />
                 </div>

@@ -1,24 +1,25 @@
-import React from "react";
+import React from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
-} from "react-router-dom";
-import Mypage from "./components/Mypage";
-import Home from "./container/Home";
-import MainContainer from "./container/MainContainer";
+} from 'react-router-dom';
+import Mypage from './components/Mypage';
+import Home from './container/Home';
+import MainContainer from './container/MainContainer';
 
 function App() {
   return (
     <>
-      <Router>
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/main" exact component={MainContainer} />
-          <Redirect path="*" to="/main" />
-        </Switch>
-      </Router>
+      {/* <Router> */}
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/main" render={() => <MainContainer />} />
+        <Route exact path="/main/profile" render={() => <Mypage />} />
+        {/* <Redirect path="*" to="/main" /> */}
+      </Switch>
+      {/* </Router> */}
     </>
   );
 }

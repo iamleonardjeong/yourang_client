@@ -42,7 +42,6 @@ export const getLocation = async (
             })
             .then((res) => {
               placeInfo = res.data;
-              console.log(placeInfo);
               // 다음 페이지로 이동
               //   history.push('/main', { latLng, placeInfo, placeInput });
             });

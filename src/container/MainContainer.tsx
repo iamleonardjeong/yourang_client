@@ -14,6 +14,7 @@ const MainContainer = () => {
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isOnMypageModal, setIsOnMypageModal] = useState(false);
+  const [placeType, setPlaceType] = useState('');
 
   // 기존 state
   const [navPlaceInfo, setNavPlaceInfo] = useState({});
@@ -50,7 +51,8 @@ const MainContainer = () => {
 
     if (input.key === 'Enter') {
       // 장소를 입력하고 {좌표, 장소들정보 배열, 사용자가 입력한장소(string)}이 리턴 됨.
-      const placeInfo = await getLocation(navPlaceInput);
+      const placeInfo = await getLocation(navPlaceInput, placeType);
+      console.log('메인 콘테이너 장소', placeInfo);
       setNavPlaceInfo(placeInfo);
     }
   };
@@ -102,6 +104,10 @@ const MainContainer = () => {
     setIsOnMypageModal(!isOnMypageModal);
   };
 
+  const getSelectedPlaceType = (placeType: string) => {
+    setPlaceType(placeType);
+  };
+
   return (
     <>
       {isSignInOpen ? (
@@ -136,6 +142,7 @@ const MainContainer = () => {
         navPlaceInfo={navPlaceInfo}
         currentPlaceInfoHandler={currentPlaceInfoHandler}
         logInStatusHandler={logInStatusHandler}
+        getSelectedPlaceType={getSelectedPlaceType}
       />
 
       {/* <Route exact path="/main/profile" render={() => <Mypage />} /> */}

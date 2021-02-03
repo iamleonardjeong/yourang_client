@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Redirect, useHistory, useLocation } from 'react-router-dom';
 import '../styles/Mypage.scss';
 import PlanList from './PlanList';
 import EditInfo from './EditInfo';
+import Navigation from './Navigation';
 import Photo from '../image/photo.png';
 import axios from 'axios';
 
-function Mypage() {
+interface MypageProps {
+  mainSwitchHandler: () => void;
+}
+function Mypage({ mainSwitchHandler }: MypageProps) {
   // fake data - user info
   const location = useLocation();
+  const history = useHistory();
+
   console.log('마이페이지로 넘어온 정보', location.state);
+
   const [userinfo, setUserinfo] = useState({
     // name: "",
     userid: '',
@@ -35,6 +42,7 @@ function Mypage() {
   const addDefaultSrc = (e: any) => {
     e.target.src = Photo;
   };
+  // console.log('마이페이지 커렌트 프렐이스', currentPlaceInfo);
 
   useEffect(() => {
     const authorization = localStorage.getItem('authorization');
@@ -75,20 +83,29 @@ function Mypage() {
         />
       )}
       <div id="profileLeft">
-        <div id="profileLeft_profile">
-          <img
-            id="profileLeft_profile_photo"
-            src={photo}
-            onError={addDefaultSrc}
-          />
-          <h1 id="profileLeft_profile_name">{userid}</h1>
-          <button id="profileLeft_profile_editBtn" onClick={editOnModal}>
-            EDIT
-          </button>
-        </div>
         <div id="profileLeft_myInfo">
-          <div id="profileLeft_myInfo_titleBar">User info</div>
+          <div id="profileLeft_myInfo_titleBar">
+            <div
+              id="profileLeft_myInfo_titleBar_title_closeBtn"
+              onClick={mainSwitchHandler}
+            >
+              +
+            </div>
+            <div id="profileLeft_myInfo_titleBar_title">내 정보</div>
+            <div id="profileLeft_myInfo_titleBar_empty"></div>
+          </div>
           <div id="profileLeft_myInfo_detail">
+            <div id="profileLeft_profile_userInfo">
+              <img
+                id="profileLeft_profile_photo"
+                src={photo}
+                onError={addDefaultSrc}
+              />
+              <h1 id="profileLeft_profile_name">{userid}</h1>
+              <button id="profileLeft_profile_editBtn" onClick={editOnModal}>
+                EDIT
+              </button>
+            </div>
             <div id="profileLeft_myInfo_detail_userId">
               <div id="detail_title">아이디</div>
               <div>{userid}</div>
@@ -101,13 +118,25 @@ function Mypage() {
               <div id="detail_phone">전화번호</div>
               <div>{phone}</div>
             </div>
+            <div id="profileRight_empty">
+              <button
+                id=""
+                onClick={() => {
+                  localStorage.removeItem('authorization');
+                  localStorage.removeItem('myList');
+                  // window.location.replace('http://localhost:3000/');
+                  // window.location.replace('http://localhost:3000/');
+                  <Redirect to="/" />;
+                }}
+              >
+                로그아웃
+              </button>
+              <button id="">회원탈퇴</button>
+            </div>
           </div>
         </div>
       </div>
-      <div id="profileRight_empty">
-        <button id="">로그아웃</button>
-        <button id="">회원탈퇴</button>
-      </div>
+
       <div id="profileRight">
         <div id="profileRight_contents">
           <div id="profileRight_contents_titleBar">Plan List</div>

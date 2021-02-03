@@ -30,7 +30,6 @@ const MainContainer = () => {
         },
       })
         .then((res) => {
-          console.log(res);
           if (res.status === 200) {
             setIsLoggedIn(true);
           }
@@ -55,8 +54,6 @@ const MainContainer = () => {
       setNavPlaceInfo(placeInfo);
     }
   };
-
-  console.log('메인콘테이너 현재장소 정보', navPlaceInfo);
 
   // logIn modal pop
   const signInModalHandler = (e: React.MouseEvent<HTMLElement>) => {
@@ -98,7 +95,6 @@ const MainContainer = () => {
   };
 
   const logInStatusHandler = () => {
-    console.log('이게 실행 되나요?');
     setIsLoggedIn(true);
   };
 

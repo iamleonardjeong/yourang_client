@@ -15,8 +15,6 @@ function Mypage({ mainSwitchHandler }: MypageProps) {
   const location = useLocation();
   const history = useHistory();
 
-  console.log('마이페이지로 넘어온 정보', location.state);
-
   const [userinfo, setUserinfo] = useState({
     // name: "",
     userid: '',
@@ -42,7 +40,6 @@ function Mypage({ mainSwitchHandler }: MypageProps) {
   const addDefaultSrc = (e: any) => {
     e.target.src = Photo;
   };
-  // console.log('마이페이지 커렌트 프렐이스', currentPlaceInfo);
 
   useEffect(() => {
     const authorization = localStorage.getItem('authorization');
@@ -67,11 +64,6 @@ function Mypage({ mainSwitchHandler }: MypageProps) {
   const photoChangeChecker = () => {
     setIsPhotoChanged(true);
   };
-
-  useEffect(() => {
-    console.log('이건 사진이야', photo);
-    console.log('adsadsasddas', Photo);
-  });
 
   return (
     <div id="mypage">

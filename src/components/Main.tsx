@@ -121,9 +121,6 @@ function Main({
     }
   }, []);
 
-  console.log('메인페이지 정보들', placeInfo, currentLocation, latLng);
-  console.log('메인 페이지 로케이션 스테이트', location.state);
-
   // Home -> Main으로 올 때만 발생하는 맵, 콘텐츠 렌더하는 useEffect
   useEffect(() => {
     if (location.state.latLng !== undefined) {
@@ -178,8 +175,6 @@ function Main({
     setPlaceInfo(placeInfo);
     setLatLng(latLng);
   };
-
-  console.log('로케이션 스테이트', location.state);
 
   //콘텐츠 박스의 img가 onLoad되면 상태변경 -> re-render 유도
   const imgStatusHandler = () => {
@@ -276,8 +271,6 @@ function Main({
     width: '80%',
   } as React.CSSProperties;
 
-  console.log('지금 선택되있는 장소', placeInfo);
-
   const htmlString = ReactDOMServer.renderToStaticMarkup(
     <div>
       {data.map((place) => {
@@ -316,7 +309,6 @@ function Main({
       },
       'user_viAPjBua2EXqACiVlL88n'
     );
-    console.log('email sent');
   };
 
   const emailInputHandler = () => {

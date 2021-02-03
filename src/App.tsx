@@ -16,7 +16,7 @@ function App() {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/main" render={() => <MainContainer />} />
-        <Route exact path="/main/profile" render={() => <Mypage />} />
+        <Route exact path="/main/profile" component={Mypage} />
         {/* <Redirect path="*" to="/main" /> */}
       </Switch>
       {/* </Router> */}

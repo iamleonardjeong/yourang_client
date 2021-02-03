@@ -13,7 +13,7 @@ const MainContainer = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
-  const [isMainOrMyPage, setIsMainOrMyPage] = useState(false);
+  const [isOnMypageModal, setIsOnMypageModal] = useState(false);
 
   // 기존 state
   const [navPlaceInfo, setNavPlaceInfo] = useState({});
@@ -104,7 +104,7 @@ const MainContainer = () => {
   };
 
   const mainSwitchHandler = () => {
-    setIsMainOrMyPage(!isMainOrMyPage);
+    setIsOnMypageModal(!isOnMypageModal);
   };
 
   return (
@@ -133,7 +133,9 @@ const MainContainer = () => {
         mainSwitchHandler={mainSwitchHandler}
       />
 
-      {isMainOrMyPage ? <Mypage /> : null}
+      {isOnMypageModal ? (
+        <Mypage mainSwitchHandler={mainSwitchHandler} />
+      ) : null}
 
       <Main
         navPlaceInfo={navPlaceInfo}

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import ReactDOMServer from 'react-dom/server';
 import { useLocation, useHistory } from 'react-router-dom';
 import '../styles/Main.scss';
 import classNames from 'classnames';

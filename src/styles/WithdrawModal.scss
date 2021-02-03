@@ -1,0 +1,167 @@
+.editinfo {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.35);
+
+  .editinfo_modal_container {
+    z-index: 110;
+    width: 100%;
+    min-height: 100%;
+    border: solid;
+    position: fixed;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .editinfo_modal_container_wrap {
+      min-width: 400px;
+      background-color: white;
+      box-shadow: 0 3px 6px rgba(189, 189, 189, 0.16),
+        0 3px 6px rgba(0, 0, 0, 0.23);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      // height: 600px;
+
+      .editinfo_modal_container_wrap_titleBar {
+        display: flex;
+        align-items: center;
+        background: #008f7a;
+        border-radius: 8px 8px 0px 0px;
+
+        .editinfo_modal_container_wrap_titleBar_closeBtn {
+          flex: 1;
+          font-size: 2rem;
+          font-weight: 300;
+          text-align: center;
+          color: white;
+          cursor: pointer;
+          transform: rotate(45deg);
+        }
+
+        .editinfo_modal_container_wrap_titleBar_title {
+          flex: 8;
+          margin: 16px;
+          font-size: 1rem;
+          font-weight: 400;
+          text-align: center;
+          color: white;
+        }
+        .editinfo_modal_container_wrap_titleBar_empty {
+          flex: 1;
+        }
+      }
+
+      .editinfo_modal_container_wrap_body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        padding: 20px;
+
+        .editinfo_modal_container_wrap_body_email {
+          width: 100%;
+        }
+
+        input[type='file'] {
+          display: none;
+        }
+
+        .custom-file-upload {
+          width: 100px;
+          height: 100px;
+          border-radius: 100%;
+          background: rgb(210, 210, 210);
+          &:hover {
+            background: rgb(233, 233, 233);
+            cursor: copy;
+          }
+          img {
+            width: 100px;
+            height: 100px;
+            border-radius: 100%;
+            object-fit: cover;
+          }
+        }
+        .file_input_hidden {
+          width: 120px;
+          height: 120px;
+          img {
+            width: 120px;
+          }
+        }
+        #save_btn {
+          margin-top: 20px;
+          color: #008f7a;
+          background: none;
+          border: none;
+          font-size: 0.9rem;
+          cursor: pointer;
+        }
+
+        .editinfo_modal_password_value1 {
+          font-family: 'Montserrat';
+          width: 100%;
+          height: 46px;
+          border: none;
+          border-bottom: 1px solid #008f7a;
+          outline: none;
+          font-size: 0.9rem;
+          margin-top: 20px;
+        }
+
+        .editinfo_modal_password_value2 {
+          font-family: 'Montserrat';
+          width: 100%;
+          height: 46px;
+          border: none;
+          border-bottom: 1px solid #008f7a;
+          outline: none;
+          margin-top: 20px;
+          font-size: 0.9rem;
+        }
+
+        .editinfo_modal_password_value3 {
+          font-family: 'Montserrat';
+          width: 100%;
+          height: 46px;
+          border: none;
+          border-bottom: 1px solid #008f7a;
+          outline: none;
+          margin-top: 20px;
+          font-size: 0.9rem;
+        }
+
+        .editinfo_btn_container {
+          width: 100%;
+          margin: 20px 0 0 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .editinfo_btn {
+            font-family: 'Montserrat';
+            color: #008f7a;
+            font-size: 0.9rem;
+            background: none;
+            border: none;
+            text-align: center;
+            margin: auto;
+            cursor: pointer;
+          }
+        }
+        .editinfo_modal_password_inspect {
+          margin-top: 10px;
+          font-size: 0.9rem;
+          font-weight: 600;
+          color: #008f7a;
+        }
+      }
+    }
+  }
+}

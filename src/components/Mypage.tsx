@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { Redirect, useHistory, useLocation } from 'react-router-dom';
 import '../styles/Mypage.scss';
 import EditInfo from './EditInfo';
+import WithdrawModal from './WithdrawModal';
 import Photo from '../image/photo.png';
 import axios from 'axios';
 
@@ -20,16 +21,18 @@ function Mypage({ mainSwitchHandler }: MypageProps) {
     created: '',
     photo: '',
   });
-
+  const [isLoggedOut, setIsloggedOut] = useState(false);
   const [isPhotoChanged, setIsPhotoChanged] = useState(false);
-  // fake data - user info contents
-  const { userid, email, phone, photo } = userinfo;
+  const [isWithdraw, setIsWithdraw] = useState(false);
+
   // useState
   const [onModal, setOnModal] = useState(false);
+
   // user info modification pop
   const editOnModal = () => {
     setOnModal(!onModal);
   };
+
   const addDefaultSrc = (e: any) => {
     e.target.src = Photo;
   };
@@ -53,12 +56,26 @@ function Mypage({ mainSwitchHandler }: MypageProps) {
         });
       });
   }, [isPhotoChanged]);
+
   const photoChangeChecker = () => {
     setIsPhotoChanged(true);
   };
 
+  const logOutButtonHandler = () => {
+    localStorage.removeItem('authorization');
+    localStorage.removeItem('myList');
+    setIsloggedOut(true);
+  };
+
+  const withdrawHandler = () => {
+    setIsWithdraw(!isWithdraw);
+  };
+
+  const { userid, email, phone, photo } = userinfo;
+
   return (
     <div id="mypage">
+      {isLoggedOut ? <Redirect to="/" /> : null}
       {onModal && (
         <EditInfo
           editOnModal={editOnModal}
@@ -66,6 +83,8 @@ function Mypage({ mainSwitchHandler }: MypageProps) {
           photoChangeChecker={photoChangeChecker}
         />
       )}
+
+      {isWithdraw && <WithdrawModal withdrawHandler={withdrawHandler} />}
       <div id="profileLeft">
         <div id="profileLeft_myInfo">
           <div id="profileLeft_myInfo_titleBar">
@@ -103,17 +122,12 @@ function Mypage({ mainSwitchHandler }: MypageProps) {
               <div>{phone}</div>
             </div>
             <div id="profileRight_empty">
-              <button
-                id=""
-                onClick={() => {
-                  localStorage.removeItem('authorization');
-                  localStorage.removeItem('myList');
-                  history.push('/');
-                }}
-              >
+              <button id="" onClick={logOutButtonHandler}>
                 로그아웃
               </button>
-              <button id="">회원탈퇴</button>
+              <button id="" onClick={withdrawHandler}>
+                회원탈퇴
+              </button>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
-[<img src="./src/image/logo.png" width="50%"/>](./src/image/logo.png)
+[<img src="./src/image/readme-topimg.png" width="100%" />](./src/image/readme-topimg.png)
 
-[Go to YouRang](http://yourang3.s3-website.ap-northeast-2.amazonaws.com/)
+[🔗 Go to YouRang](http://yourang.link)
 
 <!-- &nbsp; -->
 
@@ -20,6 +20,14 @@
 <!-- &nbsp; -->
 
 ---
+
+<!-- &nbsp; -->
+
+<!-- [🔗 팀회고](http://bit.ly/f3b1) -->
+
+<!-- &nbsp; -->
+
+<!-- --- -->
 
 <!-- &nbsp; -->
 
